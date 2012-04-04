@@ -35,9 +35,9 @@ if (isset($_GET['dp-url'])) {
 
 function printResult($result) {
 	ob_start();
-	print '<pre>';
+
 	var_dump($result);
-	print '</pre>';
+
 	$out = ob_get_contents();
 	ob_end_clean();
 	return $out;
@@ -51,13 +51,33 @@ function printResult($result) {
 <title>Web client test</title>
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
 <style>
+
+body {
+    font-family: verdana, sans-serif;
+    font-size: 11px;
+}
+
 h2 {
 	width: 100%;
 	background-color: #dde;
-	font-size: 16px;
-	margin: 50px 0 20px 0;
+	font-size: 13px;
+	margin: 15px 0 10px 0;
 	clear: both;
+    font-weight: normal;
+    padding: 3px;
 }
+
+#main {
+    width: 720px;
+}
+pre {
+    font-size: 10px;
+    max-height: 150px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    background: #def;
+    padding: 5px;
+  }
 
 .content-container {
 	width: 710px;
@@ -73,9 +93,12 @@ h2 {
 	background-color: #FFA500;
 	width: 600px
 }
+
+
 </style>
 </head>
 <body>
+<div id="main">
 <div>
 <form action="">
 	DrPublish API URL
@@ -86,6 +109,7 @@ h2 {
 	<input type="submit" name="run-article" value="Show article" />
 	<input type="hidden" name="run" value="true" />
 </form>
+    <!--
 <br /> ...or..<br />
 <form action="">
 	<input type="hidden" id="dpurl2" value="<?=$dpUrl?>" name="dp-url" style="width: 400px" />
@@ -104,6 +128,7 @@ h2 {
 	<input type="submit" name="run-author" value="Show author" />
 	<input type="hidden" name="run" value="true" />
 </form>
+-->
 <script>
 function setDPApiUrl(url)
 {
@@ -138,7 +163,6 @@ if ($runAuthor) {
 		die ("<em class=\"error-message\">An exception has been raised: " . $e->getMessage() . "</em></body></html>");
 	}
 ?>
-
 
 
 <h2>Source [DrPublishApiClientArticleElement DrPublishApiWebClient::getSourceName()]</h2>
@@ -187,15 +211,11 @@ DrPublishApiWebClient::getAuthorNames()]</h2>
 DrPublishApiWebClient::getDPAuthors()]</h2>
 <?
     //$drpublishApiClientArticle->getDPAuthors()
-    ?>
+?>
 <?
  //printResult($drpublishApiClientArticle->getDPAuthors())
-    ?>
+?>
 
-<h2>Authors [DrPublishApiClientList DrPublishApiWebClient::getAuthorNames()]</h2>
-<?
-    //$drpublishApiClientArticle->getAuthorNames()
-    ?>
 
 <h1>--Content--</h1>
 
@@ -216,12 +236,11 @@ DrPublishApiWebClient::getDPAuthors()]</h2>
 <h2>Body Text [DrPublishApiClientArticleElement DrPublishApiWebClient::getBodyText()]</h2>
 <div class="content-container"><?=$drpublishApiClientArticle->getBodyText()?></div>
 
-    <? exit ?>
-
 <h2>All images [DrPublishApiClientList DrPublishApiWebClient::getImages()]</h2>
 <div class="content-container"><?=$drpublishApiClientArticle->getImages()?>
 <h3>Image URL's [array DrPublishApiClientList::getAttributes('src')]</h3>
 <?= printResult($drpublishApiClientArticle->getImages()->getAttributes('src'))?></div>
+
 
 <h2>DPImages</h2>
 <h3>Including wrapping markups [DrPublishApiClientList DrPublishApiWebClient::getDPImages()]</h3>
@@ -249,6 +268,7 @@ foreach ($drpublishApiClientImages as $drpublishApiClientImageElement) {
 }
 
 ?></div>
+    <? exit ?>
 </pre>
 
 <h2>Fact Boxes [DrPublishApiClientList DrPublishApiWebClient::getFactBoxes()]</h2>
@@ -287,6 +307,7 @@ foreach ($drpublishApiClientImages as $drpublishApiClientImageElement) {
 </ul>
 
 <?php } /* end if ($runSearch)*/ ?>
+</div>
 </body>
 </html>
 
