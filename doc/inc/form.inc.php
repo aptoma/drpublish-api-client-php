@@ -4,7 +4,7 @@
     Publication
 	<input type="text" value="<?=$publication?>" name="publication" style="width: 100px" />
 	<hr/>
-    Search query: <?=$query?>
+    Search query:
     	<input type="text" name="query" value="<?=$query?>" style="width: 300px"/>
     	Limit:<input type="text" name="limit" value="<?=$limit?>" style="width: 40px"/>
     	Start:<input type="text" name="start" value="<?=$start?>" style="width: 40px"/>
