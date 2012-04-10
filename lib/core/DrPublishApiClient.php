@@ -172,7 +172,7 @@ class DrPublishApiClient
 	public function searchArticles($query, $limit = 10, $offset = 0)
 	{
 		$query = urlencode($query);
-		$url = $this->url . '/articles/?publication=' . $this->publicationName . '&dynamicQuery='.$query.'&limit='.$limit.'&offset='.$offset;
+		$url = $this->url . '/articles.xml?publication=' . $this->publicationName . '&dynamicQuery='.$query.'&limit='.$limit.'&offset='.$offset;
 		$articlesXml = $this->curl($url);
 		$this->dom = new DOMDocument('1.0', 'UTF-8');
 		$this->dom->loadXML($articlesXml);
@@ -182,11 +182,11 @@ class DrPublishApiClient
 		$dpClientArticleList = new DrPublishApiClientSearchList();
 		foreach($articleNodes as $articleNode) {
 			$articleXml = $this->dom->saveXML($articleNode);
+            $articleXml = '<DrPublish:article xmlns:DrPublish="' . self::$XMLNS_URI . '">' .$articleXml . '</DrPublish:article>';
 			$adom = new DOMDocument('1.0', 'UTF-8');
-			$adom->loadXML('<DrPublish:drpublish xmlns:"' . self::$XMLNS_URI . '">' .$articleXml . '</DrPublish:drpublish>');
+			$adom->loadXML($articleXml);
 			$dpClientArticleList->add($this->createDrPublishApiClientArticle($adom));
 		}
-		
 		$meta = $xpath -> query ( '//DrPublish:response/*' );
 		foreach ( $meta as $metaNode ) {
 		  switch ( $metaNode -> tagName ) {

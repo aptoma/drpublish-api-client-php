@@ -1,7 +1,4 @@
-<h2>DrPublish API request</h2>
-<div class="result">
-    <a href="<?=$dpWebClient->getRequestUri(); ?>" target="_blank"><?=$dpWebClient->getRequestUri(); ?></a>
-</div>
+<? include('api-request.inc.php') ?>
 
 <h2>Source [DrPublishApiClientArticleElement DrPublishApiWebClient::getSourceName()]</h2>
 <div class="result">
@@ -23,7 +20,7 @@
     <?=$drpublishApiClientArticle->getTagNames() ?>
 </div>
 
-<h2 style="display:none">DPTags as dedicated DrPublishApiClientTag objects [DrPublishApiClientList
+<h2>DPTags as dedicated DrPublishApiClientTag objects [DrPublishApiClientList
 DrPublishApiWebClient::getDPTags()]</h2>
 <div class="result">
 <? //= printResult($drpublishApiClientArticle->getDPTags()) ?>
@@ -34,7 +31,7 @@ DrPublishApiWebClient::getDPTags()]</h2>
     <?=$drpublishApiClientArticle->getCategories() ?>
 </div>
 
-<h2 style="display:none">DPCategories as dedicated DrPublishApiClientCategory objects [DrPublishApiClientListDrPublishApiWebClient::getDPCategories()]</h2>
+<h2>DPCategories as dedicated DrPublishApiClientCategory objects [DrPublishApiClientListDrPublishApiWebClient::getDPCategories()]</h2>
 <div class="result">
     <? //=printResult($drpublishApiClientArticle->getDPCategories())   ?>
 </div>
@@ -66,58 +63,69 @@ DrPublishApiWebClient::getDPTags()]</h2>
 
 <h1>--Content--</h1>
 
-<h2>Title [DrPublishApiClientArticleElement DrPublishApiWebClient::getTitle()]</h2>
-
-<h3><?=$drpublishApiClientArticle->getTitle()?></h3>
+    <h2>Title [DrPublishApiClientArticleElement DrPublishApiWebClient::getTitle()]</h2>
+<div class="result">
+    <h3><?=$drpublishApiClientArticle->getTitle()?></h3>
+</div>
 
 <h2>Preamble [DrPublishApiClientArticleElement DrPublishApiWebClient::getPreamble()]</h2>
-<div class="content-container"><b> <?=$drpublishApiClientArticle->getPreamble()?>
-</b></div>
+<div class="result">
+    <div class="content-container"><b> <?=$drpublishApiClientArticle->getPreamble()?>
+    </b></div>
+</div>
 
 <h2>LeadAsset [DrPublishApiClientArticleElement DrPublishApiWebClient::getLeadAsset()]</h2>
-<?php $leadAsset = $drpublishApiClientArticle->getLeadAsset() ?>
-<div class="content-container"><?=($leadAsset != null) ? $leadAsset->content() : '' ?>
-<div style="clear: both"></div>
+<div class="result">
+    <?php $leadAsset = $drpublishApiClientArticle->getLeadAsset() ?>
+    <div class="content-container"><?=($leadAsset != null) ? $leadAsset->content() : '' ?>
+    <div style="clear: both"></div>
+    </div>
 </div>
 
 <h2>Body Text [DrPublishApiClientArticleElement DrPublishApiWebClient::getBodyText()]</h2>
-<div class="content-container"><?=$drpublishApiClientArticle->getBodyText()?></div>
+<div class="result">
+    <div class="content-container"><?=$drpublishApiClientArticle->getBodyText()?></div>
+</div>
 
 <h2>All images [DrPublishApiClientList DrPublishApiWebClient::getImages()]</h2>
-<div class="content-container"><?=$drpublishApiClientArticle->getImages()?>
-<h3>Image URL's [array DrPublishApiClientList::getAttributes('src')]</h3>
-<?= printResult($drpublishApiClientArticle->getImages()->getAttributes('src'))?></div>
+<div class="result">
+    <div class="content-container"><?=$drpublishApiClientArticle->getImages()?>
+    <h3>Image URL's [array DrPublishApiClientList::getAttributes('src')]</h3>
+    <?= printResult($drpublishApiClientArticle->getImages()->getAttributes('src'))?></div>
+</div>
 
 
 <h2>DPImages</h2>
-<h3>Including wrapping markups [DrPublishApiClientList DrPublishApiWebClient::getDPImages()]</h3>
-<div class="content-container"><?=$drpublishApiClientArticle->getDPImages()?> <?php
-$drpublishApiClientImages = $drpublishApiClientArticle->getDPImages();
-foreach ($drpublishApiClientImages as $drpublishApiClientImage) {
-	print "<br/><br/> photographer: ";
-	printResult($drpublishApiClientImage->getPhotographer());
-	print "<br/> title: " . $drpublishApiClientImage->getTitle();
-	print "<br/> description: " . $drpublishApiClientImage->getDescription();
-	print "<br/> source: " . $drpublishApiClientImage->getSource();
-	print "<br/> image element " . 	$drpublishApiClientImage->getImage();
-}
-?>
-<h3>Thumbnails [DrPublishApiWebClientArticleElement
-DrPublishApiWebClientImageElement::getThumbnail(size)]</h3>
-<pre>
-<?php
-foreach ($drpublishApiClientImages as $drpublishApiClientImageElement) {
-	$drpublishApiClientImage = $drpublishApiClientImageElement->getThumbnail(75);
-	print printResult($drpublishApiClientImage);
-	print ($drpublishApiClientImage);
-	print " width=" . $drpublishApiClientImage->getWidth();
-	print " src=" . $drpublishApiClientImage->getUrl();
-}
-
-?>
+<div class="result">
+    <h3>Including wrapping markups [DrPublishApiClientList DrPublishApiWebClient::getDPImages()]</h3>
+    <div class="content-container"><?=$drpublishApiClientArticle->getDPImages()?> <?php
+    $drpublishApiClientImages = $drpublishApiClientArticle->getDPImages();
+    foreach ($drpublishApiClientImages as $drpublishApiClientImage) {
+        print "<br/><br/> photographer: ";
+        printResult($drpublishApiClientImage->getPhotographer());
+        print "<br/> title: " . $drpublishApiClientImage->getTitle();
+        print "<br/> description: " . $drpublishApiClientImage->getDescription();
+        print "<br/> source: " . $drpublishApiClientImage->getSource();
+        print "<br/> image element " . 	$drpublishApiClientImage->getImage();
+    }
+    ?>
+    <h3>Thumbnails [DrPublishApiWebClientArticleElement
+    DrPublishApiWebClientImageElement::getThumbnail(size)]</h3>
+    <pre>
+    <?php
+    foreach ($drpublishApiClientImages as $drpublishApiClientImageElement) {
+        $drpublishApiClientImage = $drpublishApiClientImageElement->getThumbnail(75);
+        print printResult($drpublishApiClientImage);
+        print ($drpublishApiClientImage);
+        print " width=" . $drpublishApiClientImage->getWidth();
+        print " src=" . $drpublishApiClientImage->getUrl();
+    }
+    ?>
+    </div>
+    </pre>
 </div>
 
-</pre>
-
 <h2>Fact Boxes [DrPublishApiClientList DrPublishApiWebClient::getFactBoxes()]</h2>
-<div class="content-container"><?=$drpublishApiClientArticle->getFactBoxes();?></div>
+<div class="result">
+    <div class="content-container"><?=$drpublishApiClientArticle->getFactBoxes();?></div>
+</div>

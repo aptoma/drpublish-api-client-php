@@ -17,7 +17,7 @@ class DrPublishApiClientArticle
     protected $dom;
     protected $xpath;
     protected $dpClient;
-    public $xml;
+    protected $xml;
 
     /**
      * Class constructor
@@ -273,6 +273,11 @@ class DrPublishApiClientArticle
             }
             $newNode->ownerDocument->replaceChild($newNode, $node);
         }
+    }
+
+    public function xml()
+    {
+        return $this->dom->saveXml();
     }
 
 }

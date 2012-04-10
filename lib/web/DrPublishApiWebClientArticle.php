@@ -160,7 +160,7 @@ class DrPublishApiWebClientArticle extends DrPublishApiClientArticle
 	 */
 	public function getTitle()
 	{
-		return   $this->getElement('/DrPublish:article/DrPublish:contents/DrPublish:content[@medium="' . $this->medium . '"]/title[1]');
+		return   $this->getElement('//DrPublish:article/DrPublish:contents/DrPublish:content[@medium="' . $this->medium . '"]/title[1]');
 	}
 
 	/**
@@ -168,7 +168,7 @@ class DrPublishApiWebClientArticle extends DrPublishApiClientArticle
 	 */
 	public function getPreamble()
 	{
-		return $this->getElement('/DrPublish:article/DrPublish:contents/DrPublish:content[@medium="' . $this->medium . '"]/preamble[1] | //DrPublish:article/DrPublish:contents/DrPublish:content[@medium="' . $this->medium . '"]/excerpt[1]');
+		return $this->getElement('//DrPublish:article/DrPublish:contents/DrPublish:content[@medium="' . $this->medium . '"]/preamble[1] | //DrPublish:article/DrPublish:contents/DrPublish:content[@medium="' . $this->medium . '"]/excerpt[1]');
 	}
 
 	/**
@@ -178,7 +178,7 @@ class DrPublishApiWebClientArticle extends DrPublishApiClientArticle
 	 */
 	public function getLeadAsset()
 	{
-		return $this->getElement('/DrPublish:article/DrPublish:contents/DrPublish:content[@medium="' . $this->medium . '"]/leadAsset/descendant::object[1]|descendant::embed[1]|descendant::div[1]');
+		return $this->getElement('//DrPublish:article/DrPublish:contents/DrPublish:content[@medium="' . $this->medium . '"]/leadAsset/descendant::object[1]|descendant::embed[1]|descendant::div[1]');
 	}
 	
 	/**
@@ -204,6 +204,14 @@ class DrPublishApiWebClientArticle extends DrPublishApiClientArticle
 	{
 		return $this->getElement('//DrPublish:article/DrPublish:contents/DrPublish:content[@medium="' . $this->medium . '"]/story | //DrPublish:article/DrPublish:contents/DrPublish:content[@medium="' . $this->medium . '"]/body');
 	}
+
+	/**
+	 * @return DrPublishApiWebClientArticleElement
+	 */
+	public function getBody()
+	{
+		return $this->getBodyText();
+    }
 
 	/**
 	 * @return DrPublishApiWebClientArticleElement
@@ -237,7 +245,7 @@ class DrPublishApiWebClientArticle extends DrPublishApiClientArticle
 			return null;
 		}
 		$list = new DrPublishApiClientList();
-		$domNodes = $this->xpath->query('/DrPublish:article/DrPublish:meta/authors/author');
+		$domNodes = $this->xpath->query('//DrPublish:article/DrPublish:meta/authors/author');
 		foreach ($domNodes as $domNode) {
 			$id = $domNode->getAttribute('id');
 			$dpClientAuthor = $this->dpClient->getAuthor($id);
@@ -253,7 +261,7 @@ class DrPublishApiWebClientArticle extends DrPublishApiClientArticle
 	 */
 	public function getFactBoxes()
 	{
-		return $this->getElements("/DrPublish:article/DrPublish:contents/DrPublish:content/descendant::div[@class and contains(concat(' ',normalize-space(@class),' '),' dp-fact-box ')]");
+		return $this->getElements("//DrPublish:article/DrPublish:contents/DrPublish:content/descendant::div[@class and contains(concat(' ',normalize-space(@class),' '),' dp-fact-box ')]");
 	}
 
 }
