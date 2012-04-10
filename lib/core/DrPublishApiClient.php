@@ -36,6 +36,7 @@ unset($dpcDirname);
 class DrPublishApiClient
 {
 	protected $url;
+    protected $requestUri;
 	protected $unitTestMode = false;
 	protected $dom;
     protected $publicationName;
@@ -241,6 +242,11 @@ class DrPublishApiClient
 		return trim($node->textContent);
 	}
 
+    public function getRequestUri()
+    {
+        return $this->requestUri;
+    }
+
 	/**
 	 * Creates a DrPublishApiClientArticle from XML article
 	 * This method can be overwritten by custom client
@@ -296,6 +302,7 @@ class DrPublishApiClient
 	protected function curl($url)
 	{
 		if ($this->unitTestMode) $url .= '&unittest=true';
+        $this->requestUri = $url;
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, $url);
 		curl_setopt($ch, CURLOPT_COOKIESESSION, false);
