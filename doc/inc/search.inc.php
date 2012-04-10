@@ -7,7 +7,7 @@
 		<li>
 			<h4>
 				<?=$drpublishApiClientArticle->getId()?>:
-				<a href="web-client-test.php?action=article&article-id=<?=$drpublishApiClientArticle->getId()?>&dp-url=<?=$dpUrl?>&publication=<?=$publication?>">
+				<a href="web-client-test.php?action=article&article-id=<?=$drpublishApiClientArticle->getId()?>&dp-url=<?=$dpUrl?>&publication=<?=$publication?>&query=<?=$query?>">
 
 				<?=$drpublishApiClientArticle->getTitle()?>
 				</a>

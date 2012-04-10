@@ -13,7 +13,7 @@
 	Article id:
 	<input type="text" value="<?=$articleId?>" name="article-id" style="width: 60px" />
 	<button name="run-article"  onclick="submitForm('article'); return false;">Show article</button>
-	<input type="text" name="action" id="action" />
+	<input type="hidden" name="action" id="action" />
 </form>
 <script type="text/javascript">
     function submitForm(action) {
