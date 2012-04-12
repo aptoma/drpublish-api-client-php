@@ -164,15 +164,19 @@ class DrPublishApiClient
 	 * Get list of articles from server
 	 *
 	 * @param string $query
-	 * @param int $limit
-	 * @param int $offset
+	 * @param array options
 	 * @return DrPublishApiClientList list elements are DrPublishApiClientArticle objects
 	 * @throws DrPublishApiClientException
 	 */
-	public function searchArticles($query, $limit = 10, $offset = 0)
+	public function searchArticles($query, $options = array())
 	{
 		$query = urlencode($query);
-		$url = $this->url . '/articles.xml?publication=' . $this->publicationName . '&dynamicQuery='.$query.'&limit='.$limit.'&offset='.$offset;
+        if (count($options) > 0) {
+            foreach ($options as $key => $value) {
+                $query .=  "&{$key}={$value}";
+            }
+        }
+		$url = $this->url . '/articles/search.xml?publication=' . $this->publicationName . '&q='.$query ;
 		$articlesXml = $this->curl($url);
 		$this->dom = new DOMDocument('1.0', 'UTF-8');
 		$this->dom->loadXML($articlesXml);

@@ -14,6 +14,7 @@ $dpUrl = '';
 $query = isset($_GET['query']) ? $_GET['query'] : '';
 $limit = isset($_GET['limit']) ? (int) $_GET['limit'] : 5;
 $start = isset($_GET['start']) ? (int) $_GET['start'] : 0;
+$fields = isset($_GET['fields']) ? $_GET['fields'] : '';
 $articleId = isset($_GET['article-id']) ? $_GET['article-id'] : 0;
 $authorId = isset($_GET['author-id']) ? $_GET['author-id'] : 0;
 $action = isset($_GET['action']) ? $_GET['action'] : '';
@@ -50,7 +51,17 @@ else if ($action == 'article') {
  }
 else if ($action == 'search') {
 	try {
-	    $drpublishApiClientArticles = $dpWebClient->searchArticles($query, $limit, $start);
+        $options = array();
+        if (!empty($start)) {
+            $options['start'] = $start;
+        }
+        if (!empty($limit)) {
+            $options['limit'] = $limit;
+        }
+        if (!empty($fields)) {
+            $options['fields'] = $fields;
+        }
+	    $drpublishApiClientArticles = $dpWebClient->searchArticles($query, $options);
         include('inc/search.inc.php');
 	} catch (DrPublishApiClientException $e) {
         include('inc/error.inc.php');

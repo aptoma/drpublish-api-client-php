@@ -4,10 +4,13 @@
     Publication
 	<input type="text" value="<?=$publication?>" name="publication" style="width: 100px" />
 	<hr/>
-    Search query:
-    	<input type="text" name="query" value="<?=$query?>" style="width: 300px"/>
+    <span style="vertical-align: top;">Search query:</span>
+    	<textarea name="query" style="width: 600px" style="vertical-align: top"><?=htmlentities($query)?></textarea>
+    <br/>
     	Limit:<input type="text" name="limit" value="<?=$limit?>" style="width: 40px"/>
     	Start:<input type="text" name="start" value="<?=$start?>" style="width: 40px"/>
+        <!--Fields: <input type="text" name="fields" value="<?=$fields?>" style="width: 70px"/>-->
+        <br/><br/>
     	<button name="run-search" onclick="submitForm('search'); return false;">Search</button>
     <hr/>
 	Article id:
