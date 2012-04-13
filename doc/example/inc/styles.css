@@ -1,0 +1,60 @@
+body {
+    font-family: verdana, sans-serif;
+    font-size: 12px;
+    background: #ddd;
+
+}
+
+h2 {
+    background-color: #eee;
+    font-size: 12px;
+    margin: 0;
+    padding: 5px;
+    clear: both;
+    font-weight: normal;
+    border-radius: 3px 3px 0 0;
+    color: #555;
+}
+
+#main {
+    width: 735px;
+}
+
+pre {
+    font-size: 10px;
+    max-height: 150px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    background: #def;
+    padding: 5px;
+}
+
+.result {
+    background: #fff;
+    padding: 5px;
+    margin-bottom: 5px;
+    border-radius: 0 0 3px 3px;;
+}
+
+.content-container {
+    width: 710px;
+
+    padding: 5px;
+    clear: both;
+}
+
+.error-message {
+    display: block;
+    padding: 10px;
+    margin: 20px;
+    background-color: #FFA500;
+    width: 600px
+}
+
+#request-form {
+    margin: 5px 0 8px 0;
+    border: solid #777 2px;
+    padding: 8px;
+    border-radius: 3px;
+    background: #ccc;
+}

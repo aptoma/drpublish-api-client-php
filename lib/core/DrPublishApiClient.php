@@ -170,7 +170,6 @@ class DrPublishApiClient
 	 */
 	public function searchArticles($query, $options = array())
 	{
-		$query = urlencode($query);
         if (count($options) > 0) {
             foreach ($options as $key => $value) {
                 $query .=  "&{$key}={$value}";
@@ -305,8 +304,8 @@ class DrPublishApiClient
 	 */
 	protected function curl($url)
 	{
-		if ($this->unitTestMode) $url .= '&unittest=true';
-        $this->requestUri = $url;
+		//if ($this->unitTestMode) $url .= '&unittest=true';
+        $this->requestUri = urlencode($url);
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, $url);
 		curl_setopt($ch, CURLOPT_COOKIESESSION, false);
@@ -315,7 +314,7 @@ class DrPublishApiClient
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 		$res = curl_exec($ch);
 		$info = curl_getinfo($ch);
-		$header = substr($res, 0, $info['header_size']);
+		//$header = substr($res, 0, $info['header_size']);
 		$body = substr($res, $info['header_size']);
 		curl_close($ch);
 		if ($info['http_code'] == 404) {

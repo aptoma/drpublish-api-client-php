@@ -7,7 +7,7 @@
 /**
  * Includes DrPublishApiWebClient
  */
-require(dirname(__FILE__).'/../lib/web/DrPublishApiWebClient.php');
+require(dirname(__FILE__) . '/../../lib/web/DrPublishApiWebClient.php');
 require('inc/functions.php');
 ini_set('display_errors', 1);
 $dpUrl = '';
@@ -61,6 +61,8 @@ else if ($action == 'search') {
         if (!empty($fields)) {
             $options['fields'] = $fields;
         }
+        $query = trim($query);
+        $query = urlencode(urldecode($query));
 	    $drpublishApiClientArticles = $dpWebClient->searchArticles($query, $options);
         include('inc/search.inc.php');
 	} catch (DrPublishApiClientException $e) {
