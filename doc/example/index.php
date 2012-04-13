@@ -13,14 +13,15 @@
     }
     function submitForm(action) {
         document.getElementById('action').value = action;
-        //document.getElementById('request-form').submit();
-        console.debug('submit form');
           var params = $('#request-form').serialize();
-          console.debug(params);
-          jQuery.get('web-client-test.php?' + params, function(data) {
-              $('#api-response').html(data);
-          });
-        return false;
+           $('#api-response').fadeOut( function() {
+              jQuery.get('web-client-test.php?' + params, function(data) {
+                  $('#api-response').html(data);
+                  $('#api-response').fadeIn();
+
+              });
+              return false;
+           })
     }
     </script>
     <link type="text/css" rel="stylesheet" media="all" href="inc/styles.css" />
