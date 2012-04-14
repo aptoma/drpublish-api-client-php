@@ -51,10 +51,33 @@ pre {
     width: 600px
 }
 
-#request-form {
-    margin: 5px 0 8px 0;
+fieldset {
+    vertical-align: top;
+    margin: 3px;
     border: solid #777 2px;
     padding: 8px;
     border-radius: 3px;
     background: #ccc;
+    display: inline-block;
+}
+
+fieldset legend {
+    font-size: 14px;
+    color: #666;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+fieldset legend:hover {
+    color: #ff4500;
+
+}
+
+fieldset.inactive {
+}
+
+
+
+fieldset.inactive form {
+    display: none;
 }
