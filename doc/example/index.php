@@ -20,9 +20,9 @@
             <legend>Search articles</legend>
            <form action="search">
             <span style="vertical-align: top;">Search query:</span>
-                <textarea name="query" style="width: 600px" style="vertical-align: top"></textarea>
+                <textarea name="query"></textarea>
             <br/>
-                Start:<input type="text" name="start" value="0" style="width: 40px"/>
+                Offset:<input type="text" name="offset" value="0" style="width: 40px"/>
                 Limit:<input type="text" name="limit" value="5" style="width: 40px"/>
                 <br/><br/>
                 <button name="run-search" onclick="DrPublishApiClientExmample.submitForm(this); return false;">Search</button>
@@ -34,14 +34,18 @@
             <legend>Get article</legend>
             <form action="article">
             Article id:
-            <input type="text" value="" name="article-id" style="width: 60px" />
+            <input type="text" value="" name="article-id" style="width: 80px" />
             <button name="run-article"  onclick="DrPublishApiClientExmample.submitForm(this); return false;">Show article</button>
              </form>
         </fieldset>
 
         <fieldset>
             <legend>Search Authors</legend>
-            <form action="">
+            <form action="search-authors">
+             <span style="vertical-align: top;">Search query:</span>
+                 <textarea name="query"></textarea>
+              <br/>
+                <input type="submit" onclick="DrPublishApiClientExmample.submitForm(this); return false;" val="Search" />
              </form>
         </fieldset>
 
@@ -76,6 +80,7 @@
         </fieldset>
 
 
+    <div style="clear: both"></div>
     <div id="api-response">
     </div>
 

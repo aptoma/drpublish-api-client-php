@@ -58,7 +58,8 @@ fieldset {
     padding: 8px;
     border-radius: 3px;
     background: #ccc;
-    display: inline-block;
+    display: block;
+    float: left;
 }
 
 fieldset legend {
@@ -70,14 +71,20 @@ fieldset legend {
 
 fieldset legend:hover {
     color: #ff4500;
-
 }
 
-fieldset.inactive {
+fieldset.active {
+    background: orange;
 }
 
 
 
-fieldset.inactive form {
+fieldset  form {
     display: none;
+}
+
+
+textarea {
+    width: 500px;
+    vertical-align: top
 }

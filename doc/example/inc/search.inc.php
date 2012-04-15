@@ -1,4 +1,3 @@
-<? include('api-request.inc.php') ?>
 <h2>Search articles [DrPublishApiWebClient::searchArticle('<?=$query?>', <?=$limit?>, <?=$start?>)]</h2>
 <ul>
 <?php

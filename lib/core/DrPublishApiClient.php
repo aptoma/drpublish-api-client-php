@@ -120,6 +120,15 @@ class DrPublishApiClient
 		return $dpClientArticle;
 	}
 
+    public function searchAuthors($query)
+    {
+        $query = urldecode($query);
+        $query = str_replace(':', '=', $query);
+        $url = $this->url . '/users.json?' . $query;
+        $responseBody = trim($this->curl($url));
+        return ($responseBody);
+    }
+
 	/**
 	 * Get author from server
 	 *

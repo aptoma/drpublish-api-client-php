@@ -1,5 +1,3 @@
-<? include('api-request.inc.php') ?>
-
 <h2>Source [DrPublishApiClientArticleElement DrPublishApiWebClient::getSourceName()]</h2>
 <div class="result">
     <?=$drpublishApiClientArticle->getSourceName()?>

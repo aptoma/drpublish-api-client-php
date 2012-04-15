@@ -2,32 +2,28 @@ var DrPublishApiClientExmample = {
 
     init: function() {
         $('textarea').keypress(function(e) {
-            console.debug(e.keyCode);
             if (e.keyCode == 13) {
                 DrPublishApiClientExmample.submitForm(e.target);
                 return false;
             }
         } );
-        $('fieldset').addClass('inactive');
-        $('fieldset').first().removeClass('inactive');
+
+        $('fieldset').first().addClass('active').find('form').show();
         $('fieldset legend').click(function(e) {
-            //$('fieldset').addClass('inactive');
                 $(e.target).closest('fieldset').find('form').fadeIn(
                     function() {
                         $('#api-response').fadeOut(
                             function() {
-                                $(e.target).parent().siblings().find('form').fadeOut();
-
+                                $(e.target).parent().siblings().removeClass('active').find('form').fadeOut(
+                                    function() {
+                                        window.setTimeout( function() { $(e.target).closest('fieldset').addClass('active')}, 600);
+                                    }
+                                );
                             }
                         );
 
                     }
                 );
-//            $('fieldset form').fadeOut(function() {
-//            });
-            console.debug($(e.target).parent());
-            //$(e.target).closest('fieldset').removeClass('inactive', 1000);
-
         });
     },
 
