@@ -53,17 +53,15 @@ switch ($action) {
         break;
     case 'search-authors':
         try {
-          $query = isset($_GET['query']) ? $_GET['query'] : '';
+          $requestedFields = array();
+          if (!empty($_GET['fullname'])) $requestedFields[] = "fullname={$_GET['fullname']}";
+          if (!empty($_GET['username'])) $requestedFields[] = "username={$_GET['username']}";
+          //$query = isset($_GET['query']) ? $_GET['query'] : '';
+          //$query = trim(urlencode(urldecode($query)));
           $limit = isset($_GET['limit']) ? (int) $_GET['limit'] : 5;
           $offset = isset($_GET['offset']) ? (int) $_GET['offset'] : 0;
-          $options = array();
-          if (!empty($offset)) {
-               $options['offset'] = $offset;
-          }
-          if (!empty($limit)) {
-               $options['limit'] = $limit;
-          }
-          $query = trim(urlencode(urldecode($query)));
+
+          $query = join('&', $requestedFields);
           $drpublishApiClientAuthors = $dpWebClient->searchAuthors($query, $offset, $limit);
           $mainView = 'search-authors';
         } catch (DrPublishApiClientException $e) {

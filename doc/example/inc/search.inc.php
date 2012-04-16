@@ -1,16 +1,16 @@
-<h2>Search articles [DrPublishApiWebClient::searchArticle('<?=$query?>', <?=$limit?>, <?=$start?>)]</h2>
+<h2>Search articles [DrPublishApiWebClient::searchArticle('<?=$query?>', <?=$limit?>, <?=$offset?>)]</h2>
 <ul>
 <?php
 	foreach ($drpublishApiClientArticles as $drpublishApiClientArticle) {
 		?>
 		<li>
-			<h4>
-				<?=$drpublishApiClientArticle->getId()?>:
-				<a href="web-client-test.php?action=article&article-id=<?=$drpublishApiClientArticle->getId()?>&dp-url=<?=$dpUrl?>&publication=<?=$publication?>&query=<?=$query?>">
+				[<?=$drpublishApiClientArticle->getId()?>]
+				<strong><?=$drpublishApiClientArticle->getTitle()?></strong>
+                <br/>
+                <span style="color: #555">
+               <?=$drpublishApiClientArticle->getPreamble()?>
+                </span>
 
-				<?=$drpublishApiClientArticle->getTitle()?>
-				</a>
-			</h4>
 
 		</li>
 		<?php

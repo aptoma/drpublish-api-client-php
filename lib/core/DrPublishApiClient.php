@@ -120,13 +120,26 @@ class DrPublishApiClient
 		return $dpClientArticle;
 	}
 
-    public function searchAuthors($query)
+    public function searchAuthors($query, $offset = 0, $limit = 5)
     {
         $query = urldecode($query);
-        $query = str_replace(':', '=', $query);
-        $url = $this->url . '/users.json?' . $query;
+        $url = $this->url . '/users.json?' . $query . '&offset=' . $offset . '&limit=' . $limit;
         $responseBody = trim($this->curl($url));
-        return ($responseBody);
+        $list = new DrPublishApiClientSearchList();
+        $responseObject = json_decode($responseBody);
+        if (!empty($responseObject)) {
+        $list->offset = $responseObject->offset;
+        $list->limit = $responseObject->limit;
+        $list->hits = $responseObject->count;
+        $list->total = $responseObject->total;
+        $list->query = $this->requestUri;
+        $authors = $responseObject->items;
+        foreach ($authors as $author) {
+            $author = new DrPublishApiClientAuthor($author);
+            $list->add($author);
+        }
+        }
+        return ($list);
     }
 
 	/**
@@ -138,14 +151,13 @@ class DrPublishApiClient
 	 */
 	public function getAuthor($id)
 	{
-		$url = $this->url . '/author/?id='.$id;
+		$url = $this->url . '/users/'.$id . '.json';
 		$responseBody = trim($this->curl($url));
-		if (empty($responseBody)) {
-			throw new DrPublishApiClientException("No article data retreived for article-id='{$id}'", DrPublishApiClientException::NO_DATA_ERROR);
+         $responseObject = json_decode($responseBody);
+		if (empty($responseObject)) {
+			throw new DrPublishApiClientException("No or invalid author data retreived for article-id='{$id}'", DrPublishApiClientException::NO_DATA_ERROR);
 		}
-		$dom = new DOMDocument('1.0', 'UTF-8');
-		$dom->loadXML($responseBody);
-		$dpClientAuthor = $this->createDrPublishApiClientAuthor($dom);
+		$dpClientAuthor = new DrPublishApiClientAuthor($responseObject);
 		return $dpClientAuthor;
 	}
 

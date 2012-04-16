@@ -43,7 +43,7 @@ class DrPublishApiClientSearchList extends DrPublishApiClientList {
    */
   protected function storeMeta ( $query, $offset, $limit, $hits, $total, $time ) {
     $this -> _meta = array (
-      'query' => $query,
+        'query' => $query,
     	'hits' => $hits,
     	'total' => $total,
     	'start' => $offset,

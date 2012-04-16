@@ -11,38 +11,19 @@
  * @version    $Id: DrPublishApiClient.php 967 2010-09-27 07:35:54Z stefan $
  * @author     stefan@aptoma.no
  */
-class DrPublishApiClientAuthor extends DrPublishApiClientArticleElement
+class DrPublishApiClientAuthor
 {
-	protected $id;
+
 	protected $fullName;
 	protected $userName;
-	protected $email;
 
-	/**
-	 * Class constructor
-	 *
-	 * @param DOMElement $domElement
-	 * @param DOMDocument $dom
-	 * @param DrPublishApiClient $dpClient
-	 * @return void
-	 */
-	public function __construct(DOMElement $domElement, DOMDocument $dom, DrPublishApiClient $dpClient, DOMXPath $xpath)
-	{
-		parent::__construct($domElement, $dom, $dpClient, $xpath);
-		$this->setId($this->getProperty('id'));
-		$this->setFullName($this->getProperty('fullname'));
-		$this->setUserName($this->getProperty('username'));
-		$this->setEmail($this->getProperty('email'));
-	}
-
-	/**
-	 * @param int $id
-	 * @return void
-	 */
-	public function setId($id)
-	{
-		$this->id = $id;
-	}
+    public function __construct($data) {
+        foreach($data as $key => $value) {
+            $this->{$key} = $value;
+        }
+        $this->fullName = $data->fullname;
+        $this->userName = $data->username;
+    }
 
 	/**
 	 * @return int
@@ -52,14 +33,6 @@ class DrPublishApiClientAuthor extends DrPublishApiClientArticleElement
 		return $this->id;
 	}
 
-	/**
-	 * @param string $name
-	 * @return void
-	 */
-	public function setFullName($name)
-	{
-		$this->fullName = $name;
-	}
 
 	/**
 	 * @return string
@@ -70,15 +43,6 @@ class DrPublishApiClientAuthor extends DrPublishApiClientArticleElement
 	}
 
 	/**
-	 * @param string $name
-	 * @return void
-	 */
-	public function setUserName($name)
-	{
-		$this->userName = $name;
-	}
-
-	/**
 	 * @return string
 	 */
 	public function getUserName()
@@ -86,21 +50,13 @@ class DrPublishApiClientAuthor extends DrPublishApiClientArticleElement
 		return $this->userName;
 	}
 
-	/**
-	 * @param string $email
-	 * @return void
-	 */
-	public function setEmail($email)
-	{
-		$this->email = $email;
-	}
 
 	/**
 	 * @return string
 	 */
 	public function getEmail()
 	{
-		return $this->email;
+		return isset($this->email) ? $this->email : '';
 	}
 
 	/**
@@ -113,9 +69,8 @@ class DrPublishApiClientAuthor extends DrPublishApiClientArticleElement
 
 	public function getProperty($name)
 	{
-		$node = $this->dom->getElementsByTagName($name)->item(0);
-		if (!empty($node)) {
-			return $node->nodeValue;
+		if (!empty($this->{$name})) {
+			return $this->{$name};
 		} else {
 			return '';
 		}

@@ -51,6 +51,11 @@ pre {
     width: 600px
 }
 
+label {
+    display: inline-block;
+    min-width: 80px;
+}
+
 fieldset {
     vertical-align: top;
     margin: 3px;
@@ -73,18 +78,42 @@ fieldset legend:hover {
     color: #ff4500;
 }
 
-fieldset.active {
-    background: orange;
-}
-
-
-
-fieldset  form {
-    display: none;
-}
-
-
 textarea {
     width: 500px;
     vertical-align: top
+}
+
+#active-form {
+    clear: both;
+    width: 500px;
+    float: left;
+    margin-right: 40px;
+}
+
+#active-form fieldset {
+    background-color: orange;
+}
+
+#form-pool {
+    width: 500px;
+    float: left;
+}
+
+#form-pool fieldset  form {
+    display: none;
+}
+
+#active-form fieldset{
+   float: none;
+
+}
+
+#api-response-wrap {
+    margin-top: 20px;
+    width: 1000px;
+    border: solid #777 2px;
+    border-radius: 3px;
+    padding: 10px;
+    min-height: 150px;
+    background: #ccc;
 }

@@ -12,23 +12,27 @@
 </head>
 <body>
     DrPublish API URL
-      <input type="text" value="" id="dp-url" name="dp-url" style="width: 300px"/>
+      <input type="text" value="" id="dp-url" name="dp-url" value="http://stefan.aptoma.no:9000" style="width: 300px"/>
     Publication
-       <input type="text" value="" id="dp-publication" name="dp-publication" style="width: 100px" />
+       <input type="text" value="" id="dp-publication" name="dp-publication" value="DinePenger" style="width: 100px" />
 <hr/>
-        <fieldset>
-            <legend>Search articles</legend>
-           <form action="search">
-            <span style="vertical-align: top;">Search query:</span>
-                <textarea name="query"></textarea>
-            <br/>
-                Offset:<input type="text" name="offset" value="0" style="width: 40px"/>
-                Limit:<input type="text" name="limit" value="5" style="width: 40px"/>
-                <br/><br/>
-                <button name="run-search" onclick="DrPublishApiClientExmample.submitForm(this); return false;">Search</button>
-            </form>
 
-        </fieldset>
+        <div id="active-form">
+            <fieldset>
+                <legend>Search articles</legend>
+               <form action="search">
+                <span style="vertical-align: top;">Search query:</span>
+                    <textarea name="query">*</textarea>
+                <br/>
+                    Offset:<input type="text" name="offset" value="0" style="width: 40px"/>
+                    Limit:<input type="text" name="limit" value="5" style="width: 40px"/>
+                    <br/><br/>
+                    <button name="run-search" onclick="DrPublishApiClientExmample.submitForm(this); return false;">Search</button>
+                </form>
+            </fieldset>
+        </div>
+        <div id="form-pool">
+
 
         <fieldset>
             <legend>Get article</legend>
@@ -42,18 +46,32 @@
         <fieldset>
             <legend>Search Authors</legend>
             <form action="search-authors">
+                <!--
              <span style="vertical-align: top;">Search query:</span>
                  <textarea name="query"></textarea>
               <br/>
-                <input type="submit" onclick="DrPublishApiClientExmample.submitForm(this); return false;" val="Search" />
+              -->
+                <label>Username:</label> <input type="text" name="username" value="aptoma*" style="width: 250px" />
+                <br/>
+                <label>Name:</label> <input type="text" name="fullname"  style="width: 250px"/>
+                <br/>
+                Offset:<input type="text" name="offset" value="0" style="width: 40px"/>
+                Limit:<input type="text" name="limit" value="5" style="width: 40px"/>
+                <br/><br/>
+               <input type="submit" onclick="DrPublishApiClientExmample.submitForm(this); return false;" val="Search" />
              </form>
         </fieldset>
 
         <fieldset>
             <legend>Get author</legend>
-            <form action="" >
+            <form action="author" >
+                <input type="text" value="1" name="author-id" style="width: 80px" />
+                <br/><br/>
+               <input type="submit" onclick="DrPublishApiClientExmample.submitForm(this); return false;" val="Show author" />
              </form>
         </fieldset>
+
+            <!--
 
         <fieldset>
             <legend>Search tags</legend>
@@ -79,10 +97,16 @@
              </form>
         </fieldset>
 
+        -->
+
+        </div>
+
 
     <div style="clear: both"></div>
+    <div id="api-response-wrap">
     <div id="api-response">
     </div>
+     </div>
 
 </body>
 </html>
