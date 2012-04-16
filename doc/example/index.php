@@ -12,9 +12,9 @@
 </head>
 <body>
     DrPublish API URL
-      <input type="text" value="" id="dp-url" name="dp-url" value="http://stefan.aptoma.no:9000" style="width: 300px"/>
+      <input type="text"  id="dp-url" name="dp-url" value="http://stefan.aptoma.no:9000" style="width: 300px"/>
     Publication
-       <input type="text" value="" id="dp-publication" name="dp-publication" value="DinePenger" style="width: 100px" />
+       <input type="text"  id="dp-publication" name="dp-publication" value="DinePenger" style="width: 100px" />
 <hr/>
 
         <div id="active-form">
