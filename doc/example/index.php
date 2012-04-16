@@ -71,8 +71,40 @@
              </form>
         </fieldset>
 
-            <!--
 
+        <fieldset>
+            <legend>Search Tags</legend>
+            <form action="search-tags">
+                <!--
+             <span style="vertical-align: top;">Search query:</span>
+                 <textarea name="query"></textarea>
+              <br/>
+              -->
+                <label>Tag name:</label> <input type="text" name="name" value="" style="width: 250px" />
+                <br/>
+                <label>Name:</label> <input type="text" name="fullname"  style="width: 250px"/>
+                <br/>
+                Offset:<input type="text" name="offset" value="0" style="width: 40px"/>
+                Limit:<input type="text" name="limit" value="5" style="width: 40px"/>
+                <br/><br/>
+               <input type="submit" onclick="DrPublishApiClientExmample.submitForm(this); return false;" val="Search" />
+             </form>
+         </fieldset>
+
+
+        <fieldset>
+            <legend>Get tag</legend>
+            <form action="tag">
+                <input type="text"  name="tag-id" style="width: 80px" />
+                <br/><br/>
+               <input type="submit" onclick="DrPublishApiClientExmample.submitForm(this); return false;" val="Show tag" />
+             </form>
+          </fieldset>
+
+
+
+
+            <!--
         <fieldset>
             <legend>Search tags</legend>
             <form action="" id="">

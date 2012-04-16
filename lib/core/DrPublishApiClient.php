@@ -128,16 +128,16 @@ class DrPublishApiClient
         $list = new DrPublishApiClientSearchList();
         $responseObject = json_decode($responseBody);
         if (!empty($responseObject)) {
-        $list->offset = $responseObject->offset;
-        $list->limit = $responseObject->limit;
-        $list->hits = $responseObject->count;
-        $list->total = $responseObject->total;
-        $list->query = $this->requestUri;
-        $authors = $responseObject->items;
-        foreach ($authors as $author) {
-            $author = new DrPublishApiClientAuthor($author);
-            $list->add($author);
-        }
+            $list->offset = $responseObject->offset;
+            $list->limit = $responseObject->limit;
+            $list->hits = $responseObject->count;
+            $list->total = $responseObject->total;
+            $list->query = $this->requestUri;
+            $authors = $responseObject->items;
+            foreach ($authors as $author) {
+                $author = new DrPublishApiClientAuthor($author);
+                $list->add($author);
+            }
         }
         return ($list);
     }
@@ -160,6 +160,44 @@ class DrPublishApiClient
 		$dpClientAuthor = new DrPublishApiClientAuthor($responseObject);
 		return $dpClientAuthor;
 	}
+
+
+    public function searchTags($query, $offset = 0, $limit = 5)
+    {
+        $query = urldecode($query);
+        $url = $this->url . '/tags.json?' . $query . '&offset=' . $offset . '&limit=' . $limit;
+        $responseBody = trim($this->curl($url));
+        $list = new DrPublishApiClientSearchList();
+        $responseObject = json_decode($responseBody);
+        if (!empty($responseObject)) {
+            $list->offset = $responseObject->offset;
+            $list->limit = $responseObject->limit;
+            $list->hits = $responseObject->count;
+            $list->total = $responseObject->total;
+            $list->query = $this->requestUri;
+            $tags = $responseObject->items;
+            foreach ($tags as $tag) {
+                $tag = new DrPublishApiClientTag($tag);
+                $list->add($tag);
+            }
+        }
+        return ($list);
+    }
+
+
+    public function getTag($id)
+    	{
+    		$url = $this->url . '/tags/'.$id . '.json';
+    		$responseBody = trim($this->curl($url));
+             $responseObject = json_decode($responseBody);
+    		if (empty($responseObject)) {
+    			throw new DrPublishApiClientException("No or invalid author data retreived for article-id='{$id}'", DrPublishApiClientException::NO_DATA_ERROR);
+    		}
+    		$dpClientTag = new DrPublishApiClientTag($responseObject);
+    		return $dpClientTag;
+    	}
+
+
 
 	/**
 	 * Get category from server

@@ -77,6 +77,32 @@ switch ($action) {
             $mainView = 'error';
         }
         break;
+    case 'search-tags':
+        try {
+          $requestedFields = array();
+          if (!empty($_GET['name'])) $requestedFields[] = "name={$_GET['name']}";
+         // if (!empty($_GET['username'])) $requestedFields[] = "username={$_GET['username']}";
+          //$query = isset($_GET['query']) ? $_GET['query'] : '';
+          //$query = trim(urlencode(urldecode($query)));
+          $limit = isset($_GET['limit']) ? (int) $_GET['limit'] : 5;
+          $offset = isset($_GET['offset']) ? (int) $_GET['offset'] : 0;
+          $query = join('&', $requestedFields);
+          $drpublishApiClientTags = $dpWebClient->searchTags($query, $offset, $limit);
+          $mainView = 'search-tags';
+        } catch (DrPublishApiClientException $e) {
+            $mainView = 'error';
+        }
+        break;
+    case 'tag':
+        try {
+            $tagId = isset($_GET['tag-id']) ? $_GET['tag-id'] : 0;
+            $drpublishApiClientTag = $dpWebClient->getTag($tagId);
+            $mainView = 'tag';
+        } catch (DrPublishApiClientException $e) {
+            $mainView = 'error';
+        }
+        break;
+
     default :
         $mainView = 'action-not-found';
 

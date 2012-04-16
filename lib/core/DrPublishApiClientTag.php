@@ -13,20 +13,20 @@
  */
 class DrPublishApiClientTag extends DrPublishApiClientArticleElement
 {
-	private $id;
-	private $name;
-	private $data;
-	private $tagTypeId;
-	private $tagTypeName;
+	protected $id;
+	protected $name;
+	protected $data;
+	protected $tagTypeId;
+	protected $tagTypeName;
 
-	/**
-	 * @param int $id
-	 * @return void
-	 */
-	public function setId($id)
-	{
-		$this->id = $id;
-	}
+    public function __construct($data) {
+        foreach($data as $key => $value) {
+            $this->{$key} = $value;
+        }
+        $this->tagTypeId = $data->tagType->id;
+        $this->tagTypeName = $data->tagType->name;
+    }
+
 
 	/**
 	 * @return int
@@ -36,14 +36,6 @@ class DrPublishApiClientTag extends DrPublishApiClientArticleElement
 		return $this->id;
 	}
 
-	/**
-	 * @param string $name
-	 * @return void
-	 */
-	public function setName($name)
-	{
-		$this->name = $name;
-	}
 
 	/**
 	 * @return string
@@ -53,14 +45,7 @@ class DrPublishApiClientTag extends DrPublishApiClientArticleElement
 		return $this->name;
 	}
 
-	/**
-	 * @param string $name
-	 * @return void
-	 */
-	public function setTagTypeName($tagTypeName)
-	{
-		$this->tagTypeName = $tagTypeName;
-	}
+
 
 	/**
 	 * @return string
@@ -70,14 +55,7 @@ class DrPublishApiClientTag extends DrPublishApiClientArticleElement
 		return $this->tagTypeName;
 	}
 
-	/**
-	 * @param string $id
-	 * @return void
-	 */
-	public function setTagTypeId($tagTypeId)
-	{
-		$this->tagTypeId = $tagTypeId;
-	}
+
 
 	/**
 	 * @return string
@@ -87,14 +65,7 @@ class DrPublishApiClientTag extends DrPublishApiClientArticleElement
 		return $this->tagTypeId;
 	}
 
-	/**
-	 * @param string $name
-	 * @return void
-	 */
-	public function setData($data)
-	{
-		$this->data = $data;
-	}
+
 
 	/**
 	 * @return string
@@ -102,5 +73,12 @@ class DrPublishApiClientTag extends DrPublishApiClientArticleElement
 	public function getData()
 	{
 		return $this->data;
+	}
+    /**
+	 * @return string
+	 */
+	public function getContent()
+	{
+		return $this->content;
 	}
 }
