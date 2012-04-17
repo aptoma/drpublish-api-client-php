@@ -20,9 +20,9 @@
             <fieldset>
                 <legend>Search articles</legend>
                <form action="search">
+                  Filter fields:
                    <div class="selectex">
                       <div class="row">
-                          Filter fields:
                           <br/>
                            <select name="filterFields[1][key]" size="1">
                                  <option>--choose filter field--</option>
