@@ -37,8 +37,8 @@ switch ($action) {
         try {
            $query = '';
            $dynamicQuery = isset($_GET['dynamicQuery']) ? trim($_GET['dynamicQuery']) : '';
-
            $filterFields = isset($_GET['filterFields']) ?  $_GET['filterFields'] : false;
+           $order = isset($_GET['order']) ?  $_GET['order'] : false;
            if ($filterFields) {
                foreach ($filterFields as $filterField) {
                    if (strpos($filterField['key'], '--') === false) {
@@ -51,6 +51,10 @@ switch ($action) {
            if (!empty($dynamicQuery)) {
                $query .= '&dynamicQuery=' . $dynamicQuery;
            }
+           if ($order && strpos($order, '--') === false ) {
+               $query .= '&order=' . urlencode($order);
+           }
+           $query .= '&debug';
            $limit = isset($_GET['limit']) ? (int) $_GET['limit'] : 5;
            $offset = isset($_GET['offset']) ? (int) $_GET['offset'] : 0;
            $options = array();

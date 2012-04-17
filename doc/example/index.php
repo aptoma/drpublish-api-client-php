@@ -37,12 +37,21 @@
                            <div class="minus">-</div>
                        </div>
                    </div>
-
                 <span style="vertical-align: top;">+ dynamic query (use only for advanced queries!):</span>
                     <textarea name="dynamicQuery"></textarea>
                 <br/>
+
+
                     Offset:<input type="text" name="offset" value="0" style="width: 40px"/>
                     Limit:<input type="text" name="limit" value="5" style="width: 40px"/>
+                    Sort by:
+                   <select name="order" size="1">
+                         <option>--relevance--</option>
+                         <option>published asc</option>
+                         <option>published desc</option>
+                         <option>modified asc</option>
+                         <option>modified desc</option>
+                    </select>
                     <br/><br/>
                     <button name="run-search" onclick="DrPublishApiClientExmample.submitForm(this); return false;">Search</button>
                 </form>

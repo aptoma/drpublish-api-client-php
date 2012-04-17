@@ -37,6 +37,7 @@ class DrPublishApiClient
 {
 	protected $url;
     protected $requestUri;
+    protected $searchQueryUrl;
 	protected $unitTestMode = false;
 	protected $dom;
     protected $publicationName;
@@ -309,6 +310,11 @@ class DrPublishApiClient
         return $this->requestUri;
     }
 
+    public function getSearchQueryUri()
+    {
+        return $this->searchQueryUrl;
+    }
+
 	/**
 	 * Creates a DrPublishApiClientArticle from XML article
 	 * This method can be overwritten by custom client
@@ -364,6 +370,7 @@ class DrPublishApiClient
 	protected function curl($url)
 	{
 		//if ($this->unitTestMode) $url .= '&unittest=true';
+        $isDebug = strpos('&debug', $url) !== false;
         $this->requestUri = urlencode($url);
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, $url);
@@ -373,7 +380,19 @@ class DrPublishApiClient
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 		$res = curl_exec($ch);
 		$info = curl_getinfo($ch);
-		//$header = substr($res, 0, $info['header_size']);
+        //if ($isDebug) {
+		    $header = substr($res, 0, $info['header_size']);
+            $this->searchQueryUrl = $header;
+            $split = preg_split('#([\w|-]*): #', $header, -1, PREG_SPLIT_DELIM_CAPTURE);
+            $headerArray = array();
+             for($i=1; $i< count($split)-1; $i=$i+2) {
+                 $headerArray[trim($split[$i])] = $split[$i+1];
+             }
+        if (isset($headerArray['X-SearchServer-Query-URL'])) {
+            $this->searchQueryUrl = $headerArray['X-SearchServer-Query-URL'];
+        }
+
+        //}
 		$body = substr($res, $info['header_size']);
 		curl_close($ch);
 		if ($info['http_code'] == 404) {

@@ -121,7 +121,7 @@ class DrPublishApiClientArticle
         $list = new DrPublishApiClientList();
         $domNodes = $this->xpath->query('//DrPublish:meta/categories/category');
         foreach ($domNodes as $domNode) {
-            $list->add($this->createDrPublishApiClientCategory($domNode, $this->dom));
+            $list->add($this->createDrPublishApiClientCategory($domNode));
         }
         return $list;
     }
@@ -132,15 +132,14 @@ class DrPublishApiClientArticle
      */
     public function getDPSource()
     {
-        $domNodes = $this->xpath->query('//DrPublish:meta/source[1]');
-        $domNode = $domNodes->item(0);
+        $domNode = $this->xpath->query('//DrPublish:meta/source[1]')->item(0);
         if (empty($domNode)) {
             return null;
         } else {
-            $source = new DrPublishApiClientSource($domNode, $this->dom, $this->dpClient, $this->xpath);
-            $source->setId($domNode->getAttribute('id'));
-            $source->setName($domNode->nodeValue);
-            return $source;
+            $data = new stdClass();
+            $data->id = $domNode->getAttribute('id');
+            $data->name = $domNode->nodeValue;
+            return new DrPublishApiClientSource($data);
         }
     }
 
@@ -153,7 +152,7 @@ class DrPublishApiClientArticle
         $list = new DrPublishApiClientList();
         $domNodes = $this->xpath->query('//DrPublish:meta/tags/tag');
         foreach ($domNodes as $domNode) {
-            $list->add($this->createDrPublishApiClientTag($domNode, $this->dom));
+            $list->add($this->createDrPublishApiClientTag($domNode));
         }
         return $list;
     }
@@ -192,14 +191,14 @@ class DrPublishApiClientArticle
      * @param DomDocument $domDocument
      * @return DrPublishApiClientAuthor
      */
-    protected function createDrPublishApiClientAuthor($domNode, $domDocument)
+    protected function createDrPublishApiClientAuthor($domNode)
     {
-        $dpClientAuthor = new DrPublishApiClientAuthor($domNode, $domDocument, $this->dpClient, $this->xpath);
-        $dpClientAuthor->setId($domNode->getAttribute('id'));
-        $dpClientAuthor->setFullName($domNode->nodeValue);
-        $dpClientAuthor->setUserName($domNode->getAttribute('username'));
-        $dpClientAuthor->setEmail($domNode->getAttribute('email'));
-        return $dpClientAuthor;
+       $data = new stdClass();
+       $data->id = $domNode->getAttribute('id');
+       $data->fullname = $domNode->nodeValue;
+       $data->username = $domNode->getAttribute('username');
+       $data->email =  $domNode->getAttribute('email');
+       return new DrPublishApiClientAuthor($data);
     }
 
     /**
@@ -209,14 +208,14 @@ class DrPublishApiClientArticle
      * @param DomDocument $domDocument
      * @return DrPublishApiClientCategory
      */
-    protected function createDrPublishApiClientCategory($domNode, $domDocument)
+    protected function createDrPublishApiClientCategory($domNode)
     {
-        $dpClientCategory = new DrPublishApiClientCategory($domNode, $domDocument, $this->dpClient, $this->xpath);
-        $dpClientCategory->setId($domNode->getAttribute('id'));
-        $dpClientCategory->setName($domNode->nodeValue);
-        $dpClientCategory->setParentId($domNode->getAttribute('parentId'));
-        $dpClientCategory->setIsMain($domNode->getAttribute('isMain'));
-        return $dpClientCategory;
+       $data = new stdClass();
+       $data->id = $domNode->getAttribute('id');
+       $data->name = $domNode->nodeValue;
+       $data->parentId =  $domNode->getAttribute('parentId');
+       $data->isMain = $domNode->getAttribute('isMain');
+       return new DrPublishApiClientCategory($data, $this->dpClient);
     }
 
     /**
@@ -227,7 +226,7 @@ class DrPublishApiClientArticle
      * @param DomDocument $domDocument
      * @return DrPublishApiClientCategory
      */
-    protected function createDrPublishApiClientTag($domNode, $domDocument)
+    protected function createDrPublishApiClientTag($domNode)
     {
        $data = new stdClass();
        $tagType = new stdClass();
@@ -236,12 +235,7 @@ class DrPublishApiClientArticle
        $data->id = $domNode->getAttribute('id');
        $data->name = $domNode->nodeValue;
        $data->tagType =  $tagType;
-//        foreach ($domNode->attributes as $name => $attr) {
-//            $data[$name] = $attr->value;
-//        }
-        $dpClientTag = new DrPublishApiClientTag($data);
-        //$dpClientTag->setData($data);
-        return $dpClientTag;
+       return new DrPublishApiClientTag($data);
     }
 
     /**

@@ -11,19 +11,16 @@
  * @version    $Id: DrPublishApiClient.php 967 2010-09-27 07:35:54Z stefan $
  * @author     stefan@aptoma.no
  */
-class DrPublishApiClientSource extends DrPublishApiClientArticleElement
+class DrPublishApiClientSource
 {
-	private $id;
-	private $name;
+	protected $id;
+	protected $name;
 
-	/**
-	 * @param int $id
-	 * @return void
-	 */
-	public function setId($id)
-	{
-		$this->id = $id;
-	}
+    public function __construct($data) {
+        foreach($data as $key => $value) {
+            $this->{$key} = $value;
+        }
+    }
 
 	/**
 	 * @return int
@@ -33,14 +30,6 @@ class DrPublishApiClientSource extends DrPublishApiClientArticleElement
 		return $this->id;
 	}
 
-	/**
-	 * @param string $name
-	 * @return void
-	 */
-	public function setName($name)
-	{
-		$this->name = $name;
-	}
 
 	/**
 	 * @return string
@@ -49,5 +38,10 @@ class DrPublishApiClientSource extends DrPublishApiClientArticleElement
 	{
 		return $this->name;
 	}
+
+    public function __toString()
+    {
+        return $this->name;
+    }
 
 }

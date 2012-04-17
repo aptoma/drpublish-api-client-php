@@ -11,23 +11,21 @@
  * @version    $Id: DrPublishApiClient.php 967 2010-09-27 07:35:54Z stefan $
  * @author     stefan@aptoma.no
  */
-class DrPublishApiClientCategory extends DrPublishApiClientArticleElement
+class DrPublishApiClientCategory
 {
 
-	private $id;
-	private $name;
-	private $parentId;
-	private $isMain;
-	private $parent;
+	protected $id;
+	protected $name;
+	protected $parentId;
+	protected $isMain;
+	protected $parent;
+    protected $dpClient;
 
-	/**
-	 * @param int $id
-	 * @return void
-	 */
-	public function setId($id)
-	{
-		$this->id = $id;
-	}
+    public function __construct($data, $dpClient) {
+        foreach($data as $key => $value) {
+            $this->{$key} = $value;
+        }
+    }
 
 	/**
 	 * @return int
@@ -38,31 +36,11 @@ class DrPublishApiClientCategory extends DrPublishApiClientArticleElement
 	}
 
 	/**
-	 * @param string $name
-	 * @return void
-	 */
-	public function setName($name)
-	{
-		$this->name = $name;
-	}
-
-	/**
 	 * @return string
 	 */
 	public function getName()
 	{
 		return $this->name;
-	}
-
-	/**
-	 * Sets parent category id
-	 *
-	 * @param int $parentId
-	 * @return void
-	 */
-	public function setParentId($parentId)
-	{
-		$this->parentId = $parentId;
 	}
 
 	/**
@@ -85,17 +63,6 @@ class DrPublishApiClientCategory extends DrPublishApiClientArticleElement
 	}
 
 	/**
-	 * If true, this category is the main one
-	 *
-	 * @param boolean $isMain
-	 * @return void
-	 */
-	public function setIsMain($isMain)
-	{
-		$this->isMain = ((int) $isMain === 1);
-	}
-
-	/**
 	 * If "true" is returned, this category is the main one
 	 * @return boolean
 	 */
@@ -103,14 +70,13 @@ class DrPublishApiClientCategory extends DrPublishApiClientArticleElement
 	{
 		return $this->isMain;
 	}
-	
 
 	/**
 	 * Magic method to convert the category to string (using its name)
 	 */
 	public function __toString()
 	{
-		return $this->getName();
+		return $this->name;
 	}
 	
 
