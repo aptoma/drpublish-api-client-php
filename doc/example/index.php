@@ -23,7 +23,6 @@
                   Filter fields:
                    <div class="selectex">
                       <div class="row">
-                          <br/>
                            <select name="filterFields[1][key]" size="1">
                                  <option>--choose filter field--</option>
                                  <option>title</option>
