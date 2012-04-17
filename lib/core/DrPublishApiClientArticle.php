@@ -229,16 +229,18 @@ class DrPublishApiClientArticle
      */
     protected function createDrPublishApiClientTag($domNode, $domDocument)
     {
-        $dpClientTag = new DrPublishApiClientTag($domNode, $domDocument, $this->dpClient, $this->xpath);
-        $dpClientTag->setId($domNode->getAttribute('id'));
-        $dpClientTag->setName($domNode->nodeValue);
-        $dpClientTag->setTagTypeId($domNode->getAttribute('tagTypeId'));
-        $dpClientTag->setTagTypeName($domNode->getAttribute('tagTypeName'));
-        $data = array();
-        foreach ($domNode->attributes as $name => $attr) {
-            $data[$name] = $attr->value;
-        }
-        $dpClientTag->setData($data);
+       $data = new stdClass();
+       $tagType = new stdClass();
+       $tagType->id = $domNode->getAttribute('tagTypeId');
+       $tagType->name = $domNode->getAttribute('tagTypeName');
+       $data->id = $domNode->getAttribute('id');
+       $data->name = $domNode->nodeValue;
+       $data->tagType =  $tagType;
+//        foreach ($domNode->attributes as $name => $attr) {
+//            $data[$name] = $attr->value;
+//        }
+        $dpClientTag = new DrPublishApiClientTag($data);
+        //$dpClientTag->setData($data);
         return $dpClientTag;
     }
 

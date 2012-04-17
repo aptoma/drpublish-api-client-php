@@ -42,10 +42,12 @@ switch ($action) {
            if ($filterFields) {
                foreach ($filterFields as $filterField) {
                    if (strpos($filterField['key'], '--') === false) {
-                        $query .= '&' . $filterField['key']. '="' . $filterField['value'] . '"';
+                       $val = urlencode('"' . $filterField['value']. '"');
+                        $query .= '&' . $filterField['key'].  '=' . $val ;
                    }
                }
            }
+
            if (!empty($dynamicQuery)) {
                $query .= '&dynamicQuery=' . $dynamicQuery;
            }

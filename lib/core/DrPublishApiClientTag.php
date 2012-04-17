@@ -11,7 +11,7 @@
  * @version    $Id: DrPublishApiClient.php 967 2010-09-27 07:35:54Z stefan $
  * @author     stefan@aptoma.no
  */
-class DrPublishApiClientTag extends DrPublishApiClientArticleElement
+class DrPublishApiClientTag
 {
 	protected $id;
 	protected $name;
@@ -81,4 +81,8 @@ class DrPublishApiClientTag extends DrPublishApiClientArticleElement
 	{
 		return $this->content;
 	}
+
+    public function __toString() {
+        return $this->name;
+    }
 }
