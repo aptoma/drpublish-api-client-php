@@ -234,7 +234,7 @@ class DrPublishApiClient
                 $query .=  "&{$key}={$value}";
             }
         }
-		$url = $this->url . '/articles/search.xml?publication=' . $this->publicationName . '&q='.$query ;
+		$url = $this->url . '/articles.xml?publication=' . $this->publicationName . ''.$query ;
 		$articlesXml = $this->curl($url);
 		$this->dom = new DOMDocument('1.0', 'UTF-8');
 		$this->dom->loadXML($articlesXml);

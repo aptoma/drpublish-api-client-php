@@ -16,13 +16,31 @@
     Publication
        <input type="text"  id="dp-publication" name="dp-publication" value="DinePenger" style="width: 100px" />
 <hr/>
-
         <div id="active-form">
             <fieldset>
                 <legend>Search articles</legend>
                <form action="search">
-                <span style="vertical-align: top;">Search query:</span>
-                    <textarea name="query">*</textarea>
+                   <div class="selectex">
+                      <div class="row">
+                          Filter fields:
+                          <br/>
+                           <select name="filterFields[1][key]" size="1">
+                                 <option>--choose filter field--</option>
+                                 <option>title</option>
+                                 <option>story</option>
+                                 <option>author</option>
+                                 <option>category</option>
+                                 <option>dossier</option>
+                                 <option>tag</option>
+                            </select>
+                           <input type="text" name="filterFields[1][value]" />
+                           <div class="plus">+</div>
+                           <div class="minus">-</div>
+                       </div>
+                   </div>
+
+                <span style="vertical-align: top;">+ dynamic query (use only for advanced queries!):</span>
+                    <textarea name="dynamicQuery"></textarea>
                 <br/>
                     Offset:<input type="text" name="offset" value="0" style="width: 40px"/>
                     Limit:<input type="text" name="limit" value="5" style="width: 40px"/>

@@ -117,3 +117,28 @@ textarea {
     min-height: 150px;
     background: #ccc;
 }
+
+.selectex .row {
+
+}
+
+
+.selectex .plus, .selectex .minus {
+    width: 16px;
+    height: 16px;
+    font-size: 16px;
+    line-height: 16px;
+    font-family: "courier new", monospace;
+    font-weight: bold;
+    padding: 2px;
+    background: #CCC;
+    border-radius: 3px;
+    border: solid #999 2px;
+    display: inline-block;
+    text-align: center;
+    cursor: pointer;
+}
+
+.selectex .minus {
+    display: none;
+}

@@ -33,8 +33,22 @@ switch ($action) {
         }
         break;
     case 'search':
+
         try {
-           $query = isset($_GET['query']) ? trim($_GET['query']) : '';
+           $query = '';
+           $dynamicQuery = isset($_GET['dynamicQuery']) ? trim($_GET['dynamicQuery']) : '';
+
+           $filterFields = isset($_GET['filterFields']) ?  $_GET['filterFields'] : false;
+           if ($filterFields) {
+               foreach ($filterFields as $filterField) {
+                   if (strpos($filterField['key'], '--') === false) {
+                        $query .= '&' . $filterField['key']. '="' . $filterField['value'] . '"';
+                   }
+               }
+           }
+           if (!empty($dynamicQuery)) {
+               $query .= '&dynamicQuery=' . $dynamicQuery;
+           }
            $limit = isset($_GET['limit']) ? (int) $_GET['limit'] : 5;
            $offset = isset($_GET['offset']) ? (int) $_GET['offset'] : 0;
            $options = array();
@@ -45,7 +59,7 @@ switch ($action) {
                $options['limit'] = $limit;
            }
 
-   	       $drpublishApiClientArticles = $dpWebClient->searchArticles(urlencode($query), $options);
+   	       $drpublishApiClientArticles = $dpWebClient->searchArticles($query, $options);
            $mainView = 'search';
         } catch (DrPublishApiClientException $e) {
            $mainView = 'error';
