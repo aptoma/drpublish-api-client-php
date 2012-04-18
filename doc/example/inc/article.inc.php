@@ -1,7 +1,9 @@
+<? $drpublishApiClientImages = $drpublishApiClientArticle->getDPImages(); ?>
+
 
 <h2>Source [DrPublishApiClientArticleElement DrPublishApiWebClient::getSourceName()]</h2>
 <div class="result">
-    <?=$drpublishApiClientArticle->getSourceName()?>
+    <?=$drpublishApiClientArticle->getSourc()?>
 </div>
 
 <h2>Published [DrPublishApiClientArticleElement DrPublishApiWebClient::getPublished()]</h2>
@@ -16,7 +18,7 @@
 
 <h2>Tags [DrPublishApiClientList DrPublishApiWebClient::getTagNames()]</h2>
 <div class="result">
-    <?=$drpublishApiClientArticle->getTagNames() ?>
+    <?=$drpublishApiClientArticle->getTags() ?>
 </div>
 
 <h2>DPTags as dedicated DrPublishApiClientTag objects [DrPublishApiClientList
@@ -46,7 +48,7 @@ DrPublishApiWebClient::getDPTags()]</h2>
 
 <h2>Main category [DrPublishApiClientArticleElement DrPublishApiWebClient::getMainCategoryName()]</h2>
 <div class="result">
-<?= $drpublishApiClientArticle->getMainCategoryName() ?>
+<?= $drpublishApiClientArticle->getMainCategory() ?>
 </div>
 
 <h2>Authors as simple list DrPublishApiClientArticleElement [DrPublishApiClientList DrPublishApiWebClient::getAuthorNames()]</h2>
@@ -128,7 +130,6 @@ DrPublishApiWebClient::getDPTags()]</h2>
         print " width=" . $drpublishApiClientImage->getWidth();
         print " src=" . $drpublishApiClientImage->getUrl();
     }
-
     exit;
     ?>
     </div>

@@ -31,6 +31,11 @@ class DrPublishDomElement  {
         return $this->domElement->getAttribute($name);
     }
 
+    public function setAttribute($name, $value)
+    {
+        return $this->domElement->setAttribute($name, $value);
+    }
+
     public function textValue()
     {
         return strip_tags($this->__toString());
