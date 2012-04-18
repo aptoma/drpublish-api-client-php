@@ -17,6 +17,9 @@ class DrPublishApiClientArticle
 
     protected $data = array();
     protected $dpClient;
+    protected $medium;
+    protected $dom = null;
+    protected $xpath = null;
 
     /**
      * Class constructor
@@ -25,10 +28,11 @@ class DrPublishApiClientArticle
      * @return void
      * @throws DrPublishApiClientException
      */
-    public function __construct($data, $dpClient)
+    public function __construct($data, DrPublishApiClient $dpClient)
     {
         $this->data = $data;
         $this->dpClient = $dpClient;
+        $this->medium = $dpClient->getMedium();
 
     }
 
@@ -68,13 +72,12 @@ class DrPublishApiClientArticle
                         return $this->data->meta->{$varName};
                 }
             }
-
             // article content
-            foreach ($this->data->contents as $medium => $content) {
+                $content = $this->data->contents->{$this->medium};
                 if (isset($content->{$varName})) {
-                    $templateElement = $this->data->templates->{$medium}->elements->{$varName};
+                    $templateElement = $this->data->templates->{$this->medium}->elements->{$varName};
                     $options = new stdClass();
-                    $options->medium = $medium;
+                    $options->medium = $this->medium;
                     $options->dataType = $templateElement->dataType;
                     if ($templateElement->dataType == 'text') {
                         return new DrPublishApiClientTextElement($content->{$varName}, $options);
@@ -83,51 +86,59 @@ class DrPublishApiClientArticle
 
                     }
                 }
-            }
 
             // customizable articletyp meta
             if (isset($this->data->meta->articleTypeMeta->{$varName})) {
                 return $this->data->meta->articleTypeMeta->{$varName};
             }
+            return "article element '$varName' not found";
+    }
+
+    public function findImages()
+    {
+        return $this->find('img');
+    }
 
 
-
-
-
-
-                return "element '$varName' not founc";
+    public function find($query) {
+        if ($this->dom === null) {
+            $this->initDom();
+        }
+        $domNodeList = $this->xpath->query('descendant::' . $query);
+        return DrPublishDomElementList::convertDomNodeList($domNodeList);
     }
 
     /**
-     * Gets a list of article elements queried by XPath
-     *
-     * @see DPArticleElement
-     * @param string $xpathQuery XPath query
-     * @return DPArticleElementList
+     * Get the image service url - used for image manipulation (resizing by now)
+     * @return string | null
      */
-    public function getElements($xpathQuery)
+    public function getImageServiceUrl()
     {
-        $list = new DrPublishApiClientList();
-        $domNodes = $this->xpath->query($xpathQuery, $this->dom);
-        if (!empty($domNodes)) foreach ($domNodes as $domNode) {
-            $list->add($this->createDrPublishApiClientArticleElement($domNode, $this->dom));
-        }
-        return $list;
+        return $this->data->service->imageServiceUrl;
     }
 
     /**
-     * Gets one single article element queried by XPath. If multiple elements match the query, the first one will be returned
-     * @param string $xpathQuery XPath query
-     * @return DPArticleElement | null
+     * Get the image publish url - used for image manipulation (resizing by now)
+     * @return string | null
      */
-    public function getElement($xpathQuery)
+    public function getImagePublishUrl()
     {
-        $list = $this->getElements($xpathQuery);
-        if (empty($list)) {
-            return null;
-        }
-        return $list->first();
+        return $this->data->service->imagePublishUrl;
     }
+
+    private function initDom()
+    {
+        $this->dom = new DOMDocument('1.0', 'UTF-8');
+        $xml = '';
+        foreach($this->data->templates->{$this->medium}->elements as $templateName => $templateElement) {
+            if ($templateElement->dataType == 'xml') {
+                $xml .= "<{$templateName}>" . $this->data->contents->{$this->medium}->$templateName . "</{$templateName}>";
+            }
+        }
+        $this->dom->loadXml('<articleContent>'. $xml .'</articleContent>');
+        $this->xpath = new DOMXPath($this->dom);
+    }
+
 
     /**
      * Gets all DPImages included in the article. A DPImage is an picture inserted by using the DrPublish image plugin
@@ -136,12 +147,14 @@ class DrPublishApiClientArticle
      */
     public function getDPImages()
     {
-        $list = new DrPublishApiClientList();
-        $domNodes = $this->xpath->query("//DrPublish:article/DrPublish:contents/DrPublish:content/descendant::div[@class and contains(concat(' ',normalize-space(@class),' '),' dp-article-image ')]");
-        foreach ($domNodes as $domNode) {
-            $list->add($this->createDrPublishApiClientArticleImageElement($domNode, $this->dom));
+        $drPublishDomElementList =  $this->find("div[@class and contains(concat(' ',normalize-space(@class),' '),' dp-article-image ')]");
+        $imageList = new DrPublishDomElementList();
+        foreach($drPublishDomElementList as $drPublishDomElement) {
+            $drPublishApiClientArticleElement = new DrPublishApiClientArticleImageElement($drPublishDomElement);
+            $drPublishApiClientArticleElement->setDrPublishApiClientArticle($this);
+            $imageList->add($drPublishApiClientArticleElement);
         }
-        return $list;
+        return $imageList;
     }
 
     /**
@@ -151,8 +164,7 @@ class DrPublishApiClientArticle
      */
     public function getLeadDPImage()
     {
-        $dpClientImages = $this->getDPImages();
-        return $dpClientImages->first();
+        return $this->getDPImages()->item(0);
     }
 
     /**

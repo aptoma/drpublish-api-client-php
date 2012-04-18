@@ -1,26 +1,11 @@
 <?php
-/**
- * DrPublishApiClientArticleImageElement.php
- * @package    no.aptoma.drpublish.client.core
- */
-/**
- * DrPublishApiClientArticleElement extends th DrPublishApiClientArticleElement class and  represents a DPImage DOM node.
- * DPImages are elements inserted in an article by using images plugin
- * The class provides methods for acessing element attributes and
- *	- getting and manipulating (resizing) the image element
- *	- getting the photographer as object
- *
- * @package    no.aptoma.drpublish.client.core
- * @copyright  Copyright (c) 2006-2010 Aptoma AS (http://www.aptoma.no)
- * @version    $Id: DrPublishApiClient.php 967 2010-09-27 07:35:54Z stefan $
- * @author     stefan@aptoma.no
- *
- * @see DrPublishClientArticleElement
- */
-class DrPublishApiClientArticleImageElement extends DrPublishApiClientArticleElement
+
+class DrPublishApiClientArticleImageElement extends DrPublishDomElement
 {
 
 	protected $dpClientImage;
+
+    protected $drPublishApiClientArticle;
 
 	/**
 	 * The class constructor registers the DOMElement and the entire related DOMDocument (needed for the to-string methods)
@@ -29,11 +14,16 @@ class DrPublishApiClientArticleImageElement extends DrPublishApiClientArticleEle
 	 * @param DrPublishApiClient $dpClient
 	 * @return void
 	 */
-	public function __construct(DOMElement $domElement, DOMDocument $dom, DrPublishApiClient $dpClient, DOMXPath $xpath)
+	public function __construct(DrPublishDomElement $drPublishDomElement)
 	{
-		parent::__construct($domElement, $dom, $dpClient, $xpath);
+        parent::__construct($drPublishDomElement->domElement);
 		$this->dpClientImage = $this->getImage();
 	}
+
+    public function setDrPublishApiClientArticle(DrPublishApiClientArticle $drPublishApiClientArticle)
+    {
+        $this->drPublishApiClientArticle = $drPublishApiClientArticle;
+    }
 
 	/**
 	 * Gets the image title
@@ -41,7 +31,7 @@ class DrPublishApiClientArticleImageElement extends DrPublishApiClientArticleEle
 	 */
 	public function getTitle()
 	{
-		return urldecode($this->getAttribute('data-image-title'));
+        return $this->find("div[@class='dp-article-image-title'][1]/text()");
 	}
 
 	/**
@@ -50,7 +40,7 @@ class DrPublishApiClientArticleImageElement extends DrPublishApiClientArticleEle
 	 */
 	public function getDescription()
 	{
-		return urldecode($this->getAttribute('data-image-description'));
+        return $this->find("div[@class='dp-article-image-description'][1]/text()");
 	}
 
 	/**
@@ -59,7 +49,7 @@ class DrPublishApiClientArticleImageElement extends DrPublishApiClientArticleEle
 	 */
 	public function getSource()
 	{
-		return urldecode($this->getAttribute('data-source-name'));
+        return $this->find("div[@class='dp-article-image-source'][1]/text()");
 	}
 	
 	/**
@@ -74,8 +64,8 @@ class DrPublishApiClientArticleImageElement extends DrPublishApiClientArticleEle
 		if (empty($imageElement)) {
 			return null;
 		}
-		$imageServiceUrl = $this->dpClient->getImageServiceUrl();
-		$imagePublishUrl = $this->dpClient->getImagePublishUrl();
+		$imageServiceUrl = $this->drPublishApiClientArticle->getImageServiceUrl();
+		$imagePublishUrl = $this->drPublishApiClientArticle->getImagePublishUrl();
 		$currentSrc = $imageElement->getAttribute('src');
 		try {
 			$properties = DrPublishApiClient::resizeImage($currentSrc, $type, $imageServiceUrl, $imagePublishUrl);
@@ -100,13 +90,12 @@ class DrPublishApiClientArticleImageElement extends DrPublishApiClientArticleEle
 	 */
 	public function getImage()
 	{
-		$xpath = new DOMXPath($this->dom);
-		$domNodes = $xpath->query('./img[1]|./*/img[1]|./*/*/img[1]', $this->domElement);
-		$imageElement = $domNodes->item(0);
+
+        $imageElement = $this->domElement->getElementsByTagName('img')->item(0);
 		if (empty($imageElement)) {
 			return null;
 		}
-		return new DrPublishApiClientImage($imageElement, $this->dom, $this->dpClient, $this->xpath);
+		return new DrPublishApiClientImage($imageElement);
 	}
 
 	/**

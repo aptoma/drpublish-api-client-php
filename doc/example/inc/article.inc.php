@@ -1,3 +1,4 @@
+
 <h2>Source [DrPublishApiClientArticleElement DrPublishApiWebClient::getSourceName()]</h2>
 <div class="result">
     <?=$drpublishApiClientArticle->getSourceName()?>
@@ -75,7 +76,7 @@ DrPublishApiWebClient::getDPTags()]</h2>
 <h2>LeadAsset [DrPublishApiClientArticleElement DrPublishApiWebClient::getLeadAsset()]</h2>
 <div class="result">
     <?php $leadAsset = $drpublishApiClientArticle->getLeadAsset() ?>
-    <div class="content-container"><?=($leadAsset != null) ? $leadAsset->content() : '' ?>
+    <div class="content-container"><?=$leadAsset?>
     <div style="clear: both"></div>
     </div>
 </div>
@@ -87,37 +88,48 @@ DrPublishApiWebClient::getDPTags()]</h2>
 
 <h2>All images [DrPublishApiClientList DrPublishApiWebClient::getImages()]</h2>
 <div class="result">
-    <div class="content-container"><?=$drpublishApiClientArticle->getImages()?>
+    <div class="content-container"><?=$drpublishApiClientArticle->findImages()?>
     <h3>Image URL's [array DrPublishApiClientList::getAttributes('src')]</h3>
-    <?= printResult($drpublishApiClientArticle->getImages()->getAttributes('src'))?></div>
+        <pre>
+             <? print_r($drpublishApiClientArticle->findImages()->getAttributes('src'))?>
+        </pre>
+</div>
 </div>
 
 
 <h2>DPImages</h2>
 <div class="result">
     <h3>Including wrapping markups [DrPublishApiClientList DrPublishApiWebClient::getDPImages()]</h3>
-    <div class="content-container"><?=$drpublishApiClientArticle->getDPImages()?> <?php
-    $drpublishApiClientImages = $drpublishApiClientArticle->getDPImages();
+    <? $drpublishApiClientImages = $drpublishApiClientArticle->getDPImages(); ?>
+    <div class="content-container">
+        <?=$drpublishApiClientImages?>
+
+
+
+     <?php
     foreach ($drpublishApiClientImages as $drpublishApiClientImage) {
         print "<br/><br/> photographer: ";
         printResult($drpublishApiClientImage->getPhotographer());
         print "<br/> title: " . $drpublishApiClientImage->getTitle();
         print "<br/> description: " . $drpublishApiClientImage->getDescription();
         print "<br/> source: " . $drpublishApiClientImage->getSource();
-        print "<br/> image element " . 	$drpublishApiClientImage->getImage();
+        //print "<br/> image element " . 	$drpublishApiClientImage->getImage();
     }
+
     ?>
     <h3>Thumbnails [DrPublishApiWebClientArticleElement
     DrPublishApiWebClientImageElement::getThumbnail(size)]</h3>
     <pre>
     <?php
     foreach ($drpublishApiClientImages as $drpublishApiClientImageElement) {
-        $drpublishApiClientImage = $drpublishApiClientImageElement->getThumbnail(75);
+        $drpublishApiClientImage = $drpublishApiClientImageElement->getResizedImage(75);
         print printResult($drpublishApiClientImage);
         print ($drpublishApiClientImage);
         print " width=" . $drpublishApiClientImage->getWidth();
         print " src=" . $drpublishApiClientImage->getUrl();
     }
+
+    exit;
     ?>
     </div>
     </pre>

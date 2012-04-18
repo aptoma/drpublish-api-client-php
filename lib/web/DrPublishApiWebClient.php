@@ -26,14 +26,20 @@ unset($dpwebdn);
  */
 class DrPublishApiWebClient extends DrPublishApiClient
 {
+
+    public function __construct($url, $publicationName)
+    {
+       parent::__construct($url, $publicationName);
+        $this->medium = 'web';
+    }
 	/**
 	 * Customizes DrPublishApiClient::createDrPublishApiClientArticle()
 	 *
 	 * @param DOMDocument $dom DOM transformed response from API
 	 */
-	protected function createDrPublishApiClientArticle($dom)
+	protected function createDrPublishApiClientArticle($article)
 	{
-		return new DrPublishApiWebClientArticle($dom, $this);
+		return new DrPublishApiWebClientArticle($article, $this);
 	}
 
 	/**

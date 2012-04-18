@@ -16,6 +16,9 @@ require_once($dpcDirname . '/DrPublishApiClientXmlElement.php');
 require_once($dpcDirname . '/DrPublishApiClientTextElement.php');
 require_once($dpcDirname . '/DrPublishApiClientList.php');
 require_once($dpcDirname . '/DrPublishApiClientSearchList.php');
+require_once($dpcDirname . '/DrPublishDomElementList.php');
+require_once($dpcDirname . '/DrPublishDomElement.php');
+require_once($dpcDirname . '/DrPublishDomText.php');
 require_once($dpcDirname . '/DrPublishApiClientArticleImageElement.php');
 require_once($dpcDirname . '/DrPublishApiClientAuthor.php');
 require_once($dpcDirname . '/DrPublishApiClientCategory.php');
@@ -23,6 +26,7 @@ require_once($dpcDirname . '/DrPublishApiClientTag.php');
 require_once($dpcDirname . '/DrPublishApiClientSource.php');
 require_once($dpcDirname . '/DrPublishApiClientImage.php');
 require_once($dpcDirname . '/DrPublishApiClientPhotographer.php');
+
 unset($dpcDirname);
 
 /**
@@ -45,6 +49,7 @@ class DrPublishApiClient
 	protected $dom;
     protected $publicationName;
     public static $XMLNS_URI = 'http://aptoma.no/xml/drpublish';
+    protected $medium;
 
 	/**
 	 * Constructor for this class
@@ -56,7 +61,17 @@ class DrPublishApiClient
 	{
 		$this->url = $url;
         $this->publicationName = $publicationName;
+        $this->medium = 'web';
 	}
+
+    public function setMedium($medium) {
+        $this->medium = $medium;
+    }
+
+    public function getMedium()
+    {
+        return $this->medium;
+    }
 
     public function setDebugMode()
     {
@@ -67,6 +82,8 @@ class DrPublishApiClient
     {
         return $this->debug;
     }
+
+
 
 	/**
 	 * Internal used to unit test the client
@@ -120,17 +137,13 @@ class DrPublishApiClient
 	 */
 	public function getArticle($id)
 	{
-		$url = $this->url . '/articles/'.$id . '.xml';
-		$responseBody = trim($this->curl($url));
-		if (empty($responseBody)) {
+		$url = $this->url . '/articles/'.$id . '.json';
+        $resultJson = $this->curl($url);
+          $result = json_decode($resultJson);
+		if (empty($result)) {
 			throw new DrPublishApiClientException("No article data retreived for article-id='{$id}'", DrPublishApiClientException::NO_DATA_ERROR);
 		}
-		if (empty($responseBody)) {
-			throw new DrPublishApiClientException('Empty aricle XML', DrPublishApiClientException::XML_ERROR);
-		}
-		$this->dom = new DOMDocument('1.0', 'UTF-8');
-		$this->dom->loadXML($responseBody);
-		$dpClientArticle = $this->createDrPublishApiClientArticle($this->dom);
+		$dpClientArticle = $this->createDrPublishApiClientArticle($result);
 		return $dpClientArticle;
 	}
 
@@ -263,7 +276,7 @@ class DrPublishApiClient
         $articles = $result->items;
 		foreach($articles as $article) {
            // print_r($article->meta);
-            $drPublishApiClientArticle = new DrPublishApiClientArticle($article, $this);
+            $drPublishApiClientArticle = $this->createDrPublishApiClientArticle($article);
             $dpClientArticleList->add($drPublishApiClientArticle);
 //            print "<pre>";
 //            print "\nid: ";
@@ -277,10 +290,10 @@ class DrPublishApiClient
 //            print_r ($drPublishApiClientArticle->getCategories());
 //            print "source: \n";
 //            print_r ($drPublishApiClientArticle->getSource());
-            print "title: \n";
-            print_r ($drPublishApiClientArticle->getTitle());
-            print "leadAsset: \n";
-            print_r ($drPublishApiClientArticle->getLeadAsset()->query('//div'));
+//            print "title: \n";
+//            print_r ($drPublishApiClientArticle->getBodyText());
+//            print "leadAsset: \n";
+ //           print ($drPublishApiClientArticle->getLeadAsset()->find('div[@class="dp-article-image-description"]'));
 //exit;
 			//$articleXml = $this->dom->saveXML($articleNode);
            // $articleXml = '<DrPublish:article xmlns:DrPublish="' . self::$XMLNS_URI . '">' .$articleXml . '</DrPublish:article>';
@@ -313,33 +326,7 @@ class DrPublishApiClient
 		return $dpClientArticleList;
 	}
 
-	/**
-	 * Get the image service url - used for image manipulation (resizing by now)
-	 * @return string | null
-	 */
-	public function getImageServiceUrl()
-	{
-		$nodes = $this->dom->getElementsByTagNameNS(self::$XMLNS_URI, "imageServiceUrl");
-		$node = $nodes->item(0);
-		if (empty($node)) {
-			return null;
-		}
-		return trim($node->textContent);
-	}
 
-	/**
-	 * Get the image publish url - used for image manipulation (resizing by now)
-	 * @return string | null
-	 */
-	public function getImagePublishUrl()
-	{
-		$nodes = $this->dom->getElementsByTagNameNS(self::$XMLNS_URI, "imagePublishUrl");
-		$node = $nodes->item(0);
-		if (empty($node)) {
-			return null;
-		}
-		return trim($node->textContent);
-	}
 
     public function getRequestUri()
     {
@@ -357,9 +344,9 @@ class DrPublishApiClient
 	 * @param DOMDocument $dom DOM transformed response from API
 	 * @return DrPublishApiClientArticle
 	 */
-	protected function createDrPublishApiClientArticle($dom)
+	protected function createDrPublishApiClientArticle($article)
 	{
-		return new DrPublishApiClientArticle($dom, $this);
+		return new DrPublishApiClientArticle($article, $this);
 	}
 
 	/**

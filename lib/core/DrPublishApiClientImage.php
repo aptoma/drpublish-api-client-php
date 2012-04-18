@@ -11,7 +11,7 @@
  * @version    $Id: DrPublishApiClient.php 967 2010-09-27 07:35:54Z stefan $
  * @author     stefan@aptoma.no
  */
-class DrPublishApiClientImage extends DrPublishApiClientArticleElement
+class DrPublishApiClientImage extends DrPublishDomElement
 {
 	/**
 	 * @return int

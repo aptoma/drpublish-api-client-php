@@ -1,14 +1,15 @@
 <?
  class DrPublishApiClientXmlElement extends DrPublishApiClientArticleElement
  {
-     protected $dom = false;
-     protected $xpath = false;
+     protected $dom = null;
+     protected $xpath = null;
 
-     public function query($xpathQuery) {
-         if ($this->dom === false) {
+     public function find($query) {
+         if ($this->dom === null) {
              $this->initDom();
          }
-         return $this->xpath->query($xpathQuery);
+         $domNodeList = $this->xpath->query('descendant::' . $query);
+         return DrPublishDomElementList::convertDomNodeList($domNodeList);
      }
 
      private function initDom()
@@ -18,11 +19,4 @@
          $this->xpath = new DOMXPath($this->dom);
      }
 
-
  }
-
-class DrPublishDomElement extends DomElement {
-    public function __toString() {
-        
-    }
-}
