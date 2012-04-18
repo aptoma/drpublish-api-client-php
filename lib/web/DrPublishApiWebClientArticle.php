@@ -152,7 +152,7 @@ class DrPublishApiWebClientArticle extends DrPublishApiClientArticle
 	 */
 	public function getMainCategoryName()
 	{
-		return $this->getElement('//DrPublish:meta/categories/category[@isMain="1"]');
+		return $this->getElement('DrPublish:article/DrPublish:meta/categories/category[@isMain="1"]');
 	}
 
 	/**
@@ -160,7 +160,8 @@ class DrPublishApiWebClientArticle extends DrPublishApiClientArticle
 	 */
 	public function getTitle()
 	{
-		return   $this->getElement('//DrPublish:article/DrPublish:contents/DrPublish:content[@medium="' . $this->medium . '"]/title[1]');
+		//print_r($this->dom->saveXml());
+        return   $this->getElement('DrPublish:article/DrPublish:contents/DrPublish:content[@medium="' . $this->medium . '"]/title[1]');
 	}
 
 	/**
@@ -168,7 +169,7 @@ class DrPublishApiWebClientArticle extends DrPublishApiClientArticle
 	 */
 	public function getPreamble()
 	{
-		return $this->getElement('//DrPublish:article/DrPublish:contents/DrPublish:content[@medium="' . $this->medium . '"]/preamble[1] | //DrPublish:article/DrPublish:contents/DrPublish:content[@medium="' . $this->medium . '"]/excerpt[1]');
+		return $this->getElement('DrPublish:article/DrPublish:contents/DrPublish:content[@medium="' . $this->medium . '"]/preamble[1] | DrPublish:article/DrPublish:contents/DrPublish:content[@medium="' . $this->medium . '"]/excerpt[1]');
 	}
 
 	/**
@@ -232,26 +233,6 @@ class DrPublishApiWebClientArticle extends DrPublishApiClientArticle
 	public function getDPImages()
 	{
 		return parent::getDPImages();
-	}
-
-	/**
-	 * Gets a list of DrPublishApiWebClientAuthor objects
-	 * @see DrPublishApiClientAuthor
-	 * @return DrPublishApiClientList
-	 */
-	public function getDPAuthors()
-	{
-		if (empty($this->dpClient)) {
-			return null;
-		}
-		$list = new DrPublishApiClientList();
-		$domNodes = $this->xpath->query('//DrPublish:article/DrPublish:meta/authors/author');
-		foreach ($domNodes as $domNode) {
-			$id = $domNode->getAttribute('id');
-			$dpClientAuthor = $this->dpClient->getAuthor($id);
-			$list->add($dpClientAuthor);
-		}
-		return $list;
 	}
 
 	/**

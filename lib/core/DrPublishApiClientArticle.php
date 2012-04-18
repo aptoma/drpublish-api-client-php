@@ -78,7 +78,7 @@ class DrPublishApiClientArticle
     public function getDPImages()
     {
         $list = new DrPublishApiClientList();
-        $domNodes = $this->xpath->query("//div[@class and contains(concat(' ',normalize-space(@class),' '),' dp-article-image ')]");
+        $domNodes = $this->xpath->query("//DrPublish:article/DrPublish:contents/DrPublish:content/descendant::div[@class and contains(concat(' ',normalize-space(@class),' '),' dp-article-image ')]");
         foreach ($domNodes as $domNode) {
             $list->add($this->createDrPublishApiClientArticleImageElement($domNode, $this->dom));
         }
@@ -97,19 +97,27 @@ class DrPublishApiClientArticle
     }
 
     /**
-     * Gets a list of DrPublishApiClientAuthor objects
-     * @see DrPublishApiClientAuthor
-     * @return DrPublishApiClientList
-     */
-    public function getDPAuthors()
-    {
-        $list = new DrPublishApiClientList();
-        $domNodes = $this->xpath->query('//DrPublish:meta/authors/author');
-        foreach ($domNodes as $domNode) {
-            $list->add($this->createDrPublishApiClientAuthor($domNode, $this->dom));
-        }
-        return $list;
-    }
+   	 * Gets a list of DrPublishApiWebClientAuthor objects
+   	 * @see DrPublishApiClientAuthor
+   	 * @return DrPublishApiClientList
+   	 */
+   	public function getDPAuthors($allData = false)
+   	{
+   		$list = new DrPublishApiClientList();
+   		$domNodes = $this->xpath->query('//DrPublish:article/DrPublish:meta/authors/author');
+   		foreach ($domNodes as $domNode) {
+   			$id = $domNode->getAttribute('id');
+               if ($allData) {
+                   print "advanced author ";
+   			    $dpClientAuthor = $this->dpClient->getAuthor($id);
+               } else {
+                   print "simple author ";
+                   $dpClientAuthor = $this->createDrPublishApiClientAuthor($domNode, $this->dom);
+               }
+   			$list->add($dpClientAuthor);
+   		}
+   		return $list;
+   	}
 
     /**
      * Gets a category list of DrPublishApiClientCategory objects
@@ -119,7 +127,7 @@ class DrPublishApiClientArticle
     public function getDPCategories()
     {
         $list = new DrPublishApiClientList();
-        $domNodes = $this->xpath->query('//DrPublish:meta/categories/category');
+        $domNodes = $this->xpath->query('//DrPublish:article/DrPublish:meta/categories/category');
         foreach ($domNodes as $domNode) {
             $list->add($this->createDrPublishApiClientCategory($domNode));
         }
@@ -132,7 +140,7 @@ class DrPublishApiClientArticle
      */
     public function getDPSource()
     {
-        $domNode = $this->xpath->query('//DrPublish:meta/source[1]')->item(0);
+        $domNode = $this->xpath->query('//DrPublish:article/DrPublish:meta/source[1]')->item(0);
         if (empty($domNode)) {
             return null;
         } else {
@@ -150,7 +158,7 @@ class DrPublishApiClientArticle
     public function getDPTags()
     {
         $list = new DrPublishApiClientList();
-        $domNodes = $this->xpath->query('//DrPublish:meta/tags/tag');
+        $domNodes = $this->xpath->query('//DrPublish:article/DrPublish:meta/tags/tag');
         foreach ($domNodes as $domNode) {
             $list->add($this->createDrPublishApiClientTag($domNode));
         }

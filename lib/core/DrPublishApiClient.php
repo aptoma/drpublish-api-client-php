@@ -39,6 +39,7 @@ class DrPublishApiClient
     protected $requestUri;
     protected $searchQueryUrl;
 	protected $unitTestMode = false;
+    protected $debug = false;
 	protected $dom;
     protected $publicationName;
     public static $XMLNS_URI = 'http://aptoma.no/xml/drpublish';
@@ -54,6 +55,16 @@ class DrPublishApiClient
 		$this->url = $url;
         $this->publicationName = $publicationName;
 	}
+
+    public function setDebugMode()
+    {
+        $this->debug = true;
+    }
+
+    public function getDebugMode()
+    {
+        return $this->debug;
+    }
 
 	/**
 	 * Internal used to unit test the client
@@ -241,36 +252,33 @@ class DrPublishApiClient
 		$this->dom->loadXML($articlesXml);
 		$xpath = new DOMXPath($this->dom);
 		$xpath->registerNamespace('DrPublish', self::$XMLNS_URI);
-		$articleNodes = $xpath->query('//DrPublish:article');
+		$articleNodes = $xpath->query('//DrPublish:response/DrPublish:article');
 		$dpClientArticleList = new DrPublishApiClientSearchList();
 		foreach($articleNodes as $articleNode) {
 			$articleXml = $this->dom->saveXML($articleNode);
-            $articleXml = '<DrPublish:article xmlns:DrPublish="' . self::$XMLNS_URI . '">' .$articleXml . '</DrPublish:article>';
+           // $articleXml = '<DrPublish:article xmlns:DrPublish="' . self::$XMLNS_URI . '">' .$articleXml . '</DrPublish:article>';
 			$adom = new DOMDocument('1.0', 'UTF-8');
 			$adom->loadXML($articleXml);
 			$dpClientArticleList->add($this->createDrPublishApiClientArticle($adom));
 		}
-		$meta = $xpath -> query ( '//DrPublish:response/*' );
+		$meta = $xpath->query ('DrPublish:response/DrPublish:limit|DrPublish:total[1]|DrPublish:offset[1]|DrPublish:count[1]' );
 		foreach ( $meta as $metaNode ) {
-		  switch ( $metaNode -> tagName ) {
-		    case 'DrPublish:search-query':
-		      $dpClientArticleList -> query = $metaNode -> textContent;
-		      break;
+		  switch ( $metaNode->tagName ) {
 		    case 'DrPublish:limit':
-		      $dpClientArticleList -> limit = $metaNode -> textContent;
+		      $dpClientArticleList->limit = $metaNode->textContent;
 		      break;
 		    case 'DrPublish:offset':
-		      $dpClientArticleList -> offset = $metaNode -> textContent;
+		      $dpClientArticleList->offset = $metaNode->textContent;
 		      break;
 		    case 'DrPublish:count':
-		      $dpClientArticleList -> hits = $metaNode -> textContent;
+		      $dpClientArticleList->hits = $metaNode->textContent;
 		      break;
 		    case 'DrPublish:total':
-		      $dpClientArticleList -> total = $metaNode -> textContent;
+		      $dpClientArticleList->total = $metaNode->textContent;
 		      break;
-		    case 'DrPublish:time':
-		      $dpClientArticleList -> time = $metaNode -> textContent;
-		      break;
+//		    case 'DrPublish:time':
+//		      $dpClientArticleList -> time = $metaNode -> textContent;
+//		      break;
 		  }
 		}
 		
@@ -369,9 +377,13 @@ class DrPublishApiClient
 	 */
 	protected function curl($url)
 	{
-		//if ($this->unitTestMode) $url .= '&unittest=true';
-        $isDebug = strpos('&debug', $url) !== false;
+
         $this->requestUri = urlencode($url);
+        if ($this->debug) {
+
+            $url .= strpos($url, '?') === false ? '?' : '&';
+            $url .= 'debug';
+        }
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, $url);
 		curl_setopt($ch, CURLOPT_COOKIESESSION, false);
@@ -380,7 +392,7 @@ class DrPublishApiClient
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 		$res = curl_exec($ch);
 		$info = curl_getinfo($ch);
-        //if ($isDebug) {
+        if ($this->debug) {
 		    $header = substr($res, 0, $info['header_size']);
             $this->searchQueryUrl = $header;
             $split = preg_split('#([\w|-]*): #', $header, -1, PREG_SPLIT_DELIM_CAPTURE);
@@ -392,7 +404,7 @@ class DrPublishApiClient
             $this->searchQueryUrl = $headerArray['X-SearchServer-Query-URL'];
         }
 
-        //}
+        }
 		$body = substr($res, $info['header_size']);
 		curl_close($ch);
 		if ($info['http_code'] == 404) {

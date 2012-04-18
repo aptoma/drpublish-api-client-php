@@ -21,6 +21,7 @@ if (isset($_GET['dp-url'])) {
 }
 
 $dpWebClient = new DrPublishApiWebClient($dpUrl, $publication);
+$dpWebClient->setDebugMode();
 
 switch ($action) {
     case 'article':
@@ -54,7 +55,6 @@ switch ($action) {
            if ($order && strpos($order, '--') === false ) {
                $query .= '&order=' . urlencode($order);
            }
-           $query .= '&debug';
            $limit = isset($_GET['limit']) ? (int) $_GET['limit'] : 5;
            $offset = isset($_GET['offset']) ? (int) $_GET['offset'] : 0;
            $options = array();

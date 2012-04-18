@@ -10,7 +10,7 @@
 
             <span style="color: #555">
 
-                published: <?=$drpublishApiClientArticle->getPublished() ?> | written by: <?=$drpublishApiClientArticle->getDPAuthors() ?> |
+                published: <?=$drpublishApiClientArticle->getPublished() ?> | written by: <?=$drpublishApiClientArticle->getDPAuthors(true) ?> |
                 categories: <?=$drpublishApiClientArticle->getDPCategories() ?> |
                 tags:  <?=$drpublishApiClientArticle->getDPTags() ?>
                 <br/>
