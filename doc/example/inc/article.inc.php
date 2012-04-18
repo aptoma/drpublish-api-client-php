@@ -3,7 +3,7 @@
 
 <h2>Source [DrPublishApiClientArticleElement DrPublishApiWebClient::getSourceName()]</h2>
 <div class="result">
-    <?=$drpublishApiClientArticle->getSourc()?>
+    <?=$drpublishApiClientArticle->getSource()?>
 </div>
 
 <h2>Published [DrPublishApiClientArticleElement DrPublishApiWebClient::getPublished()]</h2>
@@ -24,7 +24,10 @@
 <h2>DPTags as dedicated DrPublishApiClientTag objects [DrPublishApiClientList
 DrPublishApiWebClient::getDPTags()]</h2>
 <div class="result">
-<? //= printResult($drpublishApiClientArticle->getDPTags()) ?>
+    <pre>
+<?= printResult($drpublishApiClientArticle->getDPTags()) ?>
+
+    </pre>
 </div>
 
 <h2>Categories [DrPublishApiClientList DrPublishApiWebClient::getCategories()]</h2>
@@ -34,31 +37,33 @@ DrPublishApiWebClient::getDPTags()]</h2>
 
 <h2>DPCategories as dedicated DrPublishApiClientCategory objects [DrPublishApiClientListDrPublishApiWebClient::getDPCategories()]</h2>
 <div class="result">
-    <? //=printResult($drpublishApiClientArticle->getDPCategories())   ?>
+
+    <pre>
+    <?=printResult($drpublishApiClientArticle->getDPCategories())   ?>
+    </pre>
 </div>
 
-<h2>DPCategorys' parent category DrPublishApiClientCategory objects [DrPublishApiClientCategory::getParent()]</h2>
-<div class="result">
-    <?php
-    //foreach ($drpublishApiClientArticle->getDPCategories() as $drpublishApiClientCategory) {
-    //	print printResult($drpublishApiClientCategory->getParent());
-    //}
-    ?>
-</div>
 
 <h2>Main category [DrPublishApiClientArticleElement DrPublishApiWebClient::getMainCategoryName()]</h2>
 <div class="result">
-<?= $drpublishApiClientArticle->getMainCategory() ?>
+<?= $drpublishApiClientArticle->getMainDPCategory() ?>
 </div>
 
-<h2>Authors as simple list DrPublishApiClientArticleElement [DrPublishApiClientList DrPublishApiWebClient::getAuthorNames()]</h2>
+<h2>Authors as simple list [DrPublishApiClientList DrPublishApiWebClient::getAuthorNames()]</h2>
 <div class="result">
-    <?= $drpublishApiClientArticle->getAuthorNames() ?>
+    <?= $drpublishApiClientArticle->getDPAuthors() ?>
+    <pre>
+        <?=printResult($drpublishApiClientArticle->getDPAuthors()) ?>
+    </pre>
 </div>
 
-<h2>Authors as DrPublishApiClientAuthor list [DrPublishApiClientList DrPublishApiWebClient::getDPAuthors()]</h2>
+<h2>Authors as advanced list [DrPublishApiClientList DrPublishApiWebClient::getDPAuthors(true)]. Extended author data are getting fetched by a separate API request</h2>
 <div class="result">
-    <? //$drpublishApiClientArticle->getDPAuthors() ?>
+    <? $dpAuthors = $drpublishApiClientArticle->getDPAuthors(true) ?>
+    <?=$dpAuthors?>
+    <pre>
+        <?=printResult($dpAuthors)  ?>
+    </pre>
 </div>
 
 

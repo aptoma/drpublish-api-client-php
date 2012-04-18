@@ -22,7 +22,7 @@ h2 {
 
 pre {
     font-size: 10px;
-    max-height: 750px;
+    max-height: 150px;
     overflow-y: auto;
     overflow-x: hidden;
     background: #def;

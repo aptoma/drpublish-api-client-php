@@ -157,6 +157,11 @@ class DrPublishApiClientArticle
         return $imageList;
     }
 
+    public function getManiCategory()
+    {
+
+    }
+
     /**
      * Gets the first DPImage of this article.
      * @see DrPublishApiClientArticle::getDPImages()
@@ -198,6 +203,18 @@ class DrPublishApiClientArticle
             $list->add($this->createDrPublishApiClientCategory($category));
         }
         return $list;
+    }
+
+    public function getMainDPCategory()
+    {
+
+        foreach ($this->data->meta->categories as $category) {
+            if ($category->isMain) {
+                return $this->createDrPublishApiClientCategory($category);
+            }
+            return null;
+        }
+
     }
 
     /**
