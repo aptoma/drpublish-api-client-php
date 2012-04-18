@@ -12,6 +12,8 @@ require_once($dpcDirname . '/DrPublishApiClientHttpException.php');
 require_once($dpcDirname . '/DrPublishApiClientConfig.php');
 require_once($dpcDirname . '/DrPublishApiClientArticle.php');
 require_once($dpcDirname . '/DrPublishApiClientArticleElement.php');
+require_once($dpcDirname . '/DrPublishApiClientXmlElement.php');
+require_once($dpcDirname . '/DrPublishApiClientTextElement.php');
 require_once($dpcDirname . '/DrPublishApiClientList.php');
 require_once($dpcDirname . '/DrPublishApiClientSearchList.php');
 require_once($dpcDirname . '/DrPublishApiClientArticleImageElement.php');
@@ -246,41 +248,67 @@ class DrPublishApiClient
                 $query .=  "&{$key}={$value}";
             }
         }
-		$url = $this->url . '/articles.xml?publication=' . $this->publicationName . ''.$query ;
-		$articlesXml = $this->curl($url);
-		$this->dom = new DOMDocument('1.0', 'UTF-8');
-		$this->dom->loadXML($articlesXml);
-		$xpath = new DOMXPath($this->dom);
-		$xpath->registerNamespace('DrPublish', self::$XMLNS_URI);
-		$articleNodes = $xpath->query('//DrPublish:response/DrPublish:article');
+		$url = $this->url . '/articles.json?publication=' . $this->publicationName . ''.$query ;
+		$resultJson = $this->curl($url);
+        $result = json_decode($resultJson);
+//		$this->dom = new DOMDocument('1.0', 'UTF-8');
+//		$this->dom->loadXML($articlesXml);
+//		$xpath = new DOMXPath($this->dom);
+
+
+//		$xpath->registerNamespace('DrPublish', self::$XMLNS_URI);
+//		$articleNodes = $xpath->query('//DrPublish:response/DrPublish:article');
 		$dpClientArticleList = new DrPublishApiClientSearchList();
-		foreach($articleNodes as $articleNode) {
-			$articleXml = $this->dom->saveXML($articleNode);
+
+        $articles = $result->items;
+		foreach($articles as $article) {
+           // print_r($article->meta);
+            $drPublishApiClientArticle = new DrPublishApiClientArticle($article, $this);
+            $dpClientArticleList->add($drPublishApiClientArticle);
+//            print "<pre>";
+//            print "\nid: ";
+//            print_r ($drPublishApiClientArticle->getId());
+//            print "\npublished: ";
+//            print_r ($drPublishApiClientArticle->getPublished());
+//            print "<pre>";
+//            print "\nenable comments: ";
+//            print_r ($drPublishApiClientArticle->getEnableComments());
+//            print "categories: \n";
+//            print_r ($drPublishApiClientArticle->getCategories());
+//            print "source: \n";
+//            print_r ($drPublishApiClientArticle->getSource());
+            print "title: \n";
+            print_r ($drPublishApiClientArticle->getTitle());
+            print "leadAsset: \n";
+            print_r ($drPublishApiClientArticle->getLeadAsset()->query('//div'));
+//exit;
+			//$articleXml = $this->dom->saveXML($articleNode);
            // $articleXml = '<DrPublish:article xmlns:DrPublish="' . self::$XMLNS_URI . '">' .$articleXml . '</DrPublish:article>';
-			$adom = new DOMDocument('1.0', 'UTF-8');
-			$adom->loadXML($articleXml);
-			$dpClientArticleList->add($this->createDrPublishApiClientArticle($adom));
+			//$adom = new DOMDocument('1.0', 'UTF-8');
+			//$adom->loadXML($articleXml);
+			//$dpClientArticleList->add($this->createDrPublishApiClientArticle($adom));
 		}
-		$meta = $xpath->query ('DrPublish:response/DrPublish:limit|DrPublish:total[1]|DrPublish:offset[1]|DrPublish:count[1]' );
-		foreach ( $meta as $metaNode ) {
-		  switch ( $metaNode->tagName ) {
-		    case 'DrPublish:limit':
-		      $dpClientArticleList->limit = $metaNode->textContent;
-		      break;
-		    case 'DrPublish:offset':
-		      $dpClientArticleList->offset = $metaNode->textContent;
-		      break;
-		    case 'DrPublish:count':
-		      $dpClientArticleList->hits = $metaNode->textContent;
-		      break;
-		    case 'DrPublish:total':
-		      $dpClientArticleList->total = $metaNode->textContent;
-		      break;
+//
+//		$meta = $xpath->query ('DrPublish:response/DrPublish:limit|DrPublish:total[1]|DrPublish:offset[1]|DrPublish:count[1]' );
+//		foreach ( $meta as $metaNode ) {
+//		  switch ( $metaNode->tagName ) {
+//		    case 'DrPublish:limit':
+//		      $dpClientArticleList->limit = $metaNode->textContent;
+//		      break;
+//		    case 'DrPublish:offset':
+//		      $dpClientArticleList->offset = $metaNode->textContent;
+//		      break;
+//		    case 'DrPublish:count':
+//		      $dpClientArticleList->hits = $metaNode->textContent;
+//		      break;
+//		    case 'DrPublish:total':
+//		      $dpClientArticleList->total = $metaNode->textContent;
+//		      break;
 //		    case 'DrPublish:time':
 //		      $dpClientArticleList -> time = $metaNode -> textContent;
 //		      break;
-		  }
-		}
+//		  }
+//		}
 		
 		return $dpClientArticleList;
 	}

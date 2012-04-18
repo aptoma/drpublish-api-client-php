@@ -1,0 +1,5 @@
+<?
+ class DrPublishApiClientTextElement extends DrPublishApiClientArticleElement
+ {
+
+ }

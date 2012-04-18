@@ -14,10 +14,9 @@
  */
 class DrPublishApiClientArticle
 {
-    protected $dom;
-    protected $xpath;
+
+    protected $data = array();
     protected $dpClient;
-    protected $xml;
 
     /**
      * Class constructor
@@ -26,17 +25,77 @@ class DrPublishApiClientArticle
      * @return void
      * @throws DrPublishApiClientException
      */
-    public function __construct($dom, $dpClient = null)
+    public function __construct($data, $dpClient)
     {
-        $this->dom = $dom;
-        $notFound = $this->dom->getElementsByTagNameNS(DrPublishApiClient::$XMLNS_URI, "notFound")->item(0);
-        if (!empty($notFound)) {
-            throw new DrPublishApiClientException("Article id='" . $notFound->getAttribute('articleId') . "' not found",
-                DrPublishApiClientException::ARTICLE_NOT_FOUND_ERROR);
-        }
+        $this->data = $data;
         $this->dpClient = $dpClient;
-        $this->xpath = new DOMXPath($this->dom);
-        $this->xpath->registerNamespace('DrPublish', DrPublishApiClient::$XMLNS_URI);
+
+    }
+
+
+    public function __set($name, $value)
+    {
+        $this->data[$name] = $value;
+    }
+
+    public function __get($name)
+    {
+        if (isset($this->data->{$name})) {
+            return $this->data->{$name};
+        }
+    }
+
+    public function __call($name, $arguments) {
+        if (substr($name, 0, 3) === 'get') {
+            return $this->parseGetCall($name, $arguments);
+        }
+    }
+
+    private function parseGetCall($name, $arguments) {
+            $varName = lcfirst(substr($name, 3));
+            // meta
+            if (isset($this->data->meta->{$varName})) {
+                switch ($varName) {
+                    case 'authors' :
+                        return $this->getDPAuthors($arguments);
+                    case 'tags' :
+                        return $this->getDPTags($arguments);
+                    case 'categories' :
+                        return $this->getDPCategories($arguments);
+                    case 'source' :
+                        return $this->getDPSource($arguments);
+                    default:
+                        return $this->data->meta->{$varName};
+                }
+            }
+
+            // article content
+            foreach ($this->data->contents as $medium => $content) {
+                if (isset($content->{$varName})) {
+                    $templateElement = $this->data->templates->{$medium}->elements->{$varName};
+                    $options = new stdClass();
+                    $options->medium = $medium;
+                    $options->dataType = $templateElement->dataType;
+                    if ($templateElement->dataType == 'text') {
+                        return new DrPublishApiClientTextElement($content->{$varName}, $options);
+                    } else {
+                        return new DrPublishApiClientXmlElement($content->{$varName}, $options);
+
+                    }
+                }
+            }
+
+            // customizable articletyp meta
+            if (isset($this->data->meta->articleTypeMeta->{$varName})) {
+                return $this->data->meta->articleTypeMeta->{$varName};
+            }
+
+
+
+
+
+
+                return "element '$varName' not founc";
     }
 
     /**
@@ -104,15 +163,11 @@ class DrPublishApiClientArticle
    	public function getDPAuthors($allData = false)
    	{
    		$list = new DrPublishApiClientList();
-   		$domNodes = $this->xpath->query('//DrPublish:article/DrPublish:meta/authors/author');
-   		foreach ($domNodes as $domNode) {
-   			$id = $domNode->getAttribute('id');
+   		foreach ($this->data->meta->authors as $author) {
                if ($allData) {
-                   print "advanced author ";
-   			    $dpClientAuthor = $this->dpClient->getAuthor($id);
+   			      $dpClientAuthor = $this->dpClient->getAuthor($author->id);
                } else {
-                   print "simple author ";
-                   $dpClientAuthor = $this->createDrPublishApiClientAuthor($domNode, $this->dom);
+                   $dpClientAuthor = $this->createDrPublishApiClientAuthor($author);
                }
    			$list->add($dpClientAuthor);
    		}
@@ -127,9 +182,8 @@ class DrPublishApiClientArticle
     public function getDPCategories()
     {
         $list = new DrPublishApiClientList();
-        $domNodes = $this->xpath->query('//DrPublish:article/DrPublish:meta/categories/category');
-        foreach ($domNodes as $domNode) {
-            $list->add($this->createDrPublishApiClientCategory($domNode));
+        foreach ($this->data->meta->categories as $category) {
+            $list->add($this->createDrPublishApiClientCategory($category));
         }
         return $list;
     }
@@ -140,15 +194,13 @@ class DrPublishApiClientArticle
      */
     public function getDPSource()
     {
-        $domNode = $this->xpath->query('//DrPublish:article/DrPublish:meta/source[1]')->item(0);
-        if (empty($domNode)) {
+        if (empty($this->data->meta->source)) {
             return null;
-        } else {
-            $data = new stdClass();
-            $data->id = $domNode->getAttribute('id');
-            $data->name = $domNode->nodeValue;
-            return new DrPublishApiClientSource($data);
         }
+        $data = new stdClass();
+        $data->name = $this->data->meta->source;
+        $data->id = $this->data->meta->dpSourceId;
+        return new DrPublishApiClientSource($data);
     }
 
     /**
@@ -158,9 +210,8 @@ class DrPublishApiClientArticle
     public function getDPTags()
     {
         $list = new DrPublishApiClientList();
-        $domNodes = $this->xpath->query('//DrPublish:article/DrPublish:meta/tags/tag');
-        foreach ($domNodes as $domNode) {
-            $list->add($this->createDrPublishApiClientTag($domNode));
+        foreach ($this->data->meta->tags as $tag) {
+            $list->add($this->createDrPublishApiClientTag($tag));
         }
         return $list;
     }
@@ -199,14 +250,9 @@ class DrPublishApiClientArticle
      * @param DomDocument $domDocument
      * @return DrPublishApiClientAuthor
      */
-    protected function createDrPublishApiClientAuthor($domNode)
+    protected function createDrPublishApiClientAuthor($author)
     {
-       $data = new stdClass();
-       $data->id = $domNode->getAttribute('id');
-       $data->fullname = $domNode->nodeValue;
-       $data->username = $domNode->getAttribute('username');
-       $data->email =  $domNode->getAttribute('email');
-       return new DrPublishApiClientAuthor($data);
+       return new DrPublishApiClientAuthor($author);
     }
 
     /**
@@ -216,14 +262,9 @@ class DrPublishApiClientArticle
      * @param DomDocument $domDocument
      * @return DrPublishApiClientCategory
      */
-    protected function createDrPublishApiClientCategory($domNode)
+    protected function createDrPublishApiClientCategory($category)
     {
-       $data = new stdClass();
-       $data->id = $domNode->getAttribute('id');
-       $data->name = $domNode->nodeValue;
-       $data->parentId =  $domNode->getAttribute('parentId');
-       $data->isMain = $domNode->getAttribute('isMain');
-       return new DrPublishApiClientCategory($data, $this->dpClient);
+       return new DrPublishApiClientCategory($category, $this->dpClient);
     }
 
     /**
@@ -234,14 +275,14 @@ class DrPublishApiClientArticle
      * @param DomDocument $domDocument
      * @return DrPublishApiClientCategory
      */
-    protected function createDrPublishApiClientTag($domNode)
+    protected function createDrPublishApiClientTag($tag)
     {
        $data = new stdClass();
        $tagType = new stdClass();
-       $tagType->id = $domNode->getAttribute('tagTypeId');
-       $tagType->name = $domNode->getAttribute('tagTypeName');
-       $data->id = $domNode->getAttribute('id');
-       $data->name = $domNode->nodeValue;
+       $tagType->id = $tag->tagTypeId;
+       $tagType->name = $tag->tagTypeName;
+       $data->id = $tag->id;
+       $data->name = $tag->name;
        $data->tagType =  $tagType;
        return new DrPublishApiClientTag($data);
     }
