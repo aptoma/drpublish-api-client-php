@@ -1,0 +1,49 @@
+body {
+    font-family: verdana, sans-serif;
+    background: #eee;
+    font-size: 13px;
+    padding:0;
+}
+
+#wrapper {
+    margin: 20px;
+    width: 800px;
+}
+
+.code {
+    margin: 10px 0 2px 0;
+    font-size: 14px;
+    background: #666;
+    color: #7cfc00;
+    padding: 5px;
+}
+
+.code-comment {
+    color: #123;
+    margin-left: 5px;
+}
+
+.output {
+    color: #361f3d;
+    background: #ddeeff;
+    padding: 3px;
+    margin: 3px;
+    width: auto;
+
+}
+
+.code-comment ul {
+    margin: 2px 0 2px 0;
+}
+
+.indent1 {
+    margin-left: 30px;
+    margin-right: 30px;
+}
+
+
+
+
+
+
+
