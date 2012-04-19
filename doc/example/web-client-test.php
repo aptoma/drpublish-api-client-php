@@ -118,7 +118,7 @@ switch ($action) {
           $limit = isset($_GET['limit']) ? (int) $_GET['limit'] : 5;
           $offset = isset($_GET['offset']) ? (int) $_GET['offset'] : 0;
           $query = join('&', $requestedFields);
-          $drpublishApiClientTags = $dpWebClient->searchTags($query, $offset, $limit);
+          $drPublishApiClientSearchList = $dpWebClient->searchTags($query, $offset, $limit);
           $mainView = 'search-tags';
         } catch (DrPublishApiClientException $e) {
             $mainView = 'error';

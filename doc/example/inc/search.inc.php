@@ -1,11 +1,8 @@
 <h2>Search articles [DrPublishApiWebClient::searchArticle('<?=$query?>', <?=$limit?>, <?=$offset?>)]</h2>
-    <? $searchMeta = $drPublishApiClientSearchList->getSearch() ?>
-total: <?=$searchMeta->getTotal(); ?> | offset : <?=$searchMeta->getOffset(); ?> | limit : <?=$searchMeta->getLimit(); ?>
+<? include('inc/search-meta.inc.php') ?>
+<br/>
+<? include('inc/search-paginator.inc.php') ?>
 
-
-<?
-//print_r($drPublishApiClientSearchList->getSearch())
-?>
 <ul>
 
 <?php
@@ -29,12 +26,4 @@ total: <?=$searchMeta->getTotal(); ?> | offset : <?=$searchMeta->getOffset(); ?>
 </ul>
 
 
-<? foreach (array('first', 'prev', 'next', 'last') as $label) { ?>
-    <? if($drPublishApiClientSearchList->hasLink($label)) { ?>
-        <?
-            $parameters =  str_replace('"',"%22", $drPublishApiClientSearchList->getLink($label)->parameters);
-        ?>
-           <a href="#" onclick="DrPublishApiClientExmample.sendGetRequest('action=search&readyRequest=true&<?=$parameters?>'); return false;"><?=$label?></a>
-    &nbsp;
-    <? } ?>
-<? } ?>
+<? include('inc/search-paginator.inc.php') ?>

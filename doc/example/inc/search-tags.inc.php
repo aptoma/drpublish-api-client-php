@@ -1,6 +1,7 @@
-<h2>Author search</h2>
+<h2>Tag search</h2>
+<? include('inc/search-meta.inc.php') ?>
 <ul>
-<? foreach ($drpublishApiClientTags as $drpublishApiClientTag) { ?>
+<? foreach ($drPublishApiClientSearchList as $drpublishApiClientTag) { ?>
         <li>
             <strong><?= $drpublishApiClientTag->getName() ?></strong>
              [id=<?= $drpublishApiClientTag->getId() ?>]
@@ -11,6 +12,5 @@
             Content:  <?= htmlentities($drpublishApiClientTag->getContent()); ?>
             </span>
         </li>
-
 <? } ?>
 </ul>

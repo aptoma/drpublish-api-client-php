@@ -8,11 +8,10 @@ body {
 h2 {
     background-color: #eee;
     font-size: 12px;
-    margin: 0;
+    margin: 0 -10px 0 -10px ;
     padding: 5px;
     clear: both;
     font-weight: normal;
-    border-radius: 3px 3px 0 0;
     color: #555;
 }
 
@@ -25,15 +24,14 @@ pre {
     max-height: 150px;
     overflow-y: auto;
     overflow-x: hidden;
-    background: #def;
     padding: 5px;
+    background: #def;
 }
 
 .result {
-    background: #fff;
     padding: 5px;
-    margin-bottom: 15px;
-    border-radius: 0 0 3px 3px;;
+    margin:5px 0 15px 0;
+
 }
 
 .content-container {
@@ -109,19 +107,18 @@ textarea {
 }
 
 #api-response-wrap {
-    margin-top: 20px;
+    margin-top: 10px;
     width: 1000px;
     border: solid #777 2px;
     border-radius: 3px;
     padding: 10px;
     min-height: 150px;
-    background: #ccc;
+    background: #ddd;
 }
 
 .selectex .row {
 
 }
-
 
 .selectex .plus, .selectex .minus {
     width: 16px;
@@ -144,14 +141,25 @@ textarea {
 }
 
 .request-info {
-    margin: -10px -10px 5px -10px;
+    margin: -10px -10px 0 -10px;
     background: #bbb;
-    padding: 3px;
+    padding: 6px;
     color: #666;
     border-bottom: solid #777 2px;
-
 }
 
 .request-info a {
     color: #666;
+
+}.request-info a:hover {
+    color: #333;
+}
+
+.search-meta {
+    color: #666;
+    text-align: right;
+}
+
+.paginator {
+    text-align: center;
 }

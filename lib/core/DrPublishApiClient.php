@@ -152,15 +152,10 @@ class DrPublishApiClient
     {
         $query = urldecode($query);
         $url = $this->url . '/users.json?' . $query . '&offset=' . $offset . '&limit=' . $limit;
-        $response = trim($this->curl($url));
+        $response = $this->curl($url);
         $responseObject = json_decode($response->body);
-        $list = new DrPublishApiClientSearchList($responseObject->search);
+        $list = new DrPublishApiClientSearchList($responseObject->search, $response->headers);
         if (!empty($responseObject)) {
-            $list->offset = $responseObject->offset;
-            $list->limit = $responseObject->limit;
-            $list->hits = $responseObject->count;
-            $list->total = $responseObject->total;
-            $list->query = $this->requestUri;
             $authors = $responseObject->items;
             foreach ($authors as $author) {
                 $author = new DrPublishApiClientAuthor($author);
@@ -180,8 +175,8 @@ class DrPublishApiClient
 	public function getAuthor($id)
 	{
 		$url = $this->url . '/users/'.$id . '.json';
-		$response = trim($this->curl($url));
-         $responseObject = json_decode($response->body);
+		$response = $this->curl($url);
+        $responseObject = json_decode($response->body);
 		if (empty($responseObject)) {
 			throw new DrPublishApiClientException("No or invalid author data retreived for article-id='{$id}'", DrPublishApiClientException::NO_DATA_ERROR);
 		}
@@ -194,15 +189,10 @@ class DrPublishApiClient
     {
         $query = urldecode($query);
         $url = $this->url . '/tags.json?' . $query . '&offset=' . $offset . '&limit=' . $limit;
-        $response = trim($this->curl($url));
+        $response = $this->curl($url);
         $responseObject = json_decode($response->body);
-        $list = new DrPublishApiClientSearchList($responseObject->search);
+        $list = new DrPublishApiClientSearchList($responseObject->search, $response->headers);
         if (!empty($responseObject)) {
-            $list->offset = $responseObject->offset;
-            $list->limit = $responseObject->limit;
-            $list->hits = $responseObject->count;
-            $list->total = $responseObject->total;
-            $list->query = $this->requestUri;
             $tags = $responseObject->items;
             foreach ($tags as $tag) {
                 $tag = new DrPublishApiClientTag($tag);
