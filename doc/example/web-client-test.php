@@ -13,12 +13,10 @@ $dpUrl = '';
 if (isset($_GET['dp-url'])) {
 	$dpUrl = $_GET['dp-url'];
 } else {
-	if (file_exists(dirname(__FILE__).'/../WEB-INF/config/config.php')) {
-		$serialized = file_get_contents(dirname(__FILE__).'/../WEB-INF/config/config.php');
-		$configs = unserialize($serialized);
-		$dpUrl = $configs['EXAMPLE_SITE_DPAPI_URL'];
-	}
+
 }
+
+
 
 $dpWebClient = new DrPublishApiWebClient($dpUrl, $publication);
 $dpWebClient->setDebugMode();

@@ -1,3 +1,15 @@
+<?
+if (file_exists(dirname(__FILE__).'/config.php')) {
+    $configs = array();
+    include (dirname(__FILE__).'/config.php');
+    $dpUrl = $configs['dp-url'];
+    $publication = $configs['publication'];
+} else {
+    $dpUrl = 'http://stefan.aptoma.no:9000';
+    $publication = 'Solarius';
+}
+?>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
@@ -12,9 +24,9 @@
 </head>
 <body>
     DrPublish API URL
-      <input type="text"  id="dp-url" name="dp-url" value="http://stefan.aptoma.no:9000" style="width: 300px"/>
+      <input type="text"  id="dp-url" name="dp-url" value="<?=$dpUrl?>" style="width: 300px"/>
     Publication
-       <input type="text"  id="dp-publication" name="dp-publication" value="DinePenger" style="width: 100px" />
+       <input type="text"  id="dp-publication" name="dp-publication" value="<?=$publication?>" style="width: 100px" />
 <hr/>
         <div id="active-form">
             <fieldset>
