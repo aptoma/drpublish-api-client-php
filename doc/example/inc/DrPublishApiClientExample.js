@@ -25,26 +25,31 @@ var DrPublishApiClientExmample = {
       //  return;
        $('#api-response').fadeOut(120, function() {
            $('#api-response').html('loading...');
-           $('#api-response').fadeIn(120, function() { DrPublishApiClientExmample.requestApi(form) } );
+           $('#api-response').fadeIn(120, function() {
+               var action = form.attr('action');
+               var params = 'action='+ action + '&' + form.serialize();
+               params += '&publication=' + $('#dp-publication').val();
+               DrPublishApiClientExmample.sendGetRequest(params);
+           } );
            return false;
        })
     },
 
-    requestApi: function(form) {
-       var action = form.attr('action');
-       var params = 'action='+ action + '&' + form.serialize();
-       params += '&dp-url=' + $('#dp-url').val();
-       params += '&publication=' + $('#dp-publication').val();
-       jQuery.get('web-client-test.php?' + params, function(data) {
-          $('#api-response').fadeOut(120, function() {$('#api-response').html('no response'); showData(data)});
-       });
-       var showData = function(data) {
-          $('#api-response').html(data);
-          $('#api-response').fadeIn();
-       }
+    sendGetRequest: function(params) {
+
+               params += '&dp-url=' + $('#dp-url').val();
+        jQuery.get('web-client-test.php?' + params, function(data) {
+           $('#api-response').fadeOut(120, function() {
+               $('#api-response').html('no response');
+               $('#api-response').html(data);
+               $('#api-response').fadeIn();
+           });
+        });
     }
 
 }
+
+
 
 
 var Selectex = {

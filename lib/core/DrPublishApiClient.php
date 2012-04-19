@@ -138,7 +138,8 @@ class DrPublishApiClient
 	public function getArticle($id)
 	{
 		$url = $this->url . '/articles/'.$id . '.json';
-        $resultJson = $this->curl($url);
+        $response = $this->curl($url);
+        $resultJson = $response->body;
           $result = json_decode($resultJson);
 		if (empty($result)) {
 			throw new DrPublishApiClientException("No article data retreived for article-id='{$id}'", DrPublishApiClientException::NO_DATA_ERROR);
@@ -151,9 +152,9 @@ class DrPublishApiClient
     {
         $query = urldecode($query);
         $url = $this->url . '/users.json?' . $query . '&offset=' . $offset . '&limit=' . $limit;
-        $responseBody = trim($this->curl($url));
-        $list = new DrPublishApiClientSearchList();
-        $responseObject = json_decode($responseBody);
+        $response = trim($this->curl($url));
+        $responseObject = json_decode($response->body);
+        $list = new DrPublishApiClientSearchList($responseObject->search);
         if (!empty($responseObject)) {
             $list->offset = $responseObject->offset;
             $list->limit = $responseObject->limit;
@@ -179,8 +180,8 @@ class DrPublishApiClient
 	public function getAuthor($id)
 	{
 		$url = $this->url . '/users/'.$id . '.json';
-		$responseBody = trim($this->curl($url));
-         $responseObject = json_decode($responseBody);
+		$response = trim($this->curl($url));
+         $responseObject = json_decode($response->body);
 		if (empty($responseObject)) {
 			throw new DrPublishApiClientException("No or invalid author data retreived for article-id='{$id}'", DrPublishApiClientException::NO_DATA_ERROR);
 		}
@@ -193,9 +194,9 @@ class DrPublishApiClient
     {
         $query = urldecode($query);
         $url = $this->url . '/tags.json?' . $query . '&offset=' . $offset . '&limit=' . $limit;
-        $responseBody = trim($this->curl($url));
-        $list = new DrPublishApiClientSearchList();
-        $responseObject = json_decode($responseBody);
+        $response = trim($this->curl($url));
+        $responseObject = json_decode($response->body);
+        $list = new DrPublishApiClientSearchList($responseObject->search);
         if (!empty($responseObject)) {
             $list->offset = $responseObject->offset;
             $list->limit = $responseObject->limit;
@@ -215,8 +216,8 @@ class DrPublishApiClient
     public function getTag($id)
     	{
     		$url = $this->url . '/tags/'.$id . '.json';
-    		$responseBody = trim($this->curl($url));
-             $responseObject = json_decode($responseBody);
+    		$response = $this->curl($url);
+             $responseObject = json_decode($response->body);
     		if (empty($responseObject)) {
     			throw new DrPublishApiClientException("No or invalid author data retreived for article-id='{$id}'", DrPublishApiClientException::NO_DATA_ERROR);
     		}
@@ -236,12 +237,12 @@ class DrPublishApiClient
 	public function getCategory($id)
 	{
 		$url = $this->url . '/category/?id='.$id;
-		$responseBody = trim($this->curl($url));
-		if (empty($responseBody)) {
+		$response = $this->curl($url);
+		if (empty($response->body)) {
 			throw new DrPublishApiClientException("No article data retreived for article-id='{$id}'", DrPublishApiClientException::NO_DATA_ERROR);
 		}
 		$dom = new DOMDocument('1.0', 'UTF-8');
-		$dom->loadXML($responseBody);
+		$dom->loadXML($response->body);
 		$dpClientCategory = $this->createDrPublishApiClientCategory($dom);
 		return $dpClientCategory;
 	}
@@ -262,22 +263,24 @@ class DrPublishApiClient
             }
         }
 		$url = $this->url . '/articles.json?publication=' . $this->publicationName . ''.$query ;
-		$resultJson = $this->curl($url);
-        $result = json_decode($resultJson);
+		$response = $this->curl($url);
+        $result = json_decode($response->body);
 //		$this->dom = new DOMDocument('1.0', 'UTF-8');
 //		$this->dom->loadXML($articlesXml);
 //		$xpath = new DOMXPath($this->dom);
 
+       // $searchMeta->links = $response->headers['Link'];
 
 //		$xpath->registerNamespace('DrPublish', self::$XMLNS_URI);
 //		$articleNodes = $xpath->query('//DrPublish:response/DrPublish:article');
-		$dpClientArticleList = new DrPublishApiClientSearchList();
+
+		$drPublishApiClientSearchList = new DrPublishApiClientSearchList($result->search, $response->headers);
 
         $articles = $result->items;
 		foreach($articles as $article) {
            // print_r($article->meta);
             $drPublishApiClientArticle = $this->createDrPublishApiClientArticle($article);
-            $dpClientArticleList->add($drPublishApiClientArticle);
+            $drPublishApiClientSearchList->add($drPublishApiClientArticle);
 //            print "<pre>";
 //            print "\nid: ";
 //            print_r ($drPublishApiClientArticle->getId());
@@ -322,8 +325,8 @@ class DrPublishApiClient
 //		      break;
 //		  }
 //		}
-		
-		return $dpClientArticleList;
+		//var_dump($drPublishApiClientSearchList->getSearchProperty('limit'));
+		return $drPublishApiClientSearchList;
 	}
 
 
@@ -407,19 +410,20 @@ class DrPublishApiClient
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 		$res = curl_exec($ch);
 		$info = curl_getinfo($ch);
-        if ($this->debug) {
+        //if ($this->debug) {
 		    $header = substr($res, 0, $info['header_size']);
             $this->searchQueryUrl = $header;
             $split = preg_split('#([\w|-]*): #', $header, -1, PREG_SPLIT_DELIM_CAPTURE);
             $headerArray = array();
+            $headerArray['status'] = $split[0];
              for($i=1; $i< count($split)-1; $i=$i+2) {
                  $headerArray[trim($split[$i])] = $split[$i+1];
              }
+
         if (isset($headerArray['X-SearchServer-Query-URL'])) {
             $this->searchQueryUrl = $headerArray['X-SearchServer-Query-URL'];
         }
-
-        }
+        //}
 		$body = substr($res, $info['header_size']);
 		curl_close($ch);
 		if ($info['http_code'] == 404) {
@@ -431,7 +435,10 @@ class DrPublishApiClient
 		if (empty($body) || $body == '{}') {
 			$this->serverError('No data responded by DrPublishAPI', $info['http_code']);
 		}
-		return $body;
+        $out = new stdClass();
+        $out->headers = $headerArray;
+        $out->body = $body;
+		return $out;
 	}
 	
 	/**

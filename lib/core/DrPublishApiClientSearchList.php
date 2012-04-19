@@ -23,86 +23,94 @@
  * @see DrPublishApiClientList
  */
 class DrPublishApiClientSearchList extends DrPublishApiClientList {
-  protected $_meta = array (
-    'query' => '',
-  	'total' => 0,
-  	'hits' => 0,
-  	'offset' => 0,
-  	'limit' => 0,
-  	'time' => 0.000
-  );
-  
-  /**
-   * Store all the meta data from a search in one go
-   * @param string $query The query for the search
-   * @param int $offset The offset given for the search
-   * @param int $limit The limit given for the search
-   * @param int $hits The number of returned hits
-   * @param int $total The total number of hits
-   * @param float $time The time the search took in seconds
-   */
-  protected function storeMeta ( $query, $offset, $limit, $hits, $total, $time ) {
-    $this -> _meta = array (
-        'query' => $query,
-    	'hits' => $hits,
-    	'total' => $total,
-    	'start' => $offset,
-    	'limit' => $limit,
-    	'time' => $time
-    );
-  }
-  
-  /**
-   * Trigger an E_USER_NOTICE if an inaccessible field is being accessed
-   * @param string $name Name of field
-   * @param string $access Name of access method
-   */
-  protected function _trigger_inaccessible ( $name, $access ) {
-    $trace = debug_backtrace();
-    trigger_error ( sprintf (
-    	'Undefined property via %s(): %s in %s on line%d',
-    	$access,
-    	$name,
-    	$trace[0]['file'],
-    	$trace[1]['line']
-    ), E_USER_NOTICE );
-  }
-  
-  /**
-  * @Override
-  */
-  public function __set ( $name, $value ) {
-    if ( array_key_exists ( $name, $this -> _meta ) ) {
-      $this -> _meta[$name] = $value;
-    } else {
-      $this -> _trigger_inaccessible ( $name, '__set' );
+
+    protected $search;
+
+    public function __construct($search, $headers)
+    {
+        //$searchMeta->headers = $response->headers;
+        $search->status = $headers['status'];
+        $search->links = new stdClass();
+        if (isset($headers['Link'])) {
+            $split = explode(',', $headers['Link']);
+            foreach ($split as $link) {
+              $m = array();
+              preg_match('#<(.*)>; rel=\"(\w+)\"#', $link, $m);
+              if (isset($m[1]) && isset($m[2])) {
+                  $link = $m[1];
+                  $lsplit = explode('?', $link);
+                  $linkObject = new stdClass();
+                  $linkObject->uri = $link;
+                  $linkObject->base = $lsplit[0];
+                  $linkObject->parameters = $lsplit[1];
+                  $search->links->{$m[2]} = $linkObject;
+              }
+            }
+        }
+        $this->search = new DrPublishApiClientSearch($search);
     }
-  }
 
-  /**
-  * @Override
-  */
-  public function __get($name) {
-    if ( array_key_exists ( $name, $this -> _meta ) ) {
-      return $this -> _meta[$name];
+    public function getSearchProperty($name)
+    {
+        return $this->search->getProperty($name);
     }
-    
-    $this -> _trigger_inaccessible ( $name, '__get' );
-    
-    return null;
-  }
 
-  /**
-   * @Override
-   */
-  public function __isset ( $name ) {
-    return array_key_exists ( $name, $this -> _meta );
-  }
+    public function setSearchProperty($name, $value)
+    {
+        return $this->search->setProperty($name, $value);
+    }
 
-  /**
-  * @Override
-  */
-  public function __unset ( $name ) {
-    unset ( $this -> _meta[$name] );
-  }
+    public function getSearch()
+    {
+        return $this->search;
+    }
+
+    public function hasLink($label)
+    {
+        return isset($this->search->getLinks('links')->{$label});
+    }
+
+    public function getLink($label)
+    {
+        if ($this->hasLink($label)) {
+            return $this->search->getLinks('links')->{$label};
+        }
+        return null;
+    }
+
+}
+
+class DrPublishApiClientSearch
+{
+    private $data;
+
+    public function __construct($data)
+    {
+        $this->data = $data;
+    }
+
+    public function getProperty($name)
+    {
+        if (isset($this->data->{$name}))
+        {
+            $this->data->{$name};
+        }
+        return 'undefined';
+    }
+
+    public function __call($name, $arguments) {
+        if (substr($name, 0, 3) === 'get') {
+            $varName = lcfirst(substr($name, 3));
+            if (isset($this->data->{$varName})) {
+                return $this->data->{$varName};
+            }
+            return 'undefined';
+        }
+    }
+
+    public function setProperty($name, $value) {
+        $this->data->{$name} = $value;
+    }
+
+
 }

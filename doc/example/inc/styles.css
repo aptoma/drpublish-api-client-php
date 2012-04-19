@@ -142,3 +142,16 @@ textarea {
 .selectex .minus {
     display: none;
 }
+
+.request-info {
+    margin: -10px -10px 5px -10px;
+    background: #bbb;
+    padding: 3px;
+    color: #666;
+    border-bottom: solid #777 2px;
+
+}
+
+.request-info a {
+    color: #666;
+}

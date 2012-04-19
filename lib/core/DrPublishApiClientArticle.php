@@ -73,25 +73,23 @@ class DrPublishApiClientArticle
                 }
             }
             // article content
-                $content = $this->data->contents->{$this->medium};
-                if (isset($content->{$varName})) {
-                    $templateElement = $this->data->templates->{$this->medium}->elements->{$varName};
-                    $options = new stdClass();
-                    $options->medium = $this->medium;
-                    $options->dataType = $templateElement->dataType;
-                    if ($templateElement->dataType == 'text') {
-                        return new DrPublishApiClientTextElement($content->{$varName}, $options);
-                    } else {
-                        return new DrPublishApiClientXmlElement($content->{$varName}, $options);
-
-                    }
+            $content = $this->data->contents->{$this->medium};
+            if (isset($content->{$varName})) {
+                $templateElement = $this->data->templates->{$this->medium}->elements->{$varName};
+                $options = new stdClass();
+                $options->medium = $this->medium;
+                $options->dataType = $templateElement->dataType;
+                if ($templateElement->dataType == 'xml') {
+                    return new DrPublishApiClientXmlElement($content->{$varName}, $options);
+                } else {
+                    return new DrPublishApiClientTextElement($content->{$varName}, $options);
                 }
-
+            }
             // customizable articletyp meta
             if (isset($this->data->meta->articleTypeMeta->{$varName})) {
                 return $this->data->meta->articleTypeMeta->{$varName};
             }
-            return "article element '$varName' not found";
+            return 'undefined';
     }
 
     public function findImages()

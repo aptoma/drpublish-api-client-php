@@ -34,29 +34,41 @@ switch ($action) {
         }
         break;
     case 'search':
-
         try {
-           $query = '';
-           $dynamicQuery = isset($_GET['dynamicQuery']) ? trim($_GET['dynamicQuery']) : '';
-           $filterFields = isset($_GET['filterFields']) ?  $_GET['filterFields'] : false;
-           $order = isset($_GET['order']) ?  $_GET['order'] : false;
-           if ($filterFields) {
-               foreach ($filterFields as $filterField) {
-                   if (strpos($filterField['key'], '--') === false) {
-                       $val = urlencode('"' . $filterField['value']. '"');
-                        $query .= '&' . $filterField['key'].  '=' . $val ;
+           if (isset($_GET['readyRequest'])) {
+               $offset = $_GET['offset'];
+               $limit = $_GET['limit'];
+               unset($_GET['offset']);
+               unset($_GET['limit']);
+               unset($_GET['readyRequest']);
+               unset($_GET['dp-url']);
+               unset($_GET['action']);
+               $query = '';
+               foreach($_GET as $key => $value) {
+                   $query .= '&' . $key.  '=' . $value ;
+               }
+           }  else {
+               $query = '';
+               $dynamicQuery = isset($_GET['dynamicQuery']) ? trim($_GET['dynamicQuery']) : '';
+               $filterFields = isset($_GET['filterFields']) ?  $_GET['filterFields'] : false;
+               $order = isset($_GET['order']) ?  $_GET['order'] : false;
+               if ($filterFields) {
+                   foreach ($filterFields as $filterField) {
+                       if (strpos($filterField['key'], '--') === false) {
+                           $val = urlencode('"' . $filterField['value']. '"');
+                            $query .= '&' . $filterField['key'].  '=' . $val ;
+                       }
                    }
                }
+               if (!empty($dynamicQuery)) {
+                   $query .= '&dynamicQuery=' . $dynamicQuery;
+               }
+               if ($order && strpos($order, '--') === false ) {
+                   $query .= '&order=' . urlencode($order);
+               }
+               $limit = isset($_GET['limit']) ? (int) $_GET['limit'] : 5;
+               $offset = isset($_GET['offset']) ? (int) $_GET['offset'] : 0;
            }
-
-           if (!empty($dynamicQuery)) {
-               $query .= '&dynamicQuery=' . $dynamicQuery;
-           }
-           if ($order && strpos($order, '--') === false ) {
-               $query .= '&order=' . urlencode($order);
-           }
-           $limit = isset($_GET['limit']) ? (int) $_GET['limit'] : 5;
-           $offset = isset($_GET['offset']) ? (int) $_GET['offset'] : 0;
            $options = array();
            if (!empty($offset)) {
                $options['offset'] = $offset;
@@ -64,8 +76,7 @@ switch ($action) {
            if (!empty($limit)) {
                $options['limit'] = $limit;
            }
-
-   	       $drpublishApiClientArticles = $dpWebClient->searchArticles($query, $options);
+           $drPublishApiClientSearchList = $dpWebClient->searchArticles($query, $options);
            $mainView = 'search';
         } catch (DrPublishApiClientException $e) {
            $mainView = 'error';

@@ -81,6 +81,11 @@ class DrPublishApiClientArticleImageElement extends DrPublishDomElement
     }
 		return $imageElement;
 	}
+
+    public function getThumbnail($size = 100)
+    {
+        return $this->getResizedImage($size);
+    }
 	
 
 	/**
