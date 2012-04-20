@@ -5,6 +5,13 @@ body {
     padding:0;
 }
 
+h2{
+    background: #FFF;
+    padding: 2px 2px 2px 8px;
+}
+
+
+
 #wrapper {
     margin: 20px;
     width: 800px;
@@ -34,6 +41,11 @@ body {
 
 .code-comment ul {
     margin: 2px 0 2px 0;
+}
+
+.indent {
+    margin-left: 30px;
+    margin-right: 30px;
 }
 
 .indent1 {

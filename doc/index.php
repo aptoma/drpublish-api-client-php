@@ -4,7 +4,7 @@
 <head>
     <title>DrPublishWebClient doc</title>
 
-    <link type="text/css" rel="stylesheet" media="all" href="docstyles.css" />
+    <link type="text/css" rel="stylesheet" media="all" href="inc/docstyles.css" />
 </head>
 <body>
 <div id="wrapper">

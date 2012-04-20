@@ -1,0 +1,761 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet href="docstyles.css" type="text/css"?>
+<?xml-stylesheet href="drpublish-apidoc.xsl" type="text/xsl"?>
+<DrPublish:links xmlns:DrPublish="http://aptoma.no/xml/drpublish">
+    <DrPublish:link>
+        <name>article</name>
+        <description>Fetch article by id - this is actually the URI for the article and will be used for PUT/DELETE
+            actions as well
+        </description>
+        <uri>/articles/{id}.{format}?</uri>
+        <verb>GET</verb>
+        <parameters>
+            <parameter>
+                <name>fields</name>
+                <mandatory>no</mandatory>
+                <description>Comma separated values list of fields to return for the requested resource(s)</description>
+                <type>string</type>
+                <allowedValues>List of valid resource property names</allowedValues>
+            </parameter>
+            <parameter>
+                <name>scope</name>
+                <mandatory>no</mandatory>
+                <description>If set to internal, will retrieve information from the saved cores (non-public resources)</description>
+                <type>string</type>
+                <allowedValues>internal</allowedValues>
+            </parameter>
+            <parameter>
+                <name>apikey</name>
+                <mandatory>no</mandatory>
+                <description>API Key for accessing non-public resources. Only needed if "scope" is set to "internal"</description>
+                <type>string</type>
+                <allowedValues>Valid API Key</allowedValues>
+            </parameter>
+            <parameter>
+                <name>callback</name>
+                <mandatory>no</mandatory>
+                <description>JSONP callback function</description>
+                <type>string</type>
+                <allowedValues>Any valid javascript function name</allowedValues>
+            </parameter>
+        </parameters>
+    </DrPublish:link>
+    <DrPublish:link>
+        <name>articles</name>
+        <description>Fetch articles by different criteria</description>
+        <uri>/articles.{format}?</uri>
+        <verb>GET</verb>
+        <parameters>
+            <parameter>
+                <name>publication</name>
+                <mandatory>yes</mandatory>
+                <description>The publication that the article belongs to</description>
+                <type>string</type>
+                <allowedValues>The name of a valid publication</allowedValues>
+            </parameter>
+            <parameter>
+                <name>author</name>
+                <mandatory>no</mandatory>
+                <description>The author of the article(s)</description>
+                <type>string</type>
+                <allowedValues>Username of the creator of the article. Cannot be used in conjunction with the authors property!</allowedValues>
+            </parameter>
+            <parameter>
+                <name>authors</name>
+                <mandatory>no</mandatory>
+                <description>A list of authors of the article(s)</description>
+                <type>string</type>
+                <allowedValues>Comma separated values list of author usernames. "," means OR, "+" means AND. Cannot be used in conjunction with author property!</allowedValues>
+            </parameter>
+            <parameter>
+                <name>tag</name>
+                <mandatory>no</mandatory>
+                <description>A tag of the article(s)</description>
+                <type>string</type>
+                <allowedValues>A tag of the article. Cannot be used in conjunction with the tags property!</allowedValues>
+            </parameter>
+            <parameter>
+                <name>tags</name>
+                <mandatory>no</mandatory>
+                <description>A list of tags</description>
+                <type>string</type>
+                <allowedValues>Comma separated values list of tags. "," means OR, "+" means AND. Cannot be used in conjunction with tag property!</allowedValues>
+            </parameter>
+            <parameter>
+                <name>dossier</name>
+                <mandatory>no</mandatory>
+                <description>A dossier of the article(s)</description>
+                <type>string</type>
+                <allowedValues>A dossier of the article. Cannot be used in conjunction with the dossiers property!</allowedValues>
+            </parameter>
+            <parameter>
+                <name>dossiers</name>
+                <mandatory>no</mandatory>
+                <description>A list of dossiers</description>
+                <type>string</type>
+                <allowedValues>Comma separated values list of dossiers. "," means OR, "+" means AND. Cannot be used in conjunction with dossier property!</allowedValues>
+            </parameter>
+            <parameter>
+                <name>category</name>
+                <mandatory>no</mandatory>
+                <description>A category of the article(s)</description>
+                <type>string</type>
+                <allowedValues>A category of the article. Cannot be used in conjunction with the categories property!</allowedValues>
+            </parameter>
+            <parameter>
+                <name>categories</name>
+                <mandatory>no</mandatory>
+                <description>A list of categories</description>
+                <type>string</type>
+                <allowedValues>Comma separated values list of categories. "," means OR, "+" means AND. Cannot be used in conjunction with category property!</allowedValues>
+            </parameter>
+            <parameter>
+                <name>dynamicQuery</name>
+                <mandatory>no</mandatory>
+                <description>This can contain extra parameters passed to the search, such as fields generated on the fly in DrPublish, etc.</description>
+                <type>string</type>
+                <allowedValues>The format is as follows: field_name:field_value+AND+field_name_2:field_value_2+AND+(field_name_3:field_value_3+OR+field_name_4:field_value_4)</allowedValues>
+            </parameter>
+            <parameter>
+                <name>offset</name>
+                <mandatory>no</mandatory>
+                <description>Used in pagination. "Page number"</description>
+                <type>int</type>
+                <allowedValues>1..n</allowedValues>
+            </parameter>
+            <parameter>
+                <name>limit</name>
+                <mandatory>no</mandatory>
+                <description>Used in pagination. "Number of items per page"</description>
+                <type>int</type>
+                <allowedValues>1..n</allowedValues>
+            </parameter>
+            <parameter>
+                <name>fields</name>
+                <mandatory>no</mandatory>
+                <description>Comma separated values list of fields to return for the requested resource(s)</description>
+                <type>string</type>
+                <allowedValues>List of valid resource property names</allowedValues>
+            </parameter>
+            <parameter>
+                <name>scope</name>
+                <mandatory>no</mandatory>
+                <description>If set to internal, will retrieve information from the saved cores (non-public resources)</description>
+                <type>string</type>
+                <allowedValues>internal</allowedValues>
+            </parameter>
+            <parameter>
+                <name>apikey</name>
+                <mandatory>no</mandatory>
+                <description>API Key for accessing non-public resources. Only needed if "scope" is set to "internal"</description>
+                <type>string</type>
+                <allowedValues>Valid API Key</allowedValues>
+            </parameter>
+            <parameter>
+                <name>callback</name>
+                <mandatory>no</mandatory>
+                <description>JSONP callback function</description>
+                <type>string</type>
+                <allowedValues>Any valid javascript function name</allowedValues>
+            </parameter>
+            <parameter>
+                <name>order</name>
+                <mandatory>no</mandatory>
+                <description>Order by parameter</description>
+                <type>string</type>
+                <allowedValues>The name of a valid resource property, followed by direction (asc/desc)</allowedValues>
+            </parameter>
+        </parameters>
+    </DrPublish:link>
+    <DrPublish:link>
+        <name>dossiers</name>
+        <description>Fetch dossiers</description>
+        <uri>/tags.{format}?</uri>
+        <verb>GET</verb>
+        <parameters>
+            <parameter>
+                <name>publication</name>
+                <mandatory>yes</mandatory>
+                <description>The publication that the article belongs to</description>
+                <type>string</type>
+                <allowedValues>The name of a valid publication</allowedValues>
+            </parameter>
+            <parameter>
+                <name>offset</name>
+                <description>Used in pagination. "Page number"</description>
+                <type>int</type>
+                <allowedValues>1..n</allowedValues>
+            </parameter>
+            <parameter>
+                <name>limit</name>
+                <description>Used in pagination. "Number of items per page"</description>
+                <type>int</type>
+                <allowedValues>1..n</allowedValues>
+            </parameter>
+            <parameter>
+                <name>scope</name>
+                <mandatory>no</mandatory>
+                <description>If set to internal, will retrieve information from the saved cores (non-public resources)</description>
+                <type>string</type>
+                <allowedValues>internal</allowedValues>
+            </parameter>
+            <parameter>
+                <name>apikey</name>
+                <mandatory>no</mandatory>
+                <description>API Key for accessing non-public resources. Only needed if "scope" is set to "internal"</description>
+                <type>string</type>
+                <allowedValues>Valid API Key</allowedValues>
+            </parameter>
+            <parameter>
+                <name>callback</name>
+                <mandatory>no</mandatory>
+                <description>JSONP callback function</description>
+                <type>string</type>
+                <allowedValues>Any valid javascript function name</allowedValues>
+            </parameter>
+            <parameter>
+                <name>order</name>
+                <description>Order by parameter</description>
+                <type>string</type>
+                <allowedValues>One of two allowed values:index/count - index means order alphabetically, count means order by number of resources that share that property</allowedValues>
+            </parameter>
+        </parameters>
+    </DrPublish:link>
+    <DrPublish:link>
+        <name>categories</name>
+        <description>Fetch categories</description>
+        <uri>/categories.{format}?</uri>
+        <verb>GET</verb>
+        <parameters>
+            <parameter>
+                <name>publication</name>
+                <mandatory>yes</mandatory>
+                <description>The publication that the article belongs to</description>
+                <type>string</type>
+                <allowedValues>The name of a valid publication</allowedValues>
+            </parameter>
+            <parameter>
+                <name>offset</name>
+                <description>Used in pagination. "Page number"</description>
+                <type>int</type>
+                <allowedValues>1..n</allowedValues>
+            </parameter>
+            <parameter>
+                <name>limit</name>
+                <description>Used in pagination. "Number of items per page"</description>
+                <type>int</type>
+                <allowedValues>1..n</allowedValues>
+            </parameter>
+            <parameter>
+                <name>scope</name>
+                <mandatory>no</mandatory>
+                <description>If set to internal, will retrieve information from the saved cores (non-public resources)</description>
+                <type>string</type>
+                <allowedValues>internal</allowedValues>
+            </parameter>
+            <parameter>
+                <name>apikey</name>
+                <mandatory>no</mandatory>
+                <description>API Key for accessing non-public resources. Only needed if "scope" is set to "internal"</description>
+                <type>string</type>
+                <allowedValues>Valid API Key</allowedValues>
+            </parameter>
+            <parameter>
+                <name>callback</name>
+                <mandatory>no</mandatory>
+                <description>JSONP callback function</description>
+                <type>string</type>
+                <allowedValues>Any valid javascript function name</allowedValues>
+            </parameter>
+            <parameter>
+                <name>order</name>
+                <description>Order by parameter</description>
+                <type>string</type>
+                <allowedValues>One of two allowed values:index/count - index means order alphabetically, count means order by number of resources that share that property</allowedValues>
+            </parameter>
+        </parameters>
+    </DrPublish:link>
+    <DrPublish:link>
+        <name>rawsearch</name>
+        <description>Perform raw search</description>
+        <uri>/raw/{query}/?{format}?</uri>
+        <verb>GET</verb>
+        <parameters>
+            <parameter>
+                <name>callback</name>
+                <mandatory>no</mandatory>
+                <description>JSONP callback function</description>
+                <type>string</type>
+                <allowedValues>Any valid javascript function name</allowedValues>
+            </parameter>
+        </parameters>
+    </DrPublish:link>
+    <DrPublish:link>
+        <name>search</name>
+        <description>Full text search, similar to how google search works</description>
+        <uri>/search.{format}?</uri>
+        <verb>GET</verb>
+        <parameters>
+            <parameter>
+                <name>q</name>
+                <mandatory>yes</mandatory>
+                <description>The query itself. Format: ?q=bla+blabla+something</description>
+                <type>string</type>
+                <allowedValues>String with "+" separated terms to search for</allowedValues>
+            </parameter>
+            <parameter>
+                <name>fields</name>
+                <mandatory>no</mandatory>
+                <description>Comma separated values list of fields to return for the requested resource(s)</description>
+                <type>string</type>
+                <allowedValues>List of valid resource property names</allowedValues>
+            </parameter>
+            <parameter>
+                <name>scope</name>
+                <mandatory>no</mandatory>
+                <description>If set to internal, will retrieve information from the saved cores (non-public resources)</description>
+                <type>string</type>
+                <allowedValues>internal</allowedValues>
+            </parameter>
+            <parameter>
+                <name>apikey</name>
+                <mandatory>no</mandatory>
+                <description>API Key for accessing non-public resources. Only needed if "scope" is set to "internal"</description>
+                <type>string</type>
+                <allowedValues>Valid API Key</allowedValues>
+            </parameter>
+            <parameter>
+                <name>callback</name>
+                <mandatory>no</mandatory>
+                <description>JSONP callback function</description>
+                <type>string</type>
+                <allowedValues>Any valid javascript function name</allowedValues>
+            </parameter>
+            <parameter>
+                <name>offset</name>
+                <mandatory>no</mandatory>
+                <description>Used in pagination. "Page number"</description>
+                <type>int</type>
+                <allowedValues>1..n</allowedValues>
+            </parameter>
+            <parameter>
+                <name>limit</name>
+                <mandatory>no</mandatory>
+                <description>Used in pagination. "Number of items per page"</description>
+                <type>int</type>
+                <allowedValues>1..n</allowedValues>
+            </parameter>
+        </parameters>
+    </DrPublish:link>
+    <DrPublish:link>
+        <name>modifyarticle</name>
+        <description>Modify article</description>
+        <uri>/articles/{id}.{format}?</uri>
+        <verb>PUT</verb>
+        <requirements>
+            <secure>true</secure>
+            <authenticationTypes>
+                <authenticationType>apikey</authenticationType>
+            </authenticationTypes>
+            <structure>
+                <DrPublish:article required="true">
+                    <DrPublish:meta required="true">
+                        <id required="true" dataType="integer"/>
+                        <publication required="false" dataType="string"/>
+                        <authors required="false" multiple="true">
+                            <author required="false" dataType="string" description="the author username"/>
+                        </authors>
+                        <published required="false" dataType="date" format="yyyy.mm.dd H:s:i"/>
+                        <tags required="false" multiple="true">
+                            <tag required="false" dataType="string" description="the tag itself"/>
+                        </tags>
+                        <categories required="false" multiple="true">
+                            <category required="false" dataType="integer" description="the category ID"/>
+                        </categories>
+                    </DrPublish:meta>
+                    <DrPublish:contents required="false">
+                        <title required="false" dataType="string"/>
+                        <story required="false" dataType="string"/>
+                        <preamble required="false" dataType="string"/>
+                    </DrPublish:contents>
+                </DrPublish:article>
+            </structure>
+        </requirements>
+        <parameters>
+            <parameter>
+                <name>callback</name>
+                <mandatory>no</mandatory>
+                <description>JSONP callback function</description>
+                <type>string</type>
+                <allowedValues>Any valid javascript function name</allowedValues>
+            </parameter>
+            <parameter>
+                <name>apikey</name>
+                <mandatory>yes</mandatory>
+                <description>API Key for accessing non-public resources. Only needed if "scope" is set to "internal"</description>
+                <type>string</type>
+                <allowedValues>Valid API Key</allowedValues>
+            </parameter>
+            <parameter>
+                <name>etag</name>
+                <mandatory>yes</mandatory>
+                <description>The etag is found in the xml returned when fetching the article. It's used to prevent accidental overwrites, when 2 sources save/update the same resource at the same time.. Use the string 'null' if the etag is not required (article has just been published)</description>
+                <type>string</type>
+                <allowedValues>Valid etag or 'null'</allowedValues>
+            </parameter>
+        </parameters>
+    </DrPublish:link>
+    <DrPublish:link>
+        <name>createarticle</name>
+        <description>Create a new article</description>
+        <uri>/articles.{format}?</uri>
+        <verb>POST</verb>
+        <requirements>
+            <secure>true</secure>
+            <authenticationTypes>
+                <authenticationType>apikey</authenticationType>
+            </authenticationTypes>
+            <structure>
+                <DrPublish:article required="true">
+                    <DrPublish:meta required="true">
+                        <id required="true" dataType="integer"/>
+                        <publication required="false" dataType="string"/>
+                        <authors required="false" multiple="true">
+                            <author required="false" dataType="string" description="the author username"/>
+                        </authors>
+                        <published required="false" dataType="date" format="yyyy.mm.dd H:s:i"/>
+                        <tags required="false" multiple="true">
+                            <tag required="false" dataType="string" description="the tag itself"/>
+                        </tags>
+                        <categories required="false" multiple="true">
+                            <category required="false" dataType="integer" description="the category ID"/>
+                        </categories>
+                    </DrPublish:meta>
+                    <DrPublish:contents required="false">
+                        <title required="false" dataType="string"/>
+                        <story required="false" dataType="string"/>
+                        <preamble required="false" dataType="string"/>
+                    </DrPublish:contents>
+                </DrPublish:article>
+            </structure>
+        </requirements>
+        <parameters>
+            <parameter>
+                <name>callback</name>
+                <mandatory>no</mandatory>
+                <description>JSONP callback function</description>
+                <type>string</type>
+                <allowedValues>Any valid javascript function name</allowedValues>
+            </parameter>
+            <parameter>
+                <name>apikey</name>
+                <mandatory>yes</mandatory>
+                <description>API Key for accessing non-public resources. Only needed if "scope" is set to "internal"</description>
+                <type>string</type>
+                <allowedValues>Valid API Key</allowedValues>
+            </parameter>
+        </parameters>
+    </DrPublish:link>
+    <DrPublish:link>
+        <name>user</name>
+        <description>Fetch user by ID</description>
+        <uri>/users/{id}.{format}?</uri>
+        <verb>GET</verb>
+        <parameters>
+            <parameter>
+                <name>fields</name>
+                <mandatory>no</mandatory>
+                <description>Comma separated values list of fields to return for the requested resource(s)</description>
+                <type>string</type>
+                <allowedValues>List of valid resource property names</allowedValues>
+            </parameter>
+            <parameter>
+                <name>callback</name>
+                <mandatory>no</mandatory>
+                <description>JSONP callback function</description>
+                <type>string</type>
+                <allowedValues>Any valid javascript function name</allowedValues>
+            </parameter>
+        </parameters>
+    </DrPublish:link>
+    <DrPublish:link>
+        <name>users-with-article-count</name>
+        <description>Fetch users together with the number of written articles</description>
+        <uri>/users/articles.{format}?</uri>
+        <verb>GET</verb>
+        <parameters>
+            <parameter>
+                <name>publication</name>
+                <mandatory>yes</mandatory>
+                <description>The publication that the article belongs to</description>
+                <type>string</type>
+                <allowedValues>The name of a valid publication</allowedValues>
+            </parameter>
+            <parameter>
+                <name>offset</name>
+                <description>Used in pagination. "Page number"</description>
+                <type>int</type>
+                <allowedValues>1..n</allowedValues>
+            </parameter>
+            <parameter>
+                <name>limit</name>
+                <description>Used in pagination. "Number of items per page"</description>
+                <type>int</type>
+                <allowedValues>1..n</allowedValues>
+            </parameter>
+            <parameter>
+                <name>scope</name>
+                <mandatory>no</mandatory>
+                <description>If set to internal, will retrieve information from the saved cores (non-public resources)</description>
+                <type>string</type>
+                <allowedValues>internal</allowedValues>
+            </parameter>
+            <parameter>
+                <name>apikey</name>
+                <mandatory>no</mandatory>
+                <description>API Key for accessing non-public resources. Only needed if "scope" is set to "internal"</description>
+                <type>string</type>
+                <allowedValues>Valid API Key</allowedValues>
+            </parameter>
+            <parameter>
+                <name>callback</name>
+                <mandatory>no</mandatory>
+                <description>JSONP callback function</description>
+                <type>string</type>
+                <allowedValues>Any valid javascript function name</allowedValues>
+            </parameter>
+            <parameter>
+                <name>order</name>
+                <description>Order by parameter</description>
+                <type>string</type>
+                <allowedValues>One of two allowed values:index/count - index means order alphabetically, count means order by number of resources that share that property</allowedValues>
+            </parameter>
+        </parameters>
+    </DrPublish:link>
+    <DrPublish:link>
+        <name>users</name>
+        <description>Fetch users</description>
+        <uri>/users.{format}?</uri>
+        <verb>GET</verb>
+        <parameters>
+            <parameter>
+                <name>publication</name>
+                <mandatory>no</mandatory>
+                <description>Publication that the user has written in</description>
+                <type>string</type>
+                <allowedValues>The name a valid publication. Cannot be used in conjunction with the publications property!</allowedValues>
+            </parameter>
+            <parameter>
+                <name>publications</name>
+                <mandatory>no</mandatory>
+                <description>A list of publications that the user has written in</description>
+                <type>string</type>
+                <allowedValues>Comma separated values list of publications. "," means OR, "+" means AND. Cannot be used in conjunction with publication property!</allowedValues>
+            </parameter>
+            <parameter>
+                <name>username</name>
+                <mandatory>no</mandatory>
+                <description>A username to search for</description>
+                <type>string</type>
+                <allowedValues>Valid username</allowedValues>
+            </parameter>
+            <parameter>
+                <name>fullname</name>
+                <mandatory>no</mandatory>
+                <description>A full name to search for</description>
+                <type>string</type>
+                <allowedValues>Valid full name</allowedValues>
+            </parameter>
+            <parameter>
+                <name>jobTitle</name>
+                <mandatory>no</mandatory>
+                <description>A job title to search for</description>
+                <type>string</type>
+                <allowedValues>Valid job title</allowedValues>
+            </parameter>
+            <parameter>
+                <name>dynamicQuery</name>
+                <mandatory>no</mandatory>
+                <description>This can contain extra parameters passed to the search, such as fields generated on the fly in DrPublish, etc.</description>
+                <type>string</type>
+                <allowedValues>The format is as follows: field_name:field_value+AND+field_name_2:field_value_2+AND+(field_name_3:field_value_3+OR+field_name_4:field_value_4)</allowedValues>
+            </parameter>
+            <parameter>
+                <name>offset</name>
+                <description>Used in pagination. "Page number"</description>
+                <type>int</type>
+                <allowedValues>1..n</allowedValues>
+            </parameter>
+            <parameter>
+                <name>limit</name>
+                <description>Used in pagination. "Number of items per page"</description>
+                <type>int</type>
+                <allowedValues>1..n</allowedValues>
+            </parameter>
+            <parameter>
+                <name>fields</name>
+                <mandatory>no</mandatory>
+                <description>Comma separated values list of fields to return for the requested resource(s)</description>
+                <type>string</type>
+                <allowedValues>List of valid resource property names</allowedValues>
+            </parameter>
+            <parameter>
+                <name>callback</name>
+                <mandatory>no</mandatory>
+                <description>JSONP callback function</description>
+                <type>string</type>
+                <allowedValues>Any valid javascript function name</allowedValues>
+            </parameter>
+            <parameter>
+                <name>order</name>
+                <description>Order by parameter</description>
+                <type>string</type>
+                <allowedValues>One of two allowed values:index/count - index means order alphabetically, count means order by number of resources that share that property</allowedValues>
+            </parameter>
+        </parameters>
+    </DrPublish:link>
+    <DrPublish:link>
+        <name>user</name>
+        <description>Fetch tag by ID</description>
+        <uri>/tags/{id}.{format}?</uri>
+        <verb>GET</verb>
+        <parameters>
+            <parameter>
+                <name>fields</name>
+                <mandatory>no</mandatory>
+                <description>Comma separated values list of fields to return for the requested resource(s)</description>
+                <type>string</type>
+                <allowedValues>List of valid resource property names</allowedValues>
+            </parameter>
+            <parameter>
+                <name>callback</name>
+                <mandatory>no</mandatory>
+                <description>JSONP callback function</description>
+                <type>string</type>
+                <allowedValues>Any valid javascript function name</allowedValues>
+            </parameter>
+        </parameters>
+    </DrPublish:link>
+    <DrPublish:link>
+        <name>tags-with-article-count</name>
+        <description>Fetch tags together with the number of tagged articles</description>
+        <uri>/tags/articles.{format}?</uri>
+        <verb>GET</verb>
+        <parameters>
+            <parameter>
+                <name>publication</name>
+                <mandatory>yes</mandatory>
+                <description>The publication that the article belongs to</description>
+                <type>string</type>
+                <allowedValues>The name of a valid publication</allowedValues>
+            </parameter>
+            <parameter>
+                <name>offset</name>
+                <description>Used in pagination. "Page number"</description>
+                <type>int</type>
+                <allowedValues>1..n</allowedValues>
+            </parameter>
+            <parameter>
+                <name>limit</name>
+                <description>Used in pagination. "Number of items per page"</description>
+                <type>int</type>
+                <allowedValues>1..n</allowedValues>
+            </parameter>
+            <parameter>
+                <name>scope</name>
+                <mandatory>no</mandatory>
+                <description>If set to internal, will retrieve information from the saved cores (non-public resources)</description>
+                <type>string</type>
+                <allowedValues>internal</allowedValues>
+            </parameter>
+            <parameter>
+                <name>apikey</name>
+                <mandatory>no</mandatory>
+                <description>API Key for accessing non-public resources. Only needed if "scope" is set to "internal"</description>
+                <type>string</type>
+                <allowedValues>Valid API Key</allowedValues>
+            </parameter>
+            <parameter>
+                <name>callback</name>
+                <mandatory>no</mandatory>
+                <description>JSONP callback function</description>
+                <type>string</type>
+                <allowedValues>Any valid javascript function name</allowedValues>
+            </parameter>
+            <parameter>
+                <name>order</name>
+                <description>Order by parameter</description>
+                <type>string</type>
+                <allowedValues>One of two allowed values:index/count - index means order alphabetically, count means order by number of resources that share that property</allowedValues>
+            </parameter>
+        </parameters>
+    </DrPublish:link>
+    <DrPublish:link>
+        <name>tags</name>
+        <description>Fetch tags</description>
+        <uri>/tags.{format}?</uri>
+        <verb>GET</verb>
+        <parameters>
+            <parameter>
+                <name>publication</name>
+                <mandatory>no</mandatory>
+                <description>Publication that the tag is in</description>
+                <type>string</type>
+                <allowedValues>The name a valid publication</allowedValues>
+            </parameter>
+            <parameter>
+                <name>name</name>
+                <mandatory>no</mandatory>
+                <description>A tag name to search for</description>
+                <type>string</type>
+                <allowedValues>Valid tag name</allowedValues>
+            </parameter>
+            <parameter>
+                <name>tagTypeName</name>
+                <mandatory>no</mandatory>
+                <description>A tag type name to search for</description>
+                <type>string</type>
+                <allowedValues>Valid tag type name</allowedValues>
+            </parameter>
+            <parameter>
+                <name>dynamicQuery</name>
+                <mandatory>no</mandatory>
+                <description>This can contain extra parameters passed to the search, such as fields generated on the fly in DrPublish, etc.</description>
+                <type>string</type>
+                <allowedValues>The format is as follows: field_name:field_value+AND+field_name_2:field_value_2+AND+(field_name_3:field_value_3+OR+field_name_4:field_value_4)</allowedValues>
+            </parameter>
+            <parameter>
+                <name>offset</name>
+                <description>Used in pagination. "Page number"</description>
+                <type>int</type>
+                <allowedValues>1..n</allowedValues>
+            </parameter>
+            <parameter>
+                <name>limit</name>
+                <description>Used in pagination. "Number of items per page"</description>
+                <type>int</type>
+                <allowedValues>1..n</allowedValues>
+            </parameter>
+            <parameter>
+                <name>fields</name>
+                <mandatory>no</mandatory>
+                <description>Comma separated values list of fields to return for the requested resource(s)</description>
+                <type>string</type>
+                <allowedValues>List of valid resource property names</allowedValues>
+            </parameter>
+            <parameter>
+                <name>callback</name>
+                <mandatory>no</mandatory>
+                <description>JSONP callback function</description>
+                <type>string</type>
+                <allowedValues>Any valid javascript function name</allowedValues>
+            </parameter>
+            <parameter>
+                <name>order</name>
+                <description>Order by parameter</description>
+                <type>string</type>
+                <allowedValues>One of two allowed values:index/count - index means order alphabetically, count means order by number of resources that share that property</allowedValues>
+            </parameter>
+        </parameters>
+    </DrPublish:link>
+</DrPublish:links>

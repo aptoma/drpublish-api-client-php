@@ -1,4 +1,5 @@
 # Lines starting with '#' are considered comments.
 # Ignore any file named config.php.
 config.php
+.idea
 

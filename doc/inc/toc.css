@@ -1,0 +1,284 @@
+@font-face {
+	font-family:Verdana;
+}
+body {
+	background-color: #FFFFFF;
+	background-image: none;
+	font-size: 1em;
+	line-height: 1.45;
+	margin: 0 auto;
+	padding: 0 30px 4em 30px;
+	width: 60em;
+	position: relative;
+	color: #000;
+}
+a:link, a:visited {
+	color: #336666;
+	text-decoration: none;
+}
+a:visited {
+	color: #009999;
+}
+
+a[href]:hover {
+	background: none repeat scroll 0 0 #FFFFAA;
+}
+img {
+	max-width: 33em;
+}
+h1, h2, h3, h4, h5, h6, p, a, ul, ol, dt, dd, table, caption, th, td {
+	color: inherit;
+	font-family: Verdana;
+	font-weight: normal;
+	margin: 0;
+	padding: 0;
+}
+h2, h3, h4, h5, h6 {
+	position: relative;
+}
+h2 a:link, h3 a:link, h4 a:link, h5 a:link, h6 a:link,
+h2 a:visited, h3 a:visited, h4 a:visited, h5 a:visited, h6 a:visited {
+	color: inherit;
+}
+h1 {
+	font-size: 2.9em;
+	line-height: 1.4em;
+	padding-top: .5em;
+	display: inline-block;
+}
+h2 {
+	border-bottom: 2px solid #CCCCCC;
+	/* display: inline-block;*/
+	font-size: 1.6em;
+	margin: 2em 0 0.5em;
+	padding: 0 0 0.1em;
+}
+h3 {
+	font-size: 1.2em;
+	margin-bottom: 0.3em;
+}
+h4, h5 {
+/*	color: #006666;*/
+	font-size: 1.1em;
+	margin-bottom: 0.3em;
+	padding: 0.4em 0 0;
+    font-weight: bold;
+}
+p {
+	margin-bottom: .6em;
+    margin-left: 15px;
+}
+q {
+	color: #336666;
+}
+pre {
+	background: #EEFFFF;
+	padding: 0.25em 0.6em;
+	white-space: pre-wrap;
+	border: 1px dashed #99CCCC;
+	font-size: 0.9em;
+}
+pre a {
+	font-family:curier;
+}
+img.left {
+	float: left;
+	padding-right: 5px;
+}
+img.right {
+	float: right;
+	padding-left: 5px;
+}
+table {
+	border: 0 none;
+	margin-bottom: 1em;
+}
+table th, table td {
+	border-color: #AACCCC;
+	border-style: solid;
+	border-width: 0 0 1px;
+	padding: 4px;
+	vertical-align: top;
+}
+table th li, table td li {
+	margin: 0 0 0 1.5em;
+}
+table caption, table th {
+	color: #66CCCC;
+	text-align: left;
+}
+table th {
+	color: #009999;
+}
+table td {
+	padding: 0.25em 1.25em 0.25em 0;
+	vertical-align: top;
+}
+table tr, table tbody {
+	border: 0 none;
+}
+dt {
+	font-weight: bold;
+}
+dd {
+	margin-left: 1em;
+}
+ul, ol {
+	padding-left: 1em;
+	margin-bottom: 1em;
+}
+#logo {
+	position: absolute;
+	top: 8px;
+	right: 70px;
+}
+p.copyright {
+	color: #888888;
+	font-size: 0.8em;
+	font-style: italic;
+	line-height: 1.4em;
+	width: 80%;
+}
+.secnum {
+	border-radius: 3px;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	background-color: #77BBBB;
+	color: #FFFFFF;
+	font-family: helvetica,sans-serif;
+	font-size: 11px;
+	font-weight: bold;
+	left: -6em;
+	letter-spacing: 0.1em;
+	padding: 3px 6px;
+	position: absolute;
+	text-align: right;
+	top: 0.7em;
+}
+ul.toc {
+	font-weight: bold;
+	margin: 1em 0;
+	padding: 0;
+}
+ul.toc ul {
+	font-weight: normal;
+	margin: 0;
+	padding: 0;
+}
+ul.toc ul ul {
+	font-style: italic;
+	margin: 0;
+}
+ul.toc ul ul ul {
+	margin: 0;
+}
+ul.toc li {
+	padding: 0;
+}
+ul.toc li li {
+	margin: 0;
+}
+ul.toc span.secnum {
+	margin-right: 1em;
+}
+ul.toc span.secnum {
+	float: left;
+	margin-left: -5em;
+	width: 4em;
+}
+ul.toc li {
+	clear: both;
+}
+ul.toc {
+	margin-left: 5em;
+}
+.toc li {
+	color: #77BBBB;
+}
+ul.toc {
+	list-style: none outside none;
+}
+ul.toc .secnum {
+	background-color: transparent;
+	color: #77BBBB;
+	font-family: inherit;
+	font-size: 1em;
+	font-weight: normal;
+	letter-spacing: 0;
+	padding: 0;
+	position: static;
+	text-align: left;
+}
+table {
+	font-size: 0.9em;
+}
+table.css-classes td:nth-child(2) {
+	white-space: nowrap;
+}
+
+table.keyboard-shortcuts td span {
+	background: #efefef;
+	padding: 2px 6px;
+}
+.nav {
+	position: absolute;
+	top: 0;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	border-top: 6px solid #77BBBB;
+	width: 33em;
+}
+.nav li {
+	display: inline;
+	margin: 0 2px 0 0;
+	padding: 0;
+}
+.nav a {
+	font: 0.7em/1.4em Arial,Helvetica,sans-serif;
+	font-weight: bold;
+	padding: 10px 12px;
+	color: #333;
+}
+.nav a:hover, .nav a.active {
+	background: #77BBBB;
+	color: #fff;
+	border-radius: 0 0 10px 10px;
+	-moz-border-radius: 0 0 10px 10px;
+	-webkit-border-radius: 0 0 10px 10px;
+	text-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
+}
+.nav a:hover {
+	color: #FFFFAA;
+}
+
+
+dl.user {
+	margin-left: 2em;
+}
+
+dl.user dt {
+	font-weight: bold;
+}
+dl.user dd {
+	margin-bottom: 0.5em;
+	margin-left: 0;
+}
+
+dl.notop {
+	margin-left: 0;
+}
+
+
+@media print {
+	ul.nav {
+		display: none;
+	}
+	a:visited {
+		color: #336666;
+	}
+}
+
+.indent {
+    margin-left: 15px;
+}
