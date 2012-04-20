@@ -37,7 +37,6 @@
         </xsl:for-each>
             <script type="text/javascript">
             <xsl:text disable-output-escaping="yes"><![CDATA[
-            console.debug(jQuery);
                     $(document).ready(function () {
                             var h = [0, 0, 0, 0, 0], i, s, level, toc = $('.toc');
                             $('h2, h3').each(function () {

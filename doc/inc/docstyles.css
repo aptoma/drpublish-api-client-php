@@ -1,8 +1,14 @@
 body {
     font-family: verdana, sans-serif;
-    background: #eee;
-    font-size: 13px;
+    background: #FFF;
+    font-size: 14px;
+    line-height: 25px;
     padding:0;
+}
+
+h2 {
+    font-weight: normal;
+    font-size: 30px;
 }
 
 h2{
@@ -18,7 +24,7 @@ h2{
 }
 
 .code {
-    margin: 10px 0 2px 0;
+    margin: 10px 0 10px 0;
     font-size: 14px;
     background: #666;
     color: #7cfc00;
