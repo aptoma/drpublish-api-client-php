@@ -1,19 +1,15 @@
 body {
     font-family: verdana, sans-serif;
-    font-size: 12px;
-    background: #ddd;
+    font-size: 14px;
+    background: #FFF;
+    padding: 0 0 0 50px;
+    width: 1100px;
+    color: #255;
 
 }
 
-h2 {
-    background-color: #eee;
-    font-size: 12px;
-    margin: 0 -10px 0 -10px ;
-    padding: 5px;
-    clear: both;
-    font-weight: normal;
-    color: #555;
-}
+
+
 
 #main {
     width: 1000px;
@@ -57,17 +53,17 @@ label {
 fieldset {
     vertical-align: top;
     margin: 3px;
-    border: solid #777 2px;
+    border: solid #336666 2px;
     padding: 8px;
     border-radius: 3px;
-    background: #ccc;
+    background: #CDD;
     display: block;
     float: left;
 }
 
 fieldset legend {
     font-size: 14px;
-    color: #666;
+    color: #337777;
     font-weight: bold;
     cursor: pointer;
 }
@@ -89,7 +85,7 @@ textarea {
 }
 
 #active-form fieldset {
-    background-color: orange;
+    background-color: #DEE;
 }
 
 #form-pool {
@@ -103,17 +99,16 @@ textarea {
 
 #active-form fieldset{
    float: none;
-
 }
 
 #api-response-wrap {
     margin-top: 10px;
     width: 1000px;
-    border: solid #777 2px;
+    border: solid #336666 2px;
     border-radius: 3px;
     padding: 10px;
     min-height: 150px;
-    background: #ddd;
+    background: #EFF;
 }
 
 .selectex .row {
@@ -142,7 +137,7 @@ textarea {
 
 .request-info {
     margin: -10px -10px 0 -10px;
-    background: #bbb;
+    background: #CDD;
     padding: 6px;
     color: #666;
     border-bottom: solid #777 2px;

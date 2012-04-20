@@ -21,13 +21,18 @@ if (file_exists(dirname(__FILE__).'/config.php')) {
     <script type="text/javascript">
     </script>
     <link type="text/css" rel="stylesheet" media="all" href="inc/styles.css" />
+    <link type="text/css" rel="stylesheet" media="all" href="../inc/toc.css" />
 </head>
 <body>
+<h1>DrPublishApiClient example implementation</h1>
+<br/>
+<br/>
+
     DrPublish API URL
       <input type="text"  id="dp-url" name="dp-url" value="<?=$dpUrl?>" style="width: 300px"/>
     Publication
        <input type="text"  id="dp-publication" name="dp-publication" value="<?=$publication?>" style="width: 100px" />
-<hr/>
+<br/>
         <div id="active-form">
             <fieldset>
                 <legend>Search articles</legend>
@@ -66,6 +71,7 @@ if (file_exists(dirname(__FILE__).'/config.php')) {
                     </select>
                     <br/><br/>
                     <button name="run-search" onclick="DrPublishApiClientExmample.submitForm(this); return false;">Search</button>
+                   See <a href="../apidoc.php" target="_blank">API doc</a> for available search options
                 </form>
             </fieldset>
         </div>
