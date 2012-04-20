@@ -25,6 +25,8 @@
 <a href="usagedoc.php">How to use the API client</a>
 <br/>
 <a href="apidoc.php">API request documentation</a>
+<br/>
+<a href="example/">The example client application. Try it out!</a>
 
 
 <script type="text/javascript">
