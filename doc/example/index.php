@@ -41,7 +41,7 @@ if (file_exists(dirname(__FILE__).'/config.php')) {
                    <div class="selectex">
                       <div class="row">
                            <select name="filterFields[1][key]" size="1">
-                                 <option>--choose filter field--</option>
+                                 <option>--filter field--</option>
                                  <option>title</option>
                                  <option>story</option>
                                  <option>author</option>

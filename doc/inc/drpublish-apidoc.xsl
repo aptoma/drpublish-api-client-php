@@ -39,7 +39,7 @@
             <xsl:text disable-output-escaping="yes"><![CDATA[
                     $(document).ready(function () {
                             var h = [0, 0, 0, 0, 0], i, s, level, toc = $('.toc');
-                            $('h2, h3').each(function () {
+                            $('h2').each(function () {
                                     if (!$(this).hasClass('no-sec')) {
                                             s = [];
                                             level = this.nodeName.match(/H([2-6])/)[1] - 2;

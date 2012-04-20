@@ -73,15 +73,15 @@ fieldset legend:hover {
 }
 
 textarea {
-    width: 500px;
+    width: 400px;
     vertical-align: top
 }
 
 #active-form {
     clear: both;
-    width: 500px;
+    width: 450px;
     float: left;
-    margin-right: 40px;
+    margin-right: 10px;
 }
 
 #active-form fieldset {
@@ -123,9 +123,9 @@ textarea {
     font-family: "courier new", monospace;
     font-weight: bold;
     padding: 2px;
-    background: #CCC;
+    background: #ACC;
     border-radius: 3px;
-    border: solid #999 2px;
+    border: solid #366 2px;
     display: inline-block;
     text-align: center;
     cursor: pointer;
