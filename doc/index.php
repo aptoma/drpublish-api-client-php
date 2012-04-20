@@ -20,12 +20,11 @@
 
 </div>
 
-<a href="usagedoc.php">Download the API client from GitHub</a>
+<a href="https://github.com/aptoma/no.aptoma.drpublish.api.client.php" target="_blank">Download the API client from GitHub</a>
 <br/>
 <a href="usagedoc.php">How to use the API client</a>
 <br/>
 <a href="apidoc.php">API request documentation</a>
-
 
 
 <script type="text/javascript">
