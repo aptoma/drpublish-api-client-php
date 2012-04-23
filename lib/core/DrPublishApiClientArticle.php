@@ -18,8 +18,7 @@ class DrPublishApiClientArticle
     protected $data = array();
     protected $dpClient;
     protected $medium;
-    protected $dom = null;
-    protected $xpath = null;
+    protected $articleContentXmlElements = null;
 
     /**
      * Class constructor
@@ -33,7 +32,7 @@ class DrPublishApiClientArticle
         $this->data = $data;
         $this->dpClient = $dpClient;
         $this->medium = $dpClient->getMedium();
-
+        $this->buildArticleXmlContentElements();
     }
 
 
@@ -76,6 +75,9 @@ class DrPublishApiClientArticle
             $content = $this->data->contents->{$this->medium};
             if (isset($content->{$varName})) {
                 $templateElement = $this->data->templates->{$this->medium}->elements->{$varName};
+                if (isset($this->articleContentXmlElements[$varName])) {
+                    return $this->articleContentXmlElements[$varName];
+                }
                 $options = new stdClass();
                 $options->medium = $this->medium;
                 $options->dataType = $templateElement->dataType;
@@ -97,13 +99,20 @@ class DrPublishApiClientArticle
         return $this->find('img');
     }
 
-
     public function find($query) {
-        if ($this->dom === null) {
-            $this->initDom();
+        if ($this->articleContentXmlElements === null) {
+            $this->buildArticleXmlContentElements();
         }
-        $domNodeList = $this->xpath->query('descendant::' . $query);
-        return DrPublishDomElementList::convertDomNodeList($domNodeList);
+        $drPublishDomElemenList = new DrPublishDomElementList();
+        foreach ($this->articleContentXmlElements as $articleFieldName => $drPublishApiClientXmlElement) {
+            if ($drPublishApiClientXmlElement instanceof DrPublishApiClientXmlElement) {
+                $domElements = $drPublishApiClientXmlElement->find($query);
+                foreach($domElements as $domElement) {
+                    $drPublishDomElemenList->add($domElement);
+                }
+            }
+        }
+        return $drPublishDomElemenList;
     }
 
     /**
@@ -124,19 +133,13 @@ class DrPublishApiClientArticle
         return $this->data->service->imagePublishUrl;
     }
 
-    private function initDom()
+    private function buildArticleXmlContentElements()
     {
-        $this->dom = new DOMDocument('1.0', 'UTF-8');
-        $xml = '';
+        $this->articleContentXmlElements = array();
         foreach($this->data->templates->{$this->medium}->elements as $templateName => $templateElement) {
-            if ($templateElement->dataType == 'xml') {
-                $xml .= "<{$templateName}>" . $this->data->contents->{$this->medium}->$templateName . "</{$templateName}>";
-            }
+                $this->articleContentXmlElements[$templateName] =  $this->{'get'. ucfirst($templateName)}();
         }
-        $this->dom->loadXml('<articleContent>'. $xml .'</articleContent>');
-        $this->xpath = new DOMXPath($this->dom);
     }
-
 
     /**
      * Gets all DPImages included in the article. A DPImage is an picture inserted by using the DrPublish image plugin
@@ -314,42 +317,51 @@ class DrPublishApiClientArticle
        return new DrPublishApiClientTag($data);
     }
 
-    /**
-     * Removes elements found by XPATH query
-     * @param string $xpathQuery XPATH query
-     */
-    public function removeElements($xpathQuery)
-    {
-        $domNodes = $this->xpath->query($xpathQuery, $this->dom);
-        foreach ($domNodes as $domNode) {
-            $domNode->parentNode->removeChild($domNode);
-        }
-    }
+//    /**
+//     * Removes elements found by XPATH query
+//     * @param string $xpathQuery XPATH query
+//     */
+//    public function removeElements($xpathQuery)
+//    {
+//        $domNodes = $this->xpath->query($xpathQuery, $this->dom);
+//        foreach ($domNodes as $domNode) {
+//            $domNode->parentNode->removeChild($domNode);
+//        }
+//    }
 
-    /**
-     * Changes the node names of elements found by XPATH query
-     * @param string $xpathQuery
-     * @param string $name new node name
-     */
-    public function changeNames($xpathQuery, $name)
-    {
-        $domNodes = $this->xpath->query($xpathQuery, $this->dom);
-        foreach ($domNodes as $node) {
-            $newNode = $node->ownerDocument->createElement($name);
-            foreach ($node->childNodes as $child) {
-                $child = $node->ownerDocument->importNode($child, true);
-                $newNode->appendChild($child, true);
-            }
-            foreach ($node->attributes as $attrName => $attrNode) {
-                $newNode->setAttribute($attrName, $attrNode);
-            }
-            $newNode->ownerDocument->replaceChild($newNode, $node);
-        }
-    }
+//    /**
+//     * Changes the node names of elements found by XPATH query
+//     * @param string $xpathQuery
+//     * @param string $name new node name
+//     */
+//    public function changeNames($xpathQuery, $name)
+//    {
+//        $domNodes = $this->xpath->query($xpathQuery, $this->dom);
+//        foreach ($domNodes as $node) {
+//            $newNode = $node->ownerDocument->createElement($name);
+//            foreach ($node->childNodes as $child) {
+//                $child = $node->ownerDocument->importNode($child, true);
+//                $newNode->appendChild($child, true);
+//            }
+//            foreach ($node->attributes as $attrName => $attrNode) {
+//                $newNode->setAttribute($attrName, $attrNode);
+//            }
+//            $newNode->ownerDocument->replaceChild($newNode, $node);
+//        }
+//    }
 
-    public function xml()
+    public function __toString()
     {
-        return $this->dom->saveXml();
+        if ($this->articleContentXmlElements === null) {
+            return '';
+        }
+        $out = '';
+        foreach ($this->articleContentXmlElements as $fieldName => $drPublishApiClientArticleElement) {
+            $out .= "<div class=\"dr-publish-article-field $fieldName\">";
+            $out .= (string) $drPublishApiClientArticleElement;
+            $out .= "</div  >";
+        }
+        return $out;
     }
 
 }

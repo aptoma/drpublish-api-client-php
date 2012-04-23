@@ -71,4 +71,16 @@ class DrPublishDomElementList implements Iterator {
         return $drPublishDomElementList;
     }
 
+    function replaceBy($newContent) {
+        foreach($this->elements as $element) {
+            $element->replaceBy($newContent);
+        }
+    }
+
+    function remove() {
+        foreach($this->elements as $element) {
+            $element->remove();
+        }
+    }
+
 }

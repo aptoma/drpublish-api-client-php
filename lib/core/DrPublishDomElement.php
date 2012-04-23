@@ -40,4 +40,34 @@ class DrPublishDomElement  {
     {
         return strip_tags($this->__toString());
     }
+
+    public function replaceBy($newContent) {
+        if ($newContent instanceof DrPublishDomElement) {
+            $domElement = $newContent->domElement;
+        } else if ($newContent instanceof DomElement) {
+            $domElement = $newContent;
+        } else if (is_string($newContent)) {
+            $domElement = $this->ownerDocument->createDocumentFragment();
+            $domElement->appendXML($newContent);
+        }
+        if ($domElement->ownerDocument != $this->ownerDocument) {
+            $this->ownerDocument->importNode($domElement, true);
+        }
+        if (is_object($this->domElement->parentNode)) {
+           $this->domElement->parentNode->replaceChild($domElement, $this->domElement);
+           $this->domElement = $domElement;
+
+        }  else {
+            throw new DrPublishApiClientException('You tried to replace content on a non-existing element');
+        }
+    }
+
+    public function remove()
+    {
+        if (is_object($this->domElement->parentNode)) {
+           $this->domElement->parentNode->removeChild($this->domElement);
+        }  else {
+            throw new DrPublishApiClientException('Youw tried to remove a non-existing element');
+        }
+    }
 }
