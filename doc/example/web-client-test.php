@@ -16,8 +16,6 @@ if (isset($_GET['dp-url'])) {
 
 }
 
-
-
 $dpWebClient = new DrPublishApiWebClient($dpUrl, $publication);
 $dpWebClient->setDebugMode();
 

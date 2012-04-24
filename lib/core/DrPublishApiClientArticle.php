@@ -103,16 +103,16 @@ class DrPublishApiClientArticle
         if ($this->articleContentXmlElements === null) {
             $this->buildArticleXmlContentElements();
         }
-        $drPublishDomElemenList = new DrPublishDomElementList();
-        foreach ($this->articleContentXmlElements as $articleFieldName => $drPublishApiClientXmlElement) {
+        $drPublishDomElementList = new DrPublishDomElementList();
+        foreach ($this->articleContentXmlElements as $drPublishApiClientXmlElement) {
             if ($drPublishApiClientXmlElement instanceof DrPublishApiClientXmlElement) {
-                $domElements = $drPublishApiClientXmlElement->find($query);
-                foreach($domElements as $domElement) {
-                    $drPublishDomElemenList->add($domElement);
+                $drPublishDomElements = $drPublishApiClientXmlElement->find($query);
+                foreach($drPublishDomElements as $drPublishDomElement) {
+                    $drPublishDomElementList->add($drPublishDomElement);
                 }
             }
         }
-        return $drPublishDomElemenList;
+        return $drPublishDomElementList;
     }
 
     /**
@@ -148,7 +148,7 @@ class DrPublishApiClientArticle
      */
     public function getDPImages()
     {
-        $drPublishDomElementList =  $this->find("div[@class and contains(concat(' ',normalize-space(@class),' '),' dp-article-image ')]");
+        $drPublishDomElementList =  $this->find("div.dp-article-image");
         $imageList = new DrPublishDomElementList();
         foreach($drPublishDomElementList as $drPublishDomElement) {
             $drPublishApiClientArticleElement = new DrPublishApiClientArticleImageElement($drPublishDomElement);

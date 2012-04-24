@@ -17,7 +17,7 @@ body {
 
 pre {
     font-size: 10px;
-    max-height: 150px;
+    max-height: 350px;
     overflow-y: auto;
     overflow-x: hidden;
     padding: 5px;

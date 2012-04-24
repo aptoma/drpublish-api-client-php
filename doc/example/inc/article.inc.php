@@ -1,27 +1,3 @@
-<?
-
-//$images = $drpublishApiClientArticle->find('img');
-//foreach($images as $image) {
-//    //$image->setAttribute('src', 'http://images.zeit.de/politik/ausland/2012-04/xilaikailai/xilaikailai-540x304.jpg' );
-//}
-//
-//
-//$links = $drpublishApiClientArticle->getStory()->find('a');
-//foreach ($links as $link) {
-//    $newContent = '<b>' . $link . ' (external link)</b>';
-//    $link->replaceBy($newContent);
-//}
-//
-//$h3s =  $drpublishApiClientArticle->find('h3');
-//$h3s->replaceBy('<h2>H3 tags are not allowed</h2>');
-
-
-
-//$h3s->remove();
-
-?>
-
-
 
 <h2>Source [DrPublishApiClientArticleElement DrPublishApiWebClient::getSourceName()]</h2>
 <div class="result">

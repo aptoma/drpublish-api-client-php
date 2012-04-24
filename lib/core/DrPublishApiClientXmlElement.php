@@ -8,7 +8,8 @@
          if ($this->dom === null) {
              $this->initDom();
          }
-         $domNodeList = $this->xpath->query('descendant::' . $query);
+         $query = DrPublishDomElement::parseQuery($query);
+         $domNodeList = $this->xpath->query($query);
          if ($asArray) {
              $out = array();
              foreach($domNodeList as $domElement) {

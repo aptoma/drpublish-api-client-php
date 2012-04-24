@@ -28,6 +28,8 @@ require_once($dpcDirname . '/DrPublishApiClientImage.php');
 require_once($dpcDirname . '/DrPublishApiClientPhotographer.php');
 
 unset($dpcDirname);
+define('QUERY_TYPE_XPATH', 1);
+define('QUERY_TYPE_JQUERY', 2);
 
 /**
  * DrPublishApiClient is an example of using the DrPublish API.

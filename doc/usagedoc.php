@@ -83,7 +83,7 @@ print $preamble;
 
 
 <h3 id="data-extraction">Data extraction</h3>
-Advanced use of the output, used on XML/XHTML structured article elements. You can extract any sub-element via Xpath queries (we are onto implement support of jQuery- like selection of elements)
+Advanced use of the output, used on XML/XHTML structured article elements. You can extract any sub-element via querying elements using a <a href="#querying-syntax">jQuery like syntax</a>
 <code>
 foreach ($drPublishApiClientSearchList as $drPublisApiWebClientArticle) {
 </code>
@@ -137,6 +137,7 @@ print $drPublishDomElement->getAttribute('href');
 }
 </code>
 
+<h4 id="querying-syntax">Querying syntax</h4>
 
 <h3 id="replacing-elements">Replacing elements</h3>
 <div class="code-comment">
@@ -204,7 +205,7 @@ $drPublishDomElementList->remove();
 <script type="text/javascript">
     $(document).ready(function () {
          var h = [0, 0, 0, 0, 0], i, s, level, toc = $('.toc');
-         $('h2, h3').each(function () {
+         $('h2, h3, h4').each(function () {
              if (!$(this).hasClass('no-sec')) {
                  s = [];
                  level = this.nodeName.match(/H([2-6])/)[1] - 2;
