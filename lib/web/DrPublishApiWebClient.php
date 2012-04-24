@@ -47,11 +47,8 @@ class DrPublishApiWebClient extends DrPublishApiClient
 	 * @param DOMDocument $dom DOM transformed response from API
 	 * @return DrPublishApiClientArticle
 	 */
-	protected function createDrPublishApiClientAuthor($dom)
+	protected function createDrPublishApiClientAuthor($author)
 	{
-		$authorNode = $dom->documentElement->firstChild;
-		$xpath = new DOMXPath($dom);
-		$dpWebClientAuthor = new DrPublishApiWebClientAuthor($authorNode, $dom, $this, $xpath);
-		return $dpWebClientAuthor;
+		return new DrPublishApiWebClientAuthor($author);
 	}
 }

@@ -1,17 +1,4 @@
 <?php
-/**
- * DrPublishApiClientArticle.php
- * @package    no.aptoma.drpublish.client.core
- */
-/**
- * DrPublishApiClientArticle represents a DrPublish article including its meta information.
- * The class provides several general and specific methods for accessing article elements
- *
- * @package    no.aptoma.drpublish.client.core
- * @copyright  Copyright (c) 2006-2010 Aptoma AS (http://www.aptoma.no)
- * @version    $Id: DrPublishApiClient.php 967 2010-09-27 07:35:54Z stefan $
- * @author     stefan@aptoma.no
- */
 class DrPublishApiClientArticle
 {
 
@@ -20,13 +7,7 @@ class DrPublishApiClientArticle
     protected $medium;
     protected $articleContentXmlElements = null;
 
-    /**
-     * Class constructor
-     * @param string $xmlArticle XML representation of an DrPublish article; retrieved from DrPublish API
-     * @param DrPublishApiClient Referance to DrPublishApiClient object, used for loading additional information
-     * @return void
-     * @throws DrPublishApiClientException
-     */
+
     public function __construct($data, DrPublishApiClient $dpClient)
     {
         $this->data = $data;
@@ -246,65 +227,26 @@ class DrPublishApiClientArticle
         return $list;
     }
 
-    /**
-     * Creates a DrPublishApiClientArticleElement from DomElement
-     * This method can be overwritten by custom client
-     *
-     * @param DomElement $domNode
-     * @param DomDocument $domDocument
-     * @return DrPublishApiClientArticleElement
-     */
     protected function createDrPublishApiClientArticleElement($domNode, $domDocument)
     {
         return new DrPublishApiClientArticleElement($domNode, $domDocument, $this->dpClient, $this->xpath);
     }
 
-    /**
-     * Creates a DrPublishApiClientArticleImageElement from DomElement
-     * This method can be overwritten by custom client
-     *
-     * @param DomElement $domNode
-     * @param DomDocument $domDocument
-     * @return DrPublishApiClientArticleImageElement
-     */
     protected function createDrPublishApiClientArticleImageElement($domNode, $domDocument)
     {
         return new DrPublishApiClientArticleImageElement($domNode, $domDocument, $this->dpClient, $this->xpath);
     }
 
-    /**
-     * Creates a DrPublishApiClientAuthor from DomElement
-     * This method can be overwritten by custom client
-     *
-     * @param DomElement $domNode
-     * @param DomDocument $domDocument
-     * @return DrPublishApiClientAuthor
-     */
     protected function createDrPublishApiClientAuthor($author)
     {
        return new DrPublishApiClientAuthor($author);
     }
 
-    /**
-     * Creates a DrPublishApiClientCategory from DomElement
-     * This method can be overwritten by custom client
-     * @param DomElement $domNode
-     * @param DomDocument $domDocument
-     * @return DrPublishApiClientCategory
-     */
     protected function createDrPublishApiClientCategory($category)
     {
        return new DrPublishApiClientCategory($category, $this->dpClient);
     }
 
-    /**
-     * Creates a DrPublishApiClientTag from DomElement
-     * This method can be overwritten by custom client
-     *
-     * @param DomElement $domNode
-     * @param DomDocument $domDocument
-     * @return DrPublishApiClientCategory
-     */
     protected function createDrPublishApiClientTag($tag)
     {
        $data = new stdClass();
@@ -316,39 +258,6 @@ class DrPublishApiClientArticle
        $data->tagType =  $tagType;
        return new DrPublishApiClientTag($data);
     }
-
-//    /**
-//     * Removes elements found by XPATH query
-//     * @param string $xpathQuery XPATH query
-//     */
-//    public function removeElements($xpathQuery)
-//    {
-//        $domNodes = $this->xpath->query($xpathQuery, $this->dom);
-//        foreach ($domNodes as $domNode) {
-//            $domNode->parentNode->removeChild($domNode);
-//        }
-//    }
-
-//    /**
-//     * Changes the node names of elements found by XPATH query
-//     * @param string $xpathQuery
-//     * @param string $name new node name
-//     */
-//    public function changeNames($xpathQuery, $name)
-//    {
-//        $domNodes = $this->xpath->query($xpathQuery, $this->dom);
-//        foreach ($domNodes as $node) {
-//            $newNode = $node->ownerDocument->createElement($name);
-//            foreach ($node->childNodes as $child) {
-//                $child = $node->ownerDocument->importNode($child, true);
-//                $newNode->appendChild($child, true);
-//            }
-//            foreach ($node->attributes as $attrName => $attrNode) {
-//                $newNode->setAttribute($attrName, $attrNode);
-//            }
-//            $newNode->ownerDocument->replaceChild($newNode, $node);
-//        }
-//    }
 
     public function __toString()
     {

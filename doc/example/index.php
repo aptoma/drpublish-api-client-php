@@ -88,7 +88,7 @@ if (file_exists(dirname(__FILE__).'/config.php')) {
         </fieldset>
 
         <fieldset>
-            <legend>Search Authors</legend>
+            <legend>Search authors</legend>
             <form action="search-authors">
                 <!--
              <span style="vertical-align: top;">Search query:</span>
@@ -117,13 +117,8 @@ if (file_exists(dirname(__FILE__).'/config.php')) {
 
 
         <fieldset>
-            <legend>Search Tags</legend>
+            <legend>Search tags</legend>
             <form action="search-tags">
-                <!--
-             <span style="vertical-align: top;">Search query:</span>
-                 <textarea name="query"></textarea>
-              <br/>
-              -->
                 <label>Tag name:</label> <input type="text" name="name" value="" style="width: 250px" />
                 <br/>
                 <label>Name:</label> <input type="text" name="fullname"  style="width: 250px"/>
@@ -135,7 +130,6 @@ if (file_exists(dirname(__FILE__).'/config.php')) {
              </form>
          </fieldset>
 
-
         <fieldset>
             <legend>Get tag</legend>
             <form action="tag">
@@ -143,37 +137,71 @@ if (file_exists(dirname(__FILE__).'/config.php')) {
                 <br/><br/>
                <input type="submit" onclick="DrPublishApiClientExmample.submitForm(this); return false;" val="Show tag" />
              </form>
-          </fieldset>
-
-
-
-
-            <!--
-        <fieldset>
-            <legend>Search tags</legend>
-            <form action="" id="">
-             </form>
-        </fieldset>
-
-        <fieldset>
-            <legend>Get tag</legend>
-            <form action="" id="">
-             </form>
         </fieldset>
 
         <fieldset>
             <legend>Search categories</legend>
-            <form action="" id="">
+            <form action="search-categories">
+                <label>Category name:</label> <input type="text" name="name" value="" style="width: 250px" />
+                <br/>
+                Offset:<input type="text" name="offset" value="0" style="width: 40px"/>
+                Limit:<input type="text" name="limit" value="5" style="width: 40px"/>
+                <br/><br/>
+               <input type="submit" onclick="DrPublishApiClientExmample.submitForm(this); return false;" val="Search" />
+             </form>
+         </fieldset>
+
+        <fieldset>
+            <legend>Get category</legend>
+            <form action="category">
+                <input type="text"  name="category-id" style="width: 80px" />
+                <br/><br/>
+               <input type="submit" onclick="DrPublishApiClientExmample.submitForm(this); return false;" val="Show category" />
              </form>
         </fieldset>
 
         <fieldset>
-            <legend>Get category</legend>
-            <form action="" id="">
+            <legend>Search dossier</legend>
+            <form action="search-dossiers">
+                <label>Dossier name:</label> <input type="text" name="name" value="" style="width: 250px" />
+                <br/>
+                Offset:<input type="text" name="offset" value="0" style="width: 40px"/>
+                Limit:<input type="text" name="limit" value="5" style="width: 40px"/>
+                <br/><br/>
+               <input type="submit" onclick="DrPublishApiClientExmample.submitForm(this); return false;" val="Search" />
+             </form>
+         </fieldset>
+
+        <fieldset>
+            <legend>Get dossier</legend>
+            <form action="dossier">
+                <input type="text"  name="dossier-id" style="width: 80px" />
+                <br/><br/>
+               <input type="submit" onclick="DrPublishApiClientExmample.submitForm(this); return false;" val="Show dossier" />
              </form>
         </fieldset>
 
-        -->
+        <fieldset>
+            <legend>Search sources</legend>
+            <form action="search-sources">
+                <label>sorce name:</label> <input type="text" name="name" value="" style="width: 250px" />
+                <br/>
+                Offset:<input type="text" name="offset" value="0" style="width: 40px"/>
+                Limit:<input type="text" name="limit" value="5" style="width: 40px"/>
+                <br/><br/>
+               <input type="submit" onclick="DrPublishApiClientExmample.submitForm(this); return false;" val="Search" />
+             </form>
+         </fieldset>
+
+        <fieldset>
+            <legend>Get source</legend>
+            <form action="source">
+                <input type="text"  name="source-id" style="width: 80px" />
+                <br/><br/>
+               <input type="submit" onclick="DrPublishApiClientExmample.submitForm(this); return false;" val="Show source" />
+             </form>
+        </fieldset>
+
 
         </div>
 

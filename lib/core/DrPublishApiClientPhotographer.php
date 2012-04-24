@@ -1,16 +1,5 @@
 <?php
-/**
- * DrPublishApiClientPhotographer.php
- * @package    no.aptoma.drpublish.client.core
- */
-/**
- * DrPublishApiClientImage represents a photographer of a DPImage
- *
- * @package    no.aptoma.drpublish.client.core
- * @copyright  Copyright (c) 2006-2010 Aptoma AS (http://www.aptoma.no)
- * @version    $Id: DrPublishApiClient.php 967 2010-09-27 07:35:54Z stefan $
- * @author     stefan@aptoma.no
- */
+
 class DrPublishApiClientPhotographer
 {
 	private $id;

@@ -1,5 +1,5 @@
 <?
- class DrPublishApiClientTextElement extends DrPublishApiClientArticleElement
- {
+class DrPublishApiClientTextElement extends DrPublishApiClientArticleElement
+{
 
- }
+}

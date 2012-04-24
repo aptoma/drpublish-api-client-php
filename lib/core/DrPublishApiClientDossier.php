@@ -1,6 +1,6 @@
 <?php
 
-class DrPublishApiClientCategory
+class DrPublishApiClientDossier
 {
 
     protected $id;
@@ -8,14 +8,12 @@ class DrPublishApiClientCategory
     protected $parentId;
     protected $isMain;
     protected $parent;
-    protected $dpClient;
 
-    public function __construct($data, $dpClient)
+    public function __construct($data)
     {
         foreach ($data as $key => $value) {
             $this->{$key} = $value;
         }
-        $this->dpClient = $dpClient;
     }
 
     /**

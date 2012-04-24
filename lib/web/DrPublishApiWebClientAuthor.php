@@ -1,16 +1,4 @@
 <?php
-/**
- * DrPublishApiClientAuthor.php
- * @package    no.aptoma.drpublish.client.web
- */
-/**
- * DrPublishApiWebClientAuthor is a customized version of DrPublishApiClientAuthor
- *
- * @package    no.aptoma.drpublish.client.web
- * @copyright  Copyright (c) 2006-2010 Aptoma AS (http://www.aptoma.no)
- * @version    $Id: DrPublishApiClient.php 967 2010-09-27 07:35:54Z stefan $
- * @author     stefan@aptoma.no
- */
 class DrPublishApiWebClientAuthor extends DrPublishApiClientAuthor
 {
 
@@ -20,23 +8,16 @@ class DrPublishApiWebClientAuthor extends DrPublishApiClientAuthor
 	protected $jobTitle;
 	protected $twitterUsername;
 
-	/**
-	 * Class constructor
-	 *
-	 * @param DOMElement $domElement
-	 * @param DOMDocument $dom
-	 * @return void
-	 */
-	public function __construct(DOMElement $domElement, DOMDocument $dom, DrPublishApiClient $dpClient, DOMXPath $xpath)
+	public function __construct($data)
 	{
-		parent::__construct($domElement, $dom, $dpClient, $xpath);
+		parent::__construct($data);
 		$oab = $this->getProperty('is-on-about-box');
 		$this->setIsOnAboutBox(empty($oab)? false : true);
 		$this->setCellPhone($this->getProperty('cell-phone'));
 		$this->setJobTitle($this->getProperty('job-title'));
 		$this->setTwitterUsername($this->getProperty('twitter-username'));
-		$profileImages = $dom->getElementsByTagName('profile-image');
-		foreach ($profileImages as $profileImage) {
+		$profileImages = $this->getProperty('profile-image');
+		if (is_array($profileImages)) foreach ($profileImages as $profileImage) {
 			$this->profileImages[$profileImage->getAttribute('name')] = $profileImage->nodeValue;
 		}
 	}

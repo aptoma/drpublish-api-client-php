@@ -1,27 +1,5 @@
 <?php
-/**
- * DrPublishApiClientSearchList.php
- * @package    no.aptoma.drpublish.client.core
- */
-/**
- * DrPublishApiClientSearchList is an extension of DrPublishApiClientList with additional metadata for search results
- *
- * Available parameters are:
- * - string $query The query for the search
- * - int $offset The offset given for the search
- * - int $limit The limit given for the search
- * - int $hits The number of returned hits
- * - int $total The total number of hits
- * - float $time The time the search took in seconds
- *
- * __get, __set, __isset and __unset are overloaded so that access can be done through attributes
- *
- * @package    no.aptoma.drpublish.client.core
- * @copyright  Copyright (c) 2006-2010 Aptoma AS (http://www.aptoma.no)
- * @author     jon@aptoma.no
- *
- * @see DrPublishApiClientList
- */
+
 class DrPublishApiClientSearchList extends DrPublishApiClientList {
 
     protected $search;

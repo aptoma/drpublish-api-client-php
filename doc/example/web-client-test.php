@@ -83,8 +83,6 @@ switch ($action) {
           $requestedFields = array();
           if (!empty($_GET['fullname'])) $requestedFields[] = "fullname={$_GET['fullname']}";
           if (!empty($_GET['username'])) $requestedFields[] = "username={$_GET['username']}";
-          //$query = isset($_GET['query']) ? $_GET['query'] : '';
-          //$query = trim(urlencode(urldecode($query)));
           $limit = isset($_GET['limit']) ? (int) $_GET['limit'] : 5;
           $offset = isset($_GET['offset']) ? (int) $_GET['offset'] : 0;
 
@@ -108,9 +106,7 @@ switch ($action) {
         try {
           $requestedFields = array();
           if (!empty($_GET['name'])) $requestedFields[] = "name={$_GET['name']}";
-         // if (!empty($_GET['username'])) $requestedFields[] = "username={$_GET['username']}";
-          //$query = isset($_GET['query']) ? $_GET['query'] : '';
-          //$query = trim(urlencode(urldecode($query)));
+          if (!empty($_GET['publication'])) $requestedFields[] = "publication={$_GET['publication']}";
           $limit = isset($_GET['limit']) ? (int) $_GET['limit'] : 5;
           $offset = isset($_GET['offset']) ? (int) $_GET['offset'] : 0;
           $query = join('&', $requestedFields);
@@ -129,7 +125,75 @@ switch ($action) {
             $mainView = 'error';
         }
         break;
-
+    case 'search-categories':
+        try {
+          $requestedFields = array();
+          if (!empty($_GET['name'])) $requestedFields[] = "name={$_GET['name']}";
+          if (!empty($_GET['publication'])) $requestedFields[] = "publication={$_GET['publication']}";
+          $limit = isset($_GET['limit']) ? (int) $_GET['limit'] : 5;
+          $offset = isset($_GET['offset']) ? (int) $_GET['offset'] : 0;
+          $query = join('&', $requestedFields);
+          $drPublishApiClientSearchList = $dpWebClient->searchCategories($query, $offset, $limit);
+          $mainView = 'search-categories';
+        } catch (DrPublishApiClientException $e) {
+            $mainView = 'error';
+        }
+        break;
+    case 'category':
+        try {
+            $categoryId = isset($_GET['category-id']) ? $_GET['category-id'] : 0;
+            $drpublishApiClientCategory = $dpWebClient->getCategory($categoryId);
+            $mainView = 'category';
+        } catch (DrPublishApiClientException $e) {
+            $mainView = 'error';
+        }
+        break;
+    case 'search-dossiers':
+        try {
+          $requestedFields = array();
+          if (!empty($_GET['name'])) $requestedFields[] = "name={$_GET['name']}";
+          if (!empty($_GET['publication'])) $requestedFields[] = "publication={$_GET['publication']}";
+          $limit = isset($_GET['limit']) ? (int) $_GET['limit'] : 5;
+          $offset = isset($_GET['offset']) ? (int) $_GET['offset'] : 0;
+          $query = join('&', $requestedFields);
+          $drPublishApiClientSearchList = $dpWebClient->searchDossiers($query, $offset, $limit);
+          $mainView = 'search-dossiers';
+        } catch (DrPublishApiClientException $e) {
+            $mainView = 'error';
+        }
+        break;
+    case 'dossier':
+        try {
+            $dossierId = isset($_GET['dossier-id']) ? $_GET['dossier-id'] : 0;
+            $drpublishApiClientDossier = $dpWebClient->getDossier($dossierId);
+            $mainView = 'dossier';
+        } catch (DrPublishApiClientException $e) {
+            $mainView = 'error';
+        }
+        break;
+    case 'search-sources':
+        try {
+          $requestedFields = array();
+          if (!empty($_GET['name'])) $requestedFields[] = "name={$_GET['name']}";
+          if (!empty($_GET['publication'])) $requestedFields[] = "publication={$_GET['publication']}";
+          $limit = isset($_GET['limit']) ? (int) $_GET['limit'] : 5;
+          $offset = isset($_GET['offset']) ? (int) $_GET['offset'] : 0;
+          $query = join('&', $requestedFields);
+          $drPublishApiClientSearchList = $dpWebClient->searchSources($query, $offset, $limit);
+          $mainView = 'search-sources';
+        } catch (DrPublishApiClientException $e) {
+            $mainView = 'error';
+        }
+        break;
+    case 'source':
+        try {
+            $sourceId = isset($_GET['source-id']) ? $_GET['source-id'] : 0;
+            $drpublishApiClientSource = $dpWebClient->getSource($sourceId);
+            $mainView = 'source';
+        } catch (DrPublishApiClientException $e) {
+            $mainView = 'error';
+        }
+        break;
     default :
         $mainView = 'action-not-found';
 
