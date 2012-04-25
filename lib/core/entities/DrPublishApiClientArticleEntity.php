@@ -10,8 +10,8 @@ abstract class DrPublishApiClientArticleEntity
     public function __call($name, $arguments) {
         if (substr($name, 0, 3) === 'get') {
             $varName = lcfirst(substr($name, 3));
-            if (isset($this->data->{$varName})) {
-                return $this->data->{$varName};
+            if (isset($this->{$varName})) {
+                return $this->{$varName};
             } else {
                 return 'undefined';
             }

@@ -14,16 +14,6 @@ class DrPublishApiClientAuthor extends DrPublishApiClientArticleEntity
     }
 
 
-    public function getUserName()
-    {
-        return $this->userName;
-    }
-
-    public function getFullName()
-    {
-        return $this->fullName;
-    }
-
     /**
      * Magic method to convert the autor to string (using its full name)
      */
