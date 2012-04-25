@@ -33,7 +33,7 @@ class DrPublishApiClient
     protected $searchQueryUrl;
     protected $debug = false;
     protected $publicationName;
-    protected $medium;
+    protected $medium = 'web';
 
     /**
      * Constructor for this class
@@ -45,7 +45,6 @@ class DrPublishApiClient
     {
         $this->url = $url;
         $this->publicationName = $publicationName;
-        $this->medium = 'web';
     }
 
     public function setMedium($medium)

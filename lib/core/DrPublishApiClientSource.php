@@ -1,6 +1,6 @@
 <?php
 
-class DrPublishApiClientSource
+class DrPublishApiClientSource extends DrPublishApiClientArticleElement
 {
 	protected $id;
 	protected $name;
@@ -18,7 +18,6 @@ class DrPublishApiClientSource
 	{
 		return $this->id;
 	}
-
 
 	/**
 	 * @return string

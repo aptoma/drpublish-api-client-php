@@ -12,7 +12,7 @@ class DrPublishApiClientArticle
     {
         $this->data = $data;
         $this->dpClient = $dpClient;
-        $this->medium = $dpClient->getMedium();
+        $this->setMedium($dpClient->getMedium());
         $this->buildArticleXmlContentElements();
     }
 
@@ -33,6 +33,16 @@ class DrPublishApiClientArticle
         if (substr($name, 0, 3) === 'get') {
             return $this->parseGetCall($name, $arguments);
         }
+    }
+
+    public function setMedium($medium)
+    {
+        $this->medium = $medium;
+    }
+
+    public function getMedium()
+    {
+        return $this->medium;
     }
 
     private function parseGetCall($name, $arguments) {
@@ -189,19 +199,17 @@ class DrPublishApiClientArticle
 
     public function getMainDPCategory()
     {
-
         foreach ($this->data->meta->categories as $category) {
             if ($category->isMain) {
                 return $this->createDrPublishApiClientCategory($category);
             }
             return null;
         }
-
     }
 
     /**
      * Gets a DrPublishApiClientSource object
-     * @return DrPublishApiClientArticleElentList
+     * @return DrPublishApiClientSource
      */
     public function getDPSource()
     {
@@ -216,7 +224,7 @@ class DrPublishApiClientArticle
 
     /**
      * Gets a tag list of DrPublishApiClientTag objects
-     * @return DrPublishApiClientArticleElentList
+     * @return DrPublishApiClientList
      */
     public function getDPTags()
     {

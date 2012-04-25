@@ -14,7 +14,7 @@ class DrPublishApiWebClient extends DrPublishApiClient
     public function __construct($url, $publicationName)
     {
         parent::__construct($url, $publicationName);
-        $this->medium = 'web';
+        $this->setMedium('web');
     }
 
     protected function createDrPublishApiClientArticle($article)
