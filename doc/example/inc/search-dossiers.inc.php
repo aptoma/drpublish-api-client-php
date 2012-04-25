@@ -1,4 +1,4 @@
-<h2>Category search</h2>
+<h2>Dossier search</h2>
 <? include('inc/search-meta.inc.php') ?>
 <ul>
 <? foreach ($drPublishApiClientSearchList as $drpublishApiClientDossier) { ?>

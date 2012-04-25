@@ -6,6 +6,7 @@
             <strong><?= $drpublishApiClientCategory->getName() ?></strong>
              [id=<?= $drpublishApiClientCategory->getId() ?>]
             <br />
+            Parent category: <?=$drpublishApiClientCategory->getParentName() ?>
             <span style="color: #666">
             </span>
         </li>

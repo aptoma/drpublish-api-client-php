@@ -230,10 +230,11 @@ class DrPublishApiClient
     {
         $url = $this->url . '/categories/' . $id . '.json';
         $response = $this->curl($url);
-        if (empty($response->body)) {
+        $responseObject = json_decode($response->body);
+        if (empty($responseObject)) {
             throw new DrPublishApiClientException("No article data retrieved for article-id='{$id}'", DrPublishApiClientException::NO_DATA_ERROR);
         }
-        return $this->createDrPublishApiClientCategory($response->body);
+        return $this->createDrPublishApiClientCategory($responseObject);
     }
 
     public function searchDossiers($query, $offset = 0, $limit = 5)
@@ -254,10 +255,11 @@ class DrPublishApiClient
     {
         $url = $this->url . '/dossiers/' . $id . '.json';
         $response = $this->curl($url);
-        if (empty($response->body)) {
+        $responseObject = json_decode($response->body);
+        if (empty($responseObject)) {
             throw new DrPublishApiClientException("No article data retrieved for article-id='{$id}'", DrPublishApiClientException::NO_DATA_ERROR);
         }
-        return $this->createDrPublishApiClientDossier($response->body);
+        return $this->createDrPublishApiClientDossier($responseObject);
     }
 
     public function searchSources($query, $offset = 0, $limit = 5)
@@ -278,10 +280,11 @@ class DrPublishApiClient
     {
         $url = $this->url . '/sources/' . $id . '.json';
         $response = $this->curl($url);
-        if (empty($response->body)) {
+        $responseObject = json_decode($response->body);
+        if (empty($responseObject)) {
             throw new DrPublishApiClientException("No article data retrieved for article-id='{$id}'", DrPublishApiClientException::NO_DATA_ERROR);
         }
-        return $this->createDrPublishApiClientSource($response->body);
+        return $this->createDrPublishApiClientSource($responseObject);
     }
 
     public function getRequestUri()

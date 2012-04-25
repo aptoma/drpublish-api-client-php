@@ -43,6 +43,13 @@ class DrPublishApiClientCategory extends DrPublishApiClientArticleEntity
         return $this->isMain;
     }
 
+    public function getParentName()
+    {
+        if ($this->parentId == 0) {
+            return '';
+        }
+        return $this->parentName;
+    }
     /**
      * Magic method to convert the category to string (using its name)
      */

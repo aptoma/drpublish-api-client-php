@@ -13,7 +13,7 @@
 
 
 <h1>How to use the Web Client</h1>
-    <h2 class="no-sec">Table of contents</h2>
+    <h3 class="no-sec">Table of contents</h3>
     	<ul class="toc"> </ul>
 
 <h2 id="instantiating">Instantiating the DrPublishApiWebClient</h2>
@@ -25,7 +25,7 @@ $drPublishApiWebClient = new DrPublishApiWebClient($drPublishApiUrl, $publicatio
 </code>
 
 
-<h2 id="api-request">Sending article search request to API</h2>
+<h2 id="api-request">Sending article search request to the API</h2>
 <div class="code-comment">
     Any valid API query as defined in the <a href="apidoc.php">DrPublish API query documentation</a>. <br/>Example: searching all articles with category "nonsense" in decending order:
 </div>
@@ -39,10 +39,27 @@ $query = 'title="Lorem ipsum"&category="nonsense"&order=published desc';
 $drPublishApiClientSearchList = $drPublishApiWebClient->searchArticles($query);
 </code>
 
-<h2 id="response-parsing">Parsing the response</h2>
-<h3 id="simple-output">Simple output</h3>
+<h2 id="article">Articles</h2>
+<h3 id="article-retrieving">Retrieving article data</h3>
+<div class="code-comment">
+   The tow ways for accessing articles are
+    1.) the search:
+</div>
+<code>
+    $drPublishApiClientSearchList = $drPublishApiWebClient->searchArticles($query);
+</code>
+<div class="code-comment">
+   .. and 2.) the article request by id
+</div>
+<code>
+    $drPublishApiClientSearchList = $drPublishApiWebClient->article(123);
+</code>
+
+<h3 id="response-parsing">Parsing the response</h3>
+<h4 id="simple-output">Simple output</h4>
     Used for output any article element from API resonste "like it is". No parsing, no overhead
 <code>
+$drPublishApiClientSearchList = $drPublishApiWebClient->searchArticles($query);
 foreach ($drPublishApiClientSearchList as $drPublisApiWebClientArticle) {
 </code>
 
@@ -82,64 +99,59 @@ print $preamble;
 </code>
 
 
-<h3 id="data-extraction">Data extraction</h3>
+<h4 id="data-extraction">Data extraction</h4>
 Advanced use of the output, used on XML/XHTML structured article elements. You can extract any sub-element via querying elements using a <a href="#querying-syntax">jQuery like syntax</a>
-<code>
-foreach ($drPublishApiClientSearchList as $drPublisApiWebClientArticle) {
-</code>
 
-<code class="indent1">
+
+<code class="indent">
+$drPublisApiWebClientArticle = $drPublishApiClient->getArticle(123);
 $story = $drPublisApiWebClientArticle->getStory();
 </code>
-<div class="code-comment indent1">
+<div class="code-comment indent">
    Getting the story (body) element from the artilce. The returned element is of type DrPublishApiClientXmlElement.
 </div>
-<code class="indent1">
+<code class="indent">
 $drPublishDomElementList = $story->find('a');
 </code>
-    <div class="code-comment indent1">
+    <div class="code-comment indent">
         DrPublishApiClientXmlElement provides a method "find()" to extracting any element that matches the $query parameter. It returns an object of type
         DrPublishDomElementList which is a collection of DrPublishDomElement objects
     </div>
-<code class="indent1">
+<code class="indent">
 foreach ($drPublishDomElementList as $drPublishDomElement) {
 </code>
-<div class="code-comment indent2">
+<div class="code-comment indent1">
     This list can now be traversed by using the for-each construct
 </div>
-<code class="indent2">
+<code class="indent1">
 print $drPublishDomElement;
 </code>
-<div class="output indent2">
+<div class="output indent1">
     &lt;a href="http://somelink/1"&gt;Jahrhunderte überlebt&lt;a&gt;
 </div>
-<div class="output indent2">
+<div class="output indent1">
     &lt;a href="http://somelink/2"&gt;Stet cilt kasd&lt;a&gt;
 </div>
-<div class="code-comment indent2">
+<div class="code-comment indent1">
     ...or you can just extract single elements/attributes
 </div>
-<code class="indent2">
+<code class="indent1">
 print $drPublishDomElement->getAttribute('href');
 </code>
-<div class="output indent2">
+<div class="output indent1">
     http://somelink/1
 </div>
-<div class="output indent2">
+<div class="output indent1">
     http://somelink/2
 </div>
-
-<code class="indent1">
-}
-</code>
-
 <code class="code">
 }
 </code>
 
+
 <h4 id="querying-syntax">Querying syntax</h4>
 
-<h3 id="replacing-elements">Replacing elements</h3>
+<h4 id="replacing-elements">Replacing elements</h4>
 <div class="code-comment">
  You can replace any XHTML element in the content using the either DrPublishDomElementList::replaceBy() or DrPublishDomElement::replaceBy().
     <br/>
@@ -174,9 +186,7 @@ foreach ($links as $link) {
 }
 </code>
 
-
-
-<h3 id="removing-elements">Removing elements</h3>
+<h4 id="removing-elements">Removing elements</h4>
 <div class="code-comment">
  You can remove any XHTML element in the content using the either DrPublishDomElementList::remove() or DrPublishDomElement::remove().
     <br/>
@@ -193,6 +203,26 @@ $drPublishDomElementList->remove();
 $drPublishDomElementList = $drPublisApiWebClientArticle->getStory()->find('img');
 $drPublishDomElementList->remove();
 </code>
+
+
+
+
+
+<h2>Categories</h2>
+<div class="code-comment">
+    You can either request a list of categories by sending a search query or request a specific category by id:
+</div>
+<code>
+$drPublishApiClientSearchList = $drPublishApiClient->searchCategories('parentId=2');
+$drPublishApiClientCategory = $drPublishApiClient->getCategory(234);
+</code>
+<div class="code-comment">
+ For processing a search result, the received DrPublishApiClientSearchList can be iterated 
+</div>
+
+
+
+
 
 
 
