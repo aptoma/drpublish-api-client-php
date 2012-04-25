@@ -227,16 +227,6 @@ class DrPublishApiClientArticle
         return $list;
     }
 
-    protected function createDrPublishApiClientArticleElement($domNode, $domDocument)
-    {
-        return new DrPublishApiClientArticleElement($domNode, $domDocument, $this->dpClient, $this->xpath);
-    }
-
-    protected function createDrPublishApiClientArticleImageElement($domNode, $domDocument)
-    {
-        return new DrPublishApiClientArticleImageElement($domNode, $domDocument, $this->dpClient, $this->xpath);
-    }
-
     protected function createDrPublishApiClientAuthor($author)
     {
        return new DrPublishApiClientAuthor($author);

@@ -1,109 +1,103 @@
 var DrPublishApiClientExmample = {
 
-    init: function() {
-        $('textarea').keypress(function(e) {
+    init:function () {
+        $('textarea').keypress(function (e) {
             if (e.keyCode == 13) {
                 DrPublishApiClientExmample.submitForm(e.target);
                 return false;
             }
-        } );
+        });
 
-        //$('fieldset').first().addClass('active').find('form').show();
-        $('fieldset legend').click(function(e) {
-               var activateElement =  $(e.target).closest('fieldset');
-               var deactiveElement =  $('#active-form fieldset');
-               $('#active-form').prepend(activateElement);
-               $('#form-pool').prepend(deactiveElement);
+        $('fieldset legend').click(function (e) {
+            var activatedElement = $(e.target).closest('fieldset');
+            var deactivatedElement = $('#active-form fieldset');
+            $('#active-form').prepend(activatedElement);
+            $('#form-pool').prepend(deactivatedElement);
+            activatedElement.find('input[type="text"]').first().focus();
             $('#api-response').html('');
-
         });
     },
 
-    submitForm: function(element) {
-       var form = $(element).closest('form');
-      // console.debug(form.serialize());
-      //  return;
-       $('#api-response').fadeOut(120, function() {
-           $('#api-response').html('loading...');
-           $('#api-response').fadeIn(120, function() {
-               var action = form.attr('action');
-               var params = 'action='+ action + '&' + form.serialize();
-               params += '&publication=' + $('#dp-publication').val();
-               DrPublishApiClientExmample.sendGetRequest(params);
-           } );
-           return false;
-       })
+    submitForm:function (element) {
+        var form = $(element).closest('form');
+        $('#api-response').fadeOut(120, function () {
+            $('#api-response').html('loading...');
+            $('#api-response').fadeIn(120, function () {
+                var action = form.attr('action');
+                var params = 'action=' + action + '&' + form.serialize();
+                params += '&publication=' + $('#dp-publication').val();
+                DrPublishApiClientExmample.sendGetRequest(params);
+            });
+            return false;
+        })
     },
 
-    sendGetRequest: function(params) {
-
-               params += '&dp-url=' + $('#dp-url').val();
-        jQuery.get('web-client-test.php?' + params, function(data) {
-           $('#api-response').fadeOut(120, function() {
-               $('#api-response').html('no response');
-               $('#api-response').html(data);
-               $('#api-response').fadeIn();
-           });
+    sendGetRequest:function (params) {
+        params += '&dp-url=' + $('#dp-url').val();
+        jQuery.get('web-client-test.php?' + params, function (data) {
+            $('#api-response').fadeOut(120, function () {
+                $('#api-response').html('no response');
+                $('#api-response').html(data);
+                $('#api-response').fadeIn();
+            });
         });
     }
 
 }
 
-
-
-
 var Selectex = {
-    init: function() {
-        $('.selectex .plus').click(function() {
+    init:function () {
+        $('.selectex .plus').click(function () {
             Selectex.extend($(this));
         });
-        $('.selectex .minus').click(function() {
+        $('.selectex .minus').click(function () {
             Selectex.remove($(this));
         });
 
     },
-    extend: function(selectexplus) {
+    extend:function (selectexplus) {
         var selectex = selectexplus.closest('.selectex');
         var row = selectexplus.closest('.row');
         var newRow = row.clone(true);
         var len = selectex.find('.row').length;
         newRow.find('select, input').each(
-            function(index, element) {
+            function (index, element) {
                 var felement = $(element);
                 var name = felement.attr('name');
-                name = name.replace(/\[\d\]{1}/, '[' + (len+1) + ']');
+                name = name.replace(/\[\d\]{1}/, '[' + (len + 1) + ']');
                 felement.attr('name', name);
             }
         );
         newRow.find('input').val('');
-        newRow.find('select').each(function(){ this.selectedIndex = 0 });
+        newRow.find('select').each(function () {
+            this.selectedIndex = 0
+        });
         selectex.append(newRow);
-        selectex.find('.minus').css({ 'display': 'inline-block'});
+        selectex.find('.minus').css({ 'display':'inline-block'});
     },
 
-    remove: function(selectexminus) {
+    remove:function (selectexminus) {
         var selectex = selectexminus.closest('.selectex');
-                var row = selectexminus.closest('.row');
-                row.remove();
-                var rows = selectex.find('.row');
-                rows.each(function(rownr, row){
-                    $(row).find('select, input').each(
-                     function(index, element) {
-                         var felement = $(element);
-                         var name = felement.attr('name');
-                         name = name.replace(/\[\d\]{1}/, '[' + (rownr+1) + ']');
-                         felement.attr('name', name);
-                     }
-                 );
-                }) ;
-                if (rows.length == 1) {
-                    selectex.find('.minus').css({ 'display': 'none'});
+        var row = selectexminus.closest('.row');
+        row.remove();
+        var rows = selectex.find('.row');
+        rows.each(function (rownr, row) {
+            $(row).find('select, input').each(
+                function (index, element) {
+                    var felement = $(element);
+                    var name = felement.attr('name');
+                    name = name.replace(/\[\d\]{1}/, '[' + (rownr + 1) + ']');
+                    felement.attr('name', name);
                 }
+            );
+        });
+        if (rows.length == 1) {
+            selectex.find('.minus').css({ 'display':'none'});
+        }
     }
 }
 
-
-$(document).ready(function() {
-  DrPublishApiClientExmample.init();
-  Selectex.init();
+$(document).ready(function () {
+    DrPublishApiClientExmample.init();
+    Selectex.init();
 });

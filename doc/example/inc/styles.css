@@ -5,19 +5,38 @@ body {
     padding: 0 0 0 50px;
     width: 1100px;
     color: #255;
-
 }
 
+h1 {
+    margin-left: -30px;
+}
 
+h2 {
+    color: maroon;
+}
 
+h3 {
+    color: maroon;
+}
 
 #main {
     width: 1000px;
 }
 
+#global-properties {
+    margin: 8px 0 5px 3px;
+    vertical-align: top;
+    border: solid #336666 2px;
+    padding: 3px;
+    border-radius: 3px;
+    background: #CDD;
+    display: inline-block;
+    width: 1015px;
+}
+
 pre {
-    font-size: 10px;
-    max-height: 350px;
+    font-size: 12px;
+    max-height: 150px;
     overflow-y: auto;
     overflow-x: hidden;
     padding: 5px;
@@ -54,7 +73,7 @@ fieldset {
     vertical-align: top;
     margin: 3px;
     border: solid #336666 2px;
-    padding: 8px;
+    padding: 3px;
     border-radius: 3px;
     background: #CDD;
     display: block;
@@ -86,6 +105,7 @@ textarea {
 
 #active-form fieldset {
     background-color: #DEE;
+    padding: 8px;
 }
 
 #form-pool {
