@@ -16,7 +16,7 @@ class DrPublishApiWebClientArticle extends DrPublishApiClientArticle
 	/**
 	 * Simple category element with attribute "isMain"=1
 	 *
-	 * @return DrPublishApiWebClientArticleElement
+	 * @return DrPublishApiClientArticleElement
 	 */
 	public function getMainCategoryName()
 	{
@@ -26,7 +26,7 @@ class DrPublishApiWebClientArticle extends DrPublishApiClientArticle
 	/**
 	 * Simple list of fact box elements
 	 *
-	 * @return DrPublishApiClientList element type in list is DrPublishApiWebClientArticleElement
+	 * @return DrPublishApiClientList
 	 */
     public function getFactBoxes()
     {

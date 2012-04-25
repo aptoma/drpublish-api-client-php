@@ -1,2 +1,3 @@
 API client for retrieving and processing article and meta entity data from the RESTfull DrPublish  API.
-Documentation is located in the doc diretory.
+- Documentation is located in the "doc" directory.
+- The API client scripts are located in the "lib" directory.

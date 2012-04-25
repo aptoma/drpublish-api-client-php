@@ -1,0 +1,18 @@
+Installing the client
+
+* Add the content from the "lib" directory to your project
+
+* Using the generic, extensible client
+- include core/DrPublishApiClient.php
+- instantiate an object of type DrPublishApiClient with the parameters 1.) DrPublish API URL 2.) publication name
+     $drPublishApiClient = new DrPublishApiClient('http://my.search.server:9000', 'MyPublication');
+- set medium
+     $drPublishApiClient->setMedium('mobile');
+- do your stuff as described in the documentation
+
+
+* Using the web client
+- include web/DrPublishApiClient.php
+- instantiate an object of type DrPublishApiClient with the parameters 1.) DrPublish API URL 2.) publication name
+     $drPublishApiClient = new DrPublishApiClient('http://my.search.server:9000', 'MyPublication');
+- do your stuff as described in the documentation
