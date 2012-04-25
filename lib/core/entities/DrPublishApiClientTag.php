@@ -1,6 +1,6 @@
 <?php
 
-class DrPublishApiClientTag
+class DrPublishApiClientTag extends DrPublishApiClientArticleEntity
 {
     protected $id;
     protected $name;
@@ -10,27 +10,9 @@ class DrPublishApiClientTag
 
     public function __construct($data)
     {
-        foreach ($data as $key => $value) {
-            $this->{$key} = $value;
-        }
+        parent::__construct($data);
         $this->tagTypeId = $data->tagType->id;
         $this->tagTypeName = $data->tagType->name;
-    }
-
-    /**
-     * @return int
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
-     * @return string
-     */
-    public function getName()
-    {
-        return $this->name;
     }
 
     /**
@@ -55,14 +37,6 @@ class DrPublishApiClientTag
     public function getData()
     {
         return $this->data;
-    }
-
-    /**
-     * @return string
-     */
-    public function getContent()
-    {
-        return $this->content;
     }
 
     public function __toString()

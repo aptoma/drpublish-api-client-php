@@ -1,6 +1,6 @@
 <?php
 
-class DrPublishApiClientCategory
+class DrPublishApiClientDossier extends DrPublishApiClientArticleEntity
 {
 
     protected $id;
@@ -8,31 +8,6 @@ class DrPublishApiClientCategory
     protected $parentId;
     protected $isMain;
     protected $parent;
-    protected $dpClient;
-
-    public function __construct($data, $dpClient)
-    {
-        foreach ($data as $key => $value) {
-            $this->{$key} = $value;
-        }
-        $this->dpClient = $dpClient;
-    }
-
-    /**
-     * @return int
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
-     * @return string
-     */
-    public function getName()
-    {
-        return $this->name;
-    }
 
     /**
      * Gets parent category id
@@ -48,9 +23,9 @@ class DrPublishApiClientCategory
      * Gets the parent (if any)
      * @return DrPublishApiClientCategory
      */
-    public function getParent()
+    public function getParent(DrPublishApiClient $dpClient)
     {
-        return $this->dpClient->getCategory($this->parentId);
+        return $dpClient->getCategory($this->parentId);
     }
 
     /**

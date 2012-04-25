@@ -1,6 +1,6 @@
 <?php
 
-class DrPublishApiClientAuthor
+class DrPublishApiClientAuthor extends DrPublishApiClientArticleEntity
 {
 
     protected $fullName;
@@ -8,45 +8,20 @@ class DrPublishApiClientAuthor
 
     public function __construct($data)
     {
-        foreach ($data as $key => $value) {
-            $this->{$key} = $value;
-        }
+        parent::__construct($data);
         $this->fullName = $data->fullname;
         $this->userName = $data->username;
     }
 
-    /**
-     * @return int
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
 
-
-    /**
-     * @return string
-     */
-    public function getFullName()
-    {
-        return $this->fullName;
-    }
-
-    /**
-     * @return string
-     */
     public function getUserName()
     {
         return $this->userName;
     }
 
-
-    /**
-     * @return string
-     */
-    public function getEmail()
+    public function getFullName()
     {
-        return isset($this->email) ? $this->email : '';
+        return $this->fullName;
     }
 
     /**
