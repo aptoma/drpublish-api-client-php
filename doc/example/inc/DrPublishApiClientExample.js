@@ -46,6 +46,7 @@ var DrPublishApiClientExmample = {
                     dataType:'json',
                     success:function (data) {
                         var fieldSelectInput = $('[data-core="' + core + '"]');
+                        fieldSelectInput.find('*').remove();
                         fieldSelectInput.append('<option>--filter field--</option>');
                         $.each(data.items, function (index, element) {
 
