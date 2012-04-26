@@ -45,21 +45,8 @@ switch ($action) {
                    $query .= '&' . $key.  '=' . urlencode($value) ;
                }
            }  else {
-               $query = '';
-               $dynamicQuery = isset($_GET['dynamicQuery']) ? trim($_GET['dynamicQuery']) : '';
-               $filterFields = isset($_GET['filterFields']) ?  $_GET['filterFields'] : false;
+               $query = '&' . parseFilterFieldsRequest();
                $order = isset($_GET['order']) ?  $_GET['order'] : false;
-               if ($filterFields) {
-                   foreach ($filterFields as $filterField) {
-                       if (strpos($filterField['key'], '--') === false) {
-                           $val = urlencode( $filterField['value']);
-                            $query .= '&' . $filterField['key'].  '=' . $val ;
-                       }
-                   }
-               }
-               if (!empty($dynamicQuery)) {
-                   $query .= '&dynamicQuery=' . $dynamicQuery;
-               }
                if ($order && strpos($order, '--') === false ) {
                    $query .= '&order=' . urlencode($order);
                }
@@ -81,14 +68,11 @@ switch ($action) {
         break;
     case 'search-authors':
         try {
+          $query = parseFilterFieldsRequest();
           $requestedFields = array();
-          if (!empty($_GET['fullname'])) $requestedFields[] = "fullname={$_GET['fullname']}";
-          if (!empty($_GET['username'])) $requestedFields[] = "username={$_GET['username']}";
           $limit = isset($_GET['limit']) ? (int) $_GET['limit'] : 5;
           $offset = isset($_GET['offset']) ? (int) $_GET['offset'] : 0;
-
-          $query = join('&', $requestedFields);
-            $drPublishApiClientSearchList = $dpWebClient->searchAuthors($query, $offset, $limit);
+          $drPublishApiClientSearchList = $dpWebClient->searchAuthors($query, $offset, $limit);
           $mainView = 'search-authors';
         } catch (DrPublishApiClientException $e) {
             $mainView = 'error';
@@ -105,12 +89,9 @@ switch ($action) {
         break;
     case 'search-tags':
         try {
-          $requestedFields = array();
-          if (!empty($_GET['name'])) $requestedFields[] = "name={$_GET['name']}";
-          if (!empty($_GET['publication'])) $requestedFields[] = "publication={$_GET['publication']}";
+          $query = parseFilterFieldsRequest();
           $limit = isset($_GET['limit']) ? (int) $_GET['limit'] : 5;
           $offset = isset($_GET['offset']) ? (int) $_GET['offset'] : 0;
-          $query = join('&', $requestedFields);
           $drPublishApiClientSearchList = $dpWebClient->searchTags($query, $offset, $limit);
           $mainView = 'search-tags';
         } catch (DrPublishApiClientException $e) {
@@ -128,12 +109,9 @@ switch ($action) {
         break;
     case 'search-categories':
         try {
-          $requestedFields = array();
-          if (!empty($_GET['name'])) $requestedFields[] = "name={$_GET['name']}";
-          if (!empty($_GET['publication'])) $requestedFields[] = "publication={$_GET['publication']}";
+          $query = parseFilterFieldsRequest();
           $limit = isset($_GET['limit']) ? (int) $_GET['limit'] : 5;
           $offset = isset($_GET['offset']) ? (int) $_GET['offset'] : 0;
-          $query = join('&', $requestedFields);
           $drPublishApiClientSearchList = $dpWebClient->searchCategories($query, $offset, $limit);
           $mainView = 'search-categories';
         } catch (DrPublishApiClientException $e) {
@@ -151,12 +129,9 @@ switch ($action) {
         break;
     case 'search-dossiers':
         try {
-          $requestedFields = array();
-          if (!empty($_GET['name'])) $requestedFields[] = "name={$_GET['name']}";
-          if (!empty($_GET['publication'])) $requestedFields[] = "publication={$_GET['publication']}";
+          $query = parseFilterFieldsRequest();
           $limit = isset($_GET['limit']) ? (int) $_GET['limit'] : 5;
           $offset = isset($_GET['offset']) ? (int) $_GET['offset'] : 0;
-          $query = join('&', $requestedFields);
           $drPublishApiClientSearchList = $dpWebClient->searchDossiers($query, $offset, $limit);
           $mainView = 'search-dossiers';
         } catch (DrPublishApiClientException $e) {
@@ -174,12 +149,9 @@ switch ($action) {
         break;
     case 'search-sources':
         try {
-          $requestedFields = array();
-          if (!empty($_GET['name'])) $requestedFields[] = "name={$_GET['name']}";
-          if (!empty($_GET['publication'])) $requestedFields[] = "publication={$_GET['publication']}";
+          $query = parseFilterFieldsRequest();
           $limit = isset($_GET['limit']) ? (int) $_GET['limit'] : 5;
           $offset = isset($_GET['offset']) ? (int) $_GET['offset'] : 0;
-          $query = join('&', $requestedFields);
           $drPublishApiClientSearchList = $dpWebClient->searchSources($query, $offset, $limit);
           $mainView = 'search-sources';
         } catch (DrPublishApiClientException $e) {
@@ -198,6 +170,29 @@ switch ($action) {
     default :
         $mainView = 'action-not-found';
 
+}
+
+
+function parseFilterFieldsRequest()
+{
+    $query = '';
+    $filterFields = isset($_GET['filterFields']) ?  $_GET['filterFields'] : false;
+    if ($filterFields) {
+        foreach ($filterFields as $key =>  $filterField) {
+            if (strpos($filterField['key'], '--') === false) {
+                $val = urlencode( $filterField['value']);
+                if ($query != '') {
+                    $query .= '&';
+                }
+                if ($key > 1) {
+                    $condition = $filterField['condition'];
+                    $query .= $filterField['key'].  '=' . $val ;
+                    $query .= '&conditionType=' . $condition;
+                }
+            }
+        }
+    }
+    return $query;
 }
 
 

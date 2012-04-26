@@ -34,35 +34,12 @@ if (file_exists(dirname(__FILE__).'/config.php')) {
 </div>
 <div id="active-form">
     <fieldset>
+
         <legend>Search articles</legend>
        <form action="search">
-          Filter fields:
-           <div class="selectex">
-              <div class="row">
-                   <select name="filterFields[1][key]" size="1" data-core=''>
-                         <option>--filter field--</option>
-                    </select>
-                   <input type="text" name="filterFields[1][value]" />
-                   <div class="plus">+</div>
-                   <div class="minus">-</div>
-               </div>
-           </div>
-
-        <br/>
-
-
-            Offset:<input type="text" name="offset" value="0" style="width: 40px"/>
-            Limit:<input type="text" name="limit" value="5" style="width: 40px"/>
-            Sort by:
-           <select name="order" size="1">
-                 <option>--relevance--</option>
-                 <option>published asc</option>
-                 <option>published desc</option>
-                 <option>modified asc</option>
-                 <option>modified desc</option>
-            </select>
-            <br/><br/>
-            <button name="run-search" onclick="DrPublishApiClientExmample.submitForm(this); return false;">Search</button>
+           <? printSelectex('', 'title') ?>
+           <? printLimit(true) ?>
+            <input type="submit" name="run-search" onclick="DrPublishApiClientExmample.submitForm(this); return false;" value="Search" />
            See <a href="../apidoc.php" target="_blank">API doc</a> for available search options
         </form>
     </fieldset>
@@ -73,107 +50,87 @@ if (file_exists(dirname(__FILE__).'/config.php')) {
         <form action="article">
         Article id:
         <input type="text" value="" name="article-id" style="width: 80px" />
-        <button name="run-article"  onclick="DrPublishApiClientExmample.submitForm(this); return false;">Show article</button>
+        <input type="submit"  onclick="DrPublishApiClientExmample.submitForm(this); return false;" value="Show article" />
          </form>
     </fieldset>
 
     <fieldset>
         <legend>Search authors</legend>
         <form action="search-authors">
-            <label>Username:</label> <input type="text" name="username" value="aptoma*" style="width: 250px" />
-            <br/>
-            <label>Name:</label> <input type="text" name="fullname"  style="width: 250px"/>
-            <br/>
-            Offset:<input type="text" name="offset" value="0" style="width: 40px"/>
-            Limit:<input type="text" name="limit" value="5" style="width: 40px"/>
-            <br/><br/>
-           <input type="submit" onclick="DrPublishApiClientExmample.submitForm(this); return false;" val="Search" />
+            <? printSelectex('users', 'fullname') ?>
+            <? printLimit() ?>
+           <input type="submit" onclick="DrPublishApiClientExmample.submitForm(this); return false;" value="Search" />
          </form>
     </fieldset>
 
     <fieldset>
         <legend>Get author</legend>
         <form action="author" >
-            <input type="text" value="1" name="author-id" style="width: 80px" />
+            Author id: <input type="text" value="1" name="author-id" style="width: 80px" />
             <br/><br/>
-           <input type="submit" onclick="DrPublishApiClientExmample.submitForm(this); return false;" val="Show author" />
+           <input type="submit" onclick="DrPublishApiClientExmample.submitForm(this); return false;" value="Show author" />
          </form>
     </fieldset>
 
     <fieldset>
         <legend>Search tags</legend>
         <form action="search-tags">
-            <label>Tag name:</label> <input type="text" name="name" value="" style="width: 250px" />
-            <br/>
-            <label>Name:</label> <input type="text" name="fullname"  style="width: 250px"/>
-            <br/>
-            Offset:<input type="text" name="offset" value="0" style="width: 40px"/>
-            Limit:<input type="text" name="limit" value="5" style="width: 40px"/>
-            <br/><br/>
-           <input type="submit" onclick="DrPublishApiClientExmample.submitForm(this); return false;" val="Search" />
+            <? printSelectex('tags', 'name') ?>
+            <? printLimit() ?>
+           <input type="submit" onclick="DrPublishApiClientExmample.submitForm(this); return false;" value="Search" />
          </form>
      </fieldset>
 
     <fieldset>
         <legend>Get tag</legend>
         <form action="tag">
-            <input type="text"  name="tag-id" style="width: 80px" />
+            Tag id: <input type="text"  name="tag-id" style="width: 80px" />
             <br/><br/>
-           <input type="submit" onclick="DrPublishApiClientExmample.submitForm(this); return false;" val="Show tag" />
+           <input type="submit" onclick="DrPublishApiClientExmample.submitForm(this); return false;" value="Show tag" />
          </form>
     </fieldset>
 
     <fieldset>
         <legend>Search categories</legend>
         <form action="search-categories">
-            <label>Category name:</label> <input type="text" name="name" value="" style="width: 250px" />
-            <br/>
-            Offset:<input type="text" name="offset" value="0" style="width: 40px"/>
-            Limit:<input type="text" name="limit" value="5" style="width: 40px"/>
-            <br/><br/>
-           <input type="submit" onclick="DrPublishApiClientExmample.submitForm(this); return false;" val="Search" />
+            <? printSelectex('categories', 'name') ?>
+           <input type="submit" onclick="DrPublishApiClientExmample.submitForm(this); return false;" value="Search" />
          </form>
      </fieldset>
 
     <fieldset>
         <legend>Get category</legend>
         <form action="category">
-            <input type="text"  name="category-id" style="width: 80px" />
+            Category id: <input type="text"  name="category-id" style="width: 80px" />
             <br/><br/>
-           <input type="submit" onclick="DrPublishApiClientExmample.submitForm(this); return false;" val="Show category" />
+           <input type="submit" onclick="DrPublishApiClientExmample.submitForm(this); return false;" value="Show category" />
          </form>
     </fieldset>
 
     <fieldset>
-        <legend>Search dossier</legend>
+        <legend>Search dossiers</legend>
         <form action="search-dossiers">
-            <label>Dossier name:</label> <input type="text" name="name" value="" style="width: 250px" />
-            <br/>
-            Offset:<input type="text" name="offset" value="0" style="width: 40px"/>
-            Limit:<input type="text" name="limit" value="5" style="width: 40px"/>
-            <br/><br/>
-           <input type="submit" onclick="DrPublishApiClientExmample.submitForm(this); return false;" val="Search" />
+            <? printSelectex('dossiers', 'name') ?>
+            <? printLimit() ?>
+           <input type="submit" onclick="DrPublishApiClientExmample.submitForm(this); return false;" value="Search" />
          </form>
      </fieldset>
 
     <fieldset>
         <legend>Get dossier</legend>
         <form action="dossier">
-            <input type="text"  name="dossier-id" style="width: 80px" />
+            Dossier id: <input type="text"  name="dossier-id" style="width: 80px" />
             <br/><br/>
-           <input type="submit" onclick="DrPublishApiClientExmample.submitForm(this); return false;" val="Show dossier" />
+           <input type="submit" onclick="DrPublishApiClientExmample.submitForm(this); return false;" value="Show dossier" />
          </form>
     </fieldset>
 
     <fieldset>
         <legend>Search sources</legend>
         <form action="search-sources">
-            <label>sorce name:</label> <input type="text" name="name" value="" style="width: 250px" />
-            <br/>
-            Offset:<input type="text" name="offset" value="0" style="width: 40px"/>
-            Limit:<input type="text" name="limit" value="5" style="width: 40px"/>
-            <br/><br/>
-           <input type="submit" onclick="DrPublishApiClientExmample.submitForm(this); return false;" val="Search" />
+            <? printSelectex('sources', 'name') ?>
+            <? printLimit() ?>
+           <input type="submit" onclick="DrPublishApiClientExmample.submitForm(this); return false;" value="Search" />
          </form>
      </fieldset>
 
@@ -193,3 +150,42 @@ if (file_exists(dirname(__FILE__).'/config.php')) {
 </div>
 </body>
 </html>
+
+<?
+function printSelectex($name, $defaultField = "-- fulltext --")
+{ ?>
+<div class="selectex">
+  <div class="labels">
+      <div>Filter field</div>
+      <div>Search query</div>
+  </div>
+  <div class="row first">
+      <select class="condition-type" name="filterFields[1][condition]" size="1">
+            <option>AND</option>
+            <option>OR</option>
+       </select>
+       <select class="field-name" name="filterFields[1][key]" size="1" data-core='<?=$name?>'>
+             <option class="default-field"><?=$defaultField ?></option>
+        </select>
+       <input type="text" name="filterFields[1][value]" />
+       <div class="plus">+</div>
+       <div class="minus">-</div>
+   </div>
+</div>
+ <?
+}
+function printLimit($showOrder = false) { ?>
+Offset:<input type="text" name="offset" value="0" style="width: 40px"/>
+Limit:<input type="text" name="limit" value="5" style="width: 40px"/>
+<? if ($showOrder) { ?>
+Sort by:
+<select name="order" size="1">
+    <option>--relevance--</option>
+    <option>published asc</option>
+    <option>published desc</option>
+    <option>modified asc</option>
+    <option>modified desc</option>
+</select>
+<? } ?>
+<br/><br/>
+<? }

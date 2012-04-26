@@ -132,8 +132,32 @@ textarea {
     background: #EFF;
 }
 
-.selectex .row {
 
+.selectex {
+    margin-bottom: 20px;
+}
+
+.selectex .labels div:first-child
+{
+    float: left;
+    margin-left: 20px;
+}
+.selectex .labels div:last-child
+{
+    float: right;
+    margin-right: 100px;
+}
+
+.selectex .row {
+    clear: both;
+}
+
+.selectex .field-name {
+    width: 100px;
+}
+
+.selectex .row.first .condition-type  {
+    visibility: hidden;
 }
 
 .selectex .plus, .selectex .minus {
@@ -156,6 +180,11 @@ textarea {
     display: none;
 }
 
+.selectex input[type='text'] {
+    width: 220px;
+}
+
+
 .request-info {
     margin: -10px -10px 0 -10px;
     background: #CDD;
@@ -166,10 +195,21 @@ textarea {
 }
 
 .request-info a {
-    color: #666;
+    color: #366;
 
 }.request-info a:hover {
     color: #333;
+}
+
+
+.request-info input {
+    width: 800px;
+    font-size: 12px;
+    height: 15px;
+    border: solid #366 1px;
+    border-radius: 3px;
+    background: #eff;
+    padding-left: 8px;
 }
 
 .search-meta {

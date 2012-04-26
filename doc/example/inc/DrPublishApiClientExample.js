@@ -16,11 +16,18 @@ var DrPublishApiClientExmample = {
             activatedElement.find('input[type="text"]').first().focus();
             var form = activatedElement.find('form');
             if (form.attr('action').match(/search/)) {
+                var core = activatedElement.find('select.field-name').attr('data-core');
+                //if ( activatedElement.find('option').length == 1) {
                 DrPublishApiClientExmample.submitForm(form.get(0));
+                 DrPublishApiClientExmample.fetchFields(core);
+
+                //}
             }
             $('#api-response').html('');
         });
         this.fetchFields('');
+        $('#dp-url').change(function() { DrPublishApiClientExmample.fetchFields()});
+
     },
 
     submitForm:function (element) {
@@ -46,12 +53,20 @@ var DrPublishApiClientExmample = {
                     dataType:'json',
                     success:function (data) {
                         var fieldSelectInput = $('[data-core="' + core + '"]');
-                        fieldSelectInput.find('*').remove();
-                        fieldSelectInput.append('<option>--filter field--</option>');
+                        fieldSelectInput.find('option.dyn-field').remove();
+                        var defaultField = fieldSelectInput.find('option.default-field').val();
+                        var fields = []
                         $.each(data.items, function (index, element) {
-
-                            fieldSelectInput.append('<option>' + element.name + '</option>');
-                        })
+                            if (element.name != 'original' && element.name != defaultField) {
+                                fields.push(element.name);
+                            }
+                        });
+                        fields.sort();
+                        $.each(fields, function (index, element) {
+                            if (element.name != 'original') {
+                                fieldSelectInput.append('<option class="dyn-field">' + element + '</option>');
+                            }
+                        });
                     }
                 }
             )
@@ -100,6 +115,7 @@ var Selectex = {
         newRow.find('select').each(function () {
             this.selectedIndex = 0
         });
+        newRow.removeClass('first');
         selectex.append(newRow);
         selectex.find('.minus').css({ 'display':'inline-block'});
     },
@@ -118,6 +134,10 @@ var Selectex = {
                     felement.attr('name', name);
                 }
             );
+            if (rownr == 0) {
+                $(row).addClass('first');
+            }
+
         });
         if (rows.length == 1) {
             selectex.find('.minus').css({ 'display':'none'});
