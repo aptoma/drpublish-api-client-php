@@ -39,7 +39,7 @@ $query = 'title="Lorem ipsum"&category="nonsense"&order=published desc';
 $drPublishApiClientSearchList = $drPublishApiWebClient->searchArticles($query);
 </code>
 
-<h2 id="article">Articles</h2>
+<h2 id="articles">Articles</h2>
 <h3 id="article-retrieving">Retrieving article data</h3>
 <div class="code-comment">
    The tow ways for accessing articles are
@@ -57,10 +57,10 @@ $drPublishApiClientSearchList = $drPublishApiWebClient->searchArticles($query);
 
 <h3 id="response-parsing">Parsing the response</h3>
 <h4 id="simple-output">Simple output</h4>
-    Used for output any article element from API resonste "like it is". No parsing, no overhead
+    Used for output any article element from API response "like it is". No parsing, no overhead
 <code>
 $drPublishApiClientSearchList = $drPublishApiWebClient->searchArticles($query);
-foreach ($drPublishApiClientSearchList as $drPublisApiWebClientArticle) {
+foreach ($drPublishApiClientSearchList as $drPublishApiWebClientArticle) {
 </code>
 
 <div class="code-comment indent1">

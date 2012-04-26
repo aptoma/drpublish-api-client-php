@@ -12,7 +12,7 @@ h1 {
 }
 
 h2 {
-    color: maroon;
+    color: #366;
     margin-top: 10px;;
 }
 
@@ -225,8 +225,11 @@ textarea {
     text-align: center;
 }
 
-
-
 .condition {
     display: none;
+}
+
+.doclinks {
+    margin-top: 5px;
+    text-align: right;
 }

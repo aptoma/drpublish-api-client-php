@@ -1,6 +1,6 @@
 <? include('inc/search-meta.inc.php') ?>
 <? include('inc/search-paginator.inc.php') ?>
-<h2>Search articles [DrPublishApiWebClient::searchArticle('<?=$query?>', <?=$limit?>, <?=$offset?>)]</h2>
+<h2>Search articles</h2>
 
 <ul>
 

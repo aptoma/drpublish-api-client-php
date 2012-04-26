@@ -1,7 +1,7 @@
 <?
-if (file_exists(dirname(__FILE__).'/config.php')) {
+if (file_exists(dirname(__FILE__) . '/config.php')) {
     $configs = array();
-    include (dirname(__FILE__).'/config.php');
+    include (dirname(__FILE__) . '/config.php');
     $dpUrl = $configs['dp-url'];
     $publication = $configs['publication'];
 } else {
@@ -9,38 +9,37 @@ if (file_exists(dirname(__FILE__).'/config.php')) {
     $publication = 'Solarius';
 }
 ?>
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
     <title>Web client test</title>
-    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
     <script type="text/javascript" src="inc/jquery.min.js"></script>
     <script type="text/javascript" src="inc/DrPublishApiClientExample.js"></script>
     <script type="text/javascript">
     </script>
-    <link type="text/css" rel="stylesheet" media="all" href="../inc/toc.css" />
-    <link type="text/css" rel="stylesheet" media="all" href="inc/styles.css" />
+    <link type="text/css" rel="stylesheet" media="all" href="../inc/toc.css"/>
+    <link type="text/css" rel="stylesheet" media="all" href="inc/styles.css"/>
 </head>
 <body>
 <h1>DrPublishApiClient example implementation</h1>
 
 <div id="global-properties">
     DrPublish API URL
-      <input type="text"  id="dp-url" name="dp-url" value="<?=$dpUrl?>" style="width: 300px"/>
+    <input type="text" id="dp-url" name="dp-url" value="<?=$dpUrl?>" style="width: 300px"/>
     Publication
-       <input type="text"  id="dp-publication" name="dp-publication" value="<?=$publication?>" style="width: 100px" />
+    <input type="text" id="dp-publication" name="dp-publication" value="<?=$publication?>" style="width: 100px"/>
 </div>
 <div id="active-form">
     <fieldset>
 
         <legend>Search articles</legend>
-       <form action="search">
-           <? printSelectex('', 'title') ?>
-           <? printLimit(true) ?>
-            <input type="submit" name="run-search" onclick="DrPublishApiClientExmample.submitForm(this); return false;" value="Search" />
-           See <a href="../apidoc.php" target="_blank">API doc</a> for available search options
+        <form action="search">
+            <? printSelectex('', 'title') ?>
+            <? printLimit(true) ?>
+            <input type="submit" name="run-search" onclick="DrPublishApiClientExmample.submitForm(this); return false;" value="Search"/>
+            <? printApiDocLink('articles') ?>
         </form>
     </fieldset>
 </div>
@@ -48,10 +47,11 @@ if (file_exists(dirname(__FILE__).'/config.php')) {
     <fieldset>
         <legend>Get article</legend>
         <form action="article">
-        Article id:
-        <input type="text" value="" name="article-id" style="width: 80px" />
-        <input type="submit"  onclick="DrPublishApiClientExmample.submitForm(this); return false;" value="Show article" />
-         </form>
+            Article id:
+            <input type="text" value="" name="article-id" style="width: 80px"/>
+            <input type="submit" onclick="DrPublishApiClientExmample.submitForm(this); return false;" value="Show article"/>
+            <? printApiDocLink('article') ?>
+        </form>
     </fieldset>
 
     <fieldset>
@@ -59,17 +59,19 @@ if (file_exists(dirname(__FILE__).'/config.php')) {
         <form action="search-authors">
             <? printSelectex('users', 'fullname') ?>
             <? printLimit() ?>
-           <input type="submit" onclick="DrPublishApiClientExmample.submitForm(this); return false;" value="Search" />
-         </form>
+            <input type="submit" onclick="DrPublishApiClientExmample.submitForm(this); return false;" value="Search"/>
+            <? printApiDocLink('users') ?>
+        </form>
     </fieldset>
 
     <fieldset>
         <legend>Get author</legend>
-        <form action="author" >
-            Author id: <input type="text" value="1" name="author-id" style="width: 80px" />
+        <form action="author">
+            Author id: <input type="text" value="1" name="author-id" style="width: 80px"/>
             <br/><br/>
-           <input type="submit" onclick="DrPublishApiClientExmample.submitForm(this); return false;" value="Show author" />
-         </form>
+            <input type="submit" onclick="DrPublishApiClientExmample.submitForm(this); return false;" value="Show author"/>
+            <? printApiDocLink('user') ?>
+        </form>
     </fieldset>
 
     <fieldset>
@@ -77,34 +79,39 @@ if (file_exists(dirname(__FILE__).'/config.php')) {
         <form action="search-tags">
             <? printSelectex('tags', 'name') ?>
             <? printLimit() ?>
-           <input type="submit" onclick="DrPublishApiClientExmample.submitForm(this); return false;" value="Search" />
-         </form>
-     </fieldset>
+            <input type="submit" onclick="DrPublishApiClientExmample.submitForm(this); return false;" value="Search"/>
+            <? printApiDocLink('tags') ?>
+        </form>
+    </fieldset>
 
     <fieldset>
         <legend>Get tag</legend>
         <form action="tag">
-            Tag id: <input type="text"  name="tag-id" style="width: 80px" />
+            Tag id: <input type="text" name="tag-id" style="width: 80px"/>
             <br/><br/>
-           <input type="submit" onclick="DrPublishApiClientExmample.submitForm(this); return false;" value="Show tag" />
-         </form>
+            <input type="submit" onclick="DrPublishApiClientExmample.submitForm(this); return false;" value="Show tag"/>
+            <? printApiDocLink('tag') ?>
+        </form>
     </fieldset>
 
     <fieldset>
         <legend>Search categories</legend>
         <form action="search-categories">
             <? printSelectex('categories', 'name') ?>
-           <input type="submit" onclick="DrPublishApiClientExmample.submitForm(this); return false;" value="Search" />
-         </form>
-     </fieldset>
+            <? printLimit() ?>
+            <input type="submit" onclick="DrPublishApiClientExmample.submitForm(this); return false;" value="Search"/>
+            <? printApiDocLink('category') ?>
+        </form>
+    </fieldset>
 
     <fieldset>
         <legend>Get category</legend>
         <form action="category">
-            Category id: <input type="text"  name="category-id" style="width: 80px" />
+            Category id: <input type="text" name="category-id" style="width: 80px"/>
             <br/><br/>
-           <input type="submit" onclick="DrPublishApiClientExmample.submitForm(this); return false;" value="Show category" />
-         </form>
+            <input type="submit" onclick="DrPublishApiClientExmample.submitForm(this); return false;" value="Show category"/>
+            <? printApiDocLink('category') ?>
+        </form>
     </fieldset>
 
     <fieldset>
@@ -112,17 +119,19 @@ if (file_exists(dirname(__FILE__).'/config.php')) {
         <form action="search-dossiers">
             <? printSelectex('dossiers', 'name') ?>
             <? printLimit() ?>
-           <input type="submit" onclick="DrPublishApiClientExmample.submitForm(this); return false;" value="Search" />
-         </form>
-     </fieldset>
+            <input type="submit" onclick="DrPublishApiClientExmample.submitForm(this); return false;" value="Search"/>
+            <? printApiDocLink('dossiers') ?>
+        </form>
+    </fieldset>
 
     <fieldset>
         <legend>Get dossier</legend>
         <form action="dossier">
-            Dossier id: <input type="text"  name="dossier-id" style="width: 80px" />
+            Dossier id: <input type="text" name="dossier-id" style="width: 80px"/>
             <br/><br/>
-           <input type="submit" onclick="DrPublishApiClientExmample.submitForm(this); return false;" value="Show dossier" />
-         </form>
+            <input type="submit" onclick="DrPublishApiClientExmample.submitForm(this); return false;" value="Show dossier"/>
+            <? printApiDocLink('dossier') ?>
+        </form>
     </fieldset>
 
     <fieldset>
@@ -130,17 +139,19 @@ if (file_exists(dirname(__FILE__).'/config.php')) {
         <form action="search-sources">
             <? printSelectex('sources', 'name') ?>
             <? printLimit() ?>
-           <input type="submit" onclick="DrPublishApiClientExmample.submitForm(this); return false;" value="Search" />
-         </form>
-     </fieldset>
+            <input type="submit" onclick="DrPublishApiClientExmample.submitForm(this); return false;" value="Search"/>
+            <? printApiDocLink('sources') ?>
+        </form>
+    </fieldset>
 
     <fieldset>
         <legend>Get source</legend>
         <form action="source">
-            <input type="text"  name="source-id" style="width: 80px" />
+            <input type="text" name="source-id" style="width: 80px"/>
             <br/><br/>
-           <input type="submit" onclick="DrPublishApiClientExmample.submitForm(this); return false;" val="Show source" />
-         </form>
+            <input type="submit" onclick="DrPublishApiClientExmample.submitForm(this); return false;" val="Show source"/>
+            <? printApiDocLink('source') ?>
+        </form>
     </fieldset>
 </div>
 <div style="clear: both"></div>
@@ -153,30 +164,35 @@ if (file_exists(dirname(__FILE__).'/config.php')) {
 
 <?
 function printSelectex($name, $defaultField = "-- fulltext --", $defaultFieldDataType = 'string')
-{ ?>
+{
+    ?>
 <div class="selectex">
-  <div class="labels">
-      <div>Filter field</div>
-      <div>Search query</div>
-  </div>
-  <div class="row first">
-       <select class="field-name" name="filterFields[1][key]" size="1" data-core='<?=$name?>'>
+    <div class="labels">
+        <div>Filter field</div>
+        <div>Search query</div>
+    </div>
+    <div class="row first">
+        <select class="field-name" name="filterFields[1][key]" size="1" data-core='<?=$name?>'>
             <option class="default-field"><?=$defaultField ?></option>
         </select>
         <span class="type"><?=$defaultFieldDataType?></span>
-       <input type="text" name="filterFields[1][value]" />
-       <div class="plus">+</div>
-       <div class="minus">-</div>
-   </div>
+        <input type="text" name="filterFields[1][value]"/>
+
+        <div class="plus">+</div>
+        <div class="minus">-</div>
+    </div>
 </div>
- <?
+<?
 }
-function printLimit($showOrder = false) { ?>
+
+function printLimit($showOrder = false)
+{
+    ?>
 <span class="condition">
 Condition: <select class="condition-type" name="conditionType" size="1">
-            <option>AND</option>
-            <option>OR</option>
-       </select>
+    <option>AND</option>
+    <option>OR</option>
+</select>
 </span>
 Offset:<input type="text" name="offset" value="0" style="width: 20px"/>
 Limit:<input type="text" name="limit" value="5" style="width: 20px"/>
@@ -191,4 +207,15 @@ Order:
 </select>
 <? } ?>
 <br/><br/>
-<? }
+<?
+}
+
+function printApiDocLink($item)
+{
+    ?>
+<div class="doclinks">
+<a href="../apidoc.php#<?=$item?>" target="_blank">API documentation</a>
+    &nbsp;
+<a href="../usagedoc.php#<?=$item?>" target="_blank">How to process the retrieved data</a>
+</div>
+<? } ?>

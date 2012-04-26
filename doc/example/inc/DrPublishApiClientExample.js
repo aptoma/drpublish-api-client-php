@@ -19,14 +19,15 @@ var DrPublishApiClientExmample = {
                 var core = activatedElement.find('select.field-name').attr('data-core');
                 //if ( activatedElement.find('option').length == 1) {
                 DrPublishApiClientExmample.submitForm(form.get(0));
-                 DrPublishApiClientExmample.fetchFields(core);
-
+                DrPublishApiClientExmample.fetchFields(core);
                 //}
             }
             $('#api-response').html('');
         });
         this.fetchFields('');
-        $('#dp-url').change(function() { DrPublishApiClientExmample.fetchFields()});
+        $('#dp-url').change(function () {
+            DrPublishApiClientExmample.fetchFields()
+        });
 
     },
 
@@ -58,7 +59,7 @@ var DrPublishApiClientExmample = {
                         var fields = [];
                         var fieldsAsObject = {};
                         $.each(data.items, function (index, element) {
-                            if (element.name != 'original' && element.name != defaultField) {
+                            if (element.name != 'original' && element.name != 'id' && element.name != defaultField) {
                                 fields.push(element.name);
                                 fieldsAsObject[element.name] = element;
                             }
@@ -73,8 +74,6 @@ var DrPublishApiClientExmample = {
                 }
             )
         }
-
-
     },
 
     sendGetRequest:function (params) {
@@ -99,8 +98,8 @@ var Selectex = {
             Selectex.remove($(this));
         });
 
-        $('.selectex select.field-name').change(function(e) {
-            var selectedOption = $(this).find('option:selected');
+        $('.selectex select.field-name').change(function (e) {
+                var selectedOption = $(this).find('option:selected');
                 $(this).parent().find('.type').html(selectedOption.attr('data-type'));
             }
         );
@@ -150,7 +149,7 @@ var Selectex = {
         });
         if (rows.length == 1) {
             selectex.find('.minus').css({ 'display':'none'});
-                selectex.parent().find('.condition').fadeOut();
+            selectex.parent().find('.condition').fadeOut();
         }
     }
 }
