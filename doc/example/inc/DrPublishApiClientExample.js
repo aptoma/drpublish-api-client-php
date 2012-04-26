@@ -55,16 +55,18 @@ var DrPublishApiClientExmample = {
                         var fieldSelectInput = $('[data-core="' + core + '"]');
                         fieldSelectInput.find('option.dyn-field').remove();
                         var defaultField = fieldSelectInput.find('option.default-field').val();
-                        var fields = []
+                        var fields = [];
+                        var fieldsAsObject = {};
                         $.each(data.items, function (index, element) {
                             if (element.name != 'original' && element.name != defaultField) {
                                 fields.push(element.name);
+                                fieldsAsObject[element.name] = element;
                             }
                         });
                         fields.sort();
                         $.each(fields, function (index, element) {
                             if (element.name != 'original') {
-                                fieldSelectInput.append('<option class="dyn-field">' + element + '</option>');
+                                fieldSelectInput.append('<option class="dyn-field" data-type="' + fieldsAsObject[element].type + '">' + element + '</option>');
                             }
                         });
                     }
@@ -97,6 +99,12 @@ var Selectex = {
             Selectex.remove($(this));
         });
 
+        $('.selectex select.field-name').change(function(e) {
+            var selectedOption = $(this).find('option:selected');
+                $(this).parent().find('.type').html(selectedOption.attr('data-type'));
+            }
+        );
+
     },
     extend:function (selectexplus) {
         var selectex = selectexplus.closest('.selectex');
@@ -118,6 +126,7 @@ var Selectex = {
         newRow.removeClass('first');
         selectex.append(newRow);
         selectex.find('.minus').css({ 'display':'inline-block'});
+        selectex.parent().find('.condition').fadeIn();
     },
 
     remove:function (selectexminus) {
@@ -141,6 +150,7 @@ var Selectex = {
         });
         if (rows.length == 1) {
             selectex.find('.minus').css({ 'display':'none'});
+                selectex.parent().find('.condition').fadeOut();
         }
     }
 }

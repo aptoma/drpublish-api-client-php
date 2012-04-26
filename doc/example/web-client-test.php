@@ -172,26 +172,25 @@ switch ($action) {
 
 }
 
-
 function parseFilterFieldsRequest()
 {
     $query = '';
     $filterFields = isset($_GET['filterFields']) ?  $_GET['filterFields'] : false;
     if ($filterFields) {
-        foreach ($filterFields as $key =>  $filterField) {
+        foreach ($filterFields as  $filterField) {
             if (strpos($filterField['key'], '--') === false) {
                 $val = urlencode( $filterField['value']);
                 if ($query != '') {
                     $query .= '&';
                 }
-                if ($key > 1) {
-                    $condition = $filterField['condition'];
-                    $query .= $filterField['key'].  '=' . $val ;
-                    $query .= '&conditionType=' . $condition;
-                }
+                $query .= $filterField['key'].  '=' . $val ;
             }
         }
     }
+    if ($filterFields && count($filterFields) > 1 && isset($_GET['conditionType'])) {
+       $query .= '&conditionType=' . $_GET['conditionType'];
+    }
+
     return $query;
 }
 

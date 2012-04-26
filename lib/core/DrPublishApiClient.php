@@ -334,12 +334,13 @@ class DrPublishApiClient
 
     protected function curl($url)
     {
-        $this->requestUri = urlencode($url);
+        $url = str_replace(' ', '+', $url);
+        $this->requestUri =$url;
         if ($this->debug) {
-
             $url .= strpos($url, '?') === false ? '?' : '&';
             $url .= 'debug';
         }
+
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_COOKIESESSION, false);

@@ -99,7 +99,7 @@ textarea {
 
 #active-form {
     clear: both;
-    width: 500px;
+    width: 550px;
     float: left;
     margin-right: 10px;
 }
@@ -110,7 +110,7 @@ textarea {
 }
 
 #form-pool {
-    width: 500px;
+    width: 480px;
     float: left;
 }
 
@@ -132,7 +132,6 @@ textarea {
     background: #EFF;
 }
 
-
 .selectex {
     margin-bottom: 20px;
 }
@@ -145,7 +144,7 @@ textarea {
 .selectex .labels div:last-child
 {
     float: right;
-    margin-right: 100px;
+    margin-right: 200px;
 }
 
 .selectex .row {
@@ -153,7 +152,7 @@ textarea {
 }
 
 .selectex .field-name {
-    width: 100px;
+    width: 130px;
 }
 
 .selectex .row.first .condition-type  {
@@ -181,7 +180,12 @@ textarea {
 }
 
 .selectex input[type='text'] {
-    width: 220px;
+    width: 240px;
+}
+
+.selectex .type {
+    display: inline-block;
+    width: 40px;
 }
 
 
@@ -219,4 +223,10 @@ textarea {
 
 .paginator {
     text-align: center;
+}
+
+
+
+.condition {
+    display: none;
 }

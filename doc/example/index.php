@@ -152,7 +152,7 @@ if (file_exists(dirname(__FILE__).'/config.php')) {
 </html>
 
 <?
-function printSelectex($name, $defaultField = "-- fulltext --")
+function printSelectex($name, $defaultField = "-- fulltext --", $defaultFieldDataType = 'string')
 { ?>
 <div class="selectex">
   <div class="labels">
@@ -160,13 +160,10 @@ function printSelectex($name, $defaultField = "-- fulltext --")
       <div>Search query</div>
   </div>
   <div class="row first">
-      <select class="condition-type" name="filterFields[1][condition]" size="1">
-            <option>AND</option>
-            <option>OR</option>
-       </select>
        <select class="field-name" name="filterFields[1][key]" size="1" data-core='<?=$name?>'>
-             <option class="default-field"><?=$defaultField ?></option>
+            <option class="default-field"><?=$defaultField ?></option>
         </select>
+        <span class="type"><?=$defaultFieldDataType?></span>
        <input type="text" name="filterFields[1][value]" />
        <div class="plus">+</div>
        <div class="minus">-</div>
@@ -175,10 +172,16 @@ function printSelectex($name, $defaultField = "-- fulltext --")
  <?
 }
 function printLimit($showOrder = false) { ?>
-Offset:<input type="text" name="offset" value="0" style="width: 40px"/>
-Limit:<input type="text" name="limit" value="5" style="width: 40px"/>
+<span class="condition">
+Condition: <select class="condition-type" name="conditionType" size="1">
+            <option>AND</option>
+            <option>OR</option>
+       </select>
+</span>
+Offset:<input type="text" name="offset" value="0" style="width: 20px"/>
+Limit:<input type="text" name="limit" value="5" style="width: 20px"/>
 <? if ($showOrder) { ?>
-Sort by:
+Order:
 <select name="order" size="1">
     <option>--relevance--</option>
     <option>published asc</option>
