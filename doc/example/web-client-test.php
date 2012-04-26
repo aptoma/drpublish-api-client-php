@@ -32,16 +32,17 @@ switch ($action) {
     case 'search':
         try {
            if (isset($_GET['readyRequest'])) {
-               $offset = $_GET['offset'];
-               $limit = $_GET['limit'];
-               unset($_GET['offset']);
-               unset($_GET['limit']);
-               unset($_GET['readyRequest']);
-               unset($_GET['dp-url']);
-               unset($_GET['action']);
+               $get = $_GET;
+               $offset = $get['offset'];
+               $limit = $get['limit'];
+               unset($get['offset']);
+               unset($get['limit']);
+               unset($get['readyRequest']);
+               unset($get['dp-url']);
+               unset($get['action']);
                $query = '';
-               foreach($_GET as $key => $value) {
-                   $query .= '&' . $key.  '=' . $value ;
+               foreach($get as $key => $value) {
+                   $query .= '&' . $key.  '=' . urlencode($value) ;
                }
            }  else {
                $query = '';
@@ -51,7 +52,7 @@ switch ($action) {
                if ($filterFields) {
                    foreach ($filterFields as $filterField) {
                        if (strpos($filterField['key'], '--') === false) {
-                           $val = urlencode('"' . $filterField['value']. '"');
+                           $val = urlencode( $filterField['value']);
                             $query .= '&' . $filterField['key'].  '=' . $val ;
                        }
                    }
@@ -87,7 +88,7 @@ switch ($action) {
           $offset = isset($_GET['offset']) ? (int) $_GET['offset'] : 0;
 
           $query = join('&', $requestedFields);
-          $drpublishApiClientAuthors = $dpWebClient->searchAuthors($query, $offset, $limit);
+            $drPublishApiClientSearchList = $dpWebClient->searchAuthors($query, $offset, $limit);
           $mainView = 'search-authors';
         } catch (DrPublishApiClientException $e) {
             $mainView = 'error';

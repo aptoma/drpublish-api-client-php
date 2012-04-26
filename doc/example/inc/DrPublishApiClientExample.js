@@ -14,8 +14,13 @@ var DrPublishApiClientExmample = {
             $('#active-form').prepend(activatedElement);
             $('#form-pool').prepend(deactivatedElement);
             activatedElement.find('input[type="text"]').first().focus();
+            var form = activatedElement.find('form');
+            if (form.attr('action').match(/search/)) {
+                DrPublishApiClientExmample.submitForm(form.get(0));
+            }
             $('#api-response').html('');
         });
+        this.fetchFields('');
     },
 
     submitForm:function (element) {
@@ -30,6 +35,28 @@ var DrPublishApiClientExmample = {
             });
             return false;
         })
+    },
+
+    fetchFields:function (core) {
+        var apiUrl = $('#dp-url').val();
+        if (apiUrl) {
+            $.ajax(
+                {
+                    url:apiUrl + '/fields/core/' + core + '.json',
+                    dataType:'json',
+                    success:function (data) {
+                        var fieldSelectInput = $('[data-core="' + core + '"]');
+                        fieldSelectInput.append('<option>--filter field--</option>');
+                        $.each(data.items, function (index, element) {
+                            
+                            fieldSelectInput.append('<option>' + element.name + '</option>');
+                        })
+                    }
+                }
+            )
+        }
+
+
     },
 
     sendGetRequest:function (params) {

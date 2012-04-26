@@ -208,7 +208,7 @@ $drPublishDomElementList->remove();
 
 
 
-<h2>Categories</h2>
+<h2 id="categories">Categories</h2>
 <div class="code-comment">
     You can either request a list of categories by sending a search query or request a specific category by id:
 </div>
@@ -217,14 +217,15 @@ $drPublishApiClientSearchList = $drPublishApiClient->searchCategories('parentId=
 $drPublishApiClientCategory = $drPublishApiClient->getCategory(234);
 </code>
 <div class="code-comment">
- For processing a search result, the received DrPublishApiClientSearchList can be iterated 
+ For processing a search result, the received DrPublishApiClientSearchList can be traversed as a list of DrPublishApiClientCategory objects
+   Use the appropriate getter method og access the properties of a category object.
 </div>
-
-
-
-
-
-
+<code>
+foreach($drPublishApiClientSearchList as $drPublishApiClientCategory) {
+    $categoryName = $drPublishApiClientCategory->getName();
+    $categoryParentName = $drPublishApiClientCategory->getParentName();
+}
+</code>
 
 </div>
 

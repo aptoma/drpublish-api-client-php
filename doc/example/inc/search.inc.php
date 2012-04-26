@@ -1,7 +1,6 @@
-<h2>Search articles [DrPublishApiWebClient::searchArticle('<?=$query?>', <?=$limit?>, <?=$offset?>)]</h2>
 <? include('inc/search-meta.inc.php') ?>
-<br/>
 <? include('inc/search-paginator.inc.php') ?>
+<h2>Search articles [DrPublishApiWebClient::searchArticle('<?=$query?>', <?=$limit?>, <?=$offset?>)]</h2>
 
 <ul>
 
@@ -24,6 +23,4 @@
 	}
 ?>
 </ul>
-
-
 <? include('inc/search-paginator.inc.php') ?>

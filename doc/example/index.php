@@ -26,7 +26,6 @@ if (file_exists(dirname(__FILE__).'/config.php')) {
 <body>
 <h1>DrPublishApiClient example implementation</h1>
 
-
 <div id="global-properties">
     DrPublish API URL
       <input type="text"  id="dp-url" name="dp-url" value="<?=$dpUrl?>" style="width: 300px"/>
@@ -40,22 +39,16 @@ if (file_exists(dirname(__FILE__).'/config.php')) {
           Filter fields:
            <div class="selectex">
               <div class="row">
-                   <select name="filterFields[1][key]" size="1">
-                         <option>--filter field--</option>
-                         <option>title</option>
-                         <option>story</option>
-                         <option>author</option>
-                         <option>category</option>
-                         <option>dossier</option>
-                         <option>tag</option>
+                   <select name="filterFields[1][key]" size="1" data-core=''>
+
+
                     </select>
                    <input type="text" name="filterFields[1][value]" />
                    <div class="plus">+</div>
                    <div class="minus">-</div>
                </div>
            </div>
-        <span style="vertical-align: top;">+ dynamic query (use only for advanced queries!):</span>
-            <textarea name="dynamicQuery"></textarea>
+
         <br/>
 
 

@@ -13,6 +13,7 @@ h1 {
 
 h2 {
     color: maroon;
+    margin-top: 10px;;
 }
 
 h3 {
@@ -161,6 +162,7 @@ textarea {
     padding: 6px;
     color: #666;
     border-bottom: solid #777 2px;
+    font-size: 12px;
 }
 
 .request-info a {

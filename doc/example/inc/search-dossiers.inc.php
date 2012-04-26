@@ -11,3 +11,4 @@
         </li>
 <? } ?>
 </ul>
+<? include('inc/search-paginator.inc.php') ?>

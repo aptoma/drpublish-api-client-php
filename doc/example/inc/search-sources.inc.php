@@ -1,5 +1,6 @@
-<h2>Category search</h2>
+<h2>Sources search</h2>
 <? include('inc/search-meta.inc.php') ?>
+<br/>
 <ul>
 <? foreach ($drPublishApiClientSearchList as $drpublishApiClientSource) { ?>
         <li>
@@ -11,3 +12,4 @@
         </li>
 <? } ?>
 </ul>
+<? include('inc/search-paginator.inc.php') ?>

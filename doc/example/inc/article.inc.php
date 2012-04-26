@@ -1,6 +1,7 @@
 
 <h2>-- Article Meta --</h2>
 
+paywall: <?=$drpublishApiClientArticle->getEnableComments()?>
 <h3>Published [DrPublishApiClientArticleElement DrPublishApiWebClient::getPublished()]</h3>
 <div class="result">
     <?=$drpublishApiClientArticle->getPublished()?>
