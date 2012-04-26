@@ -40,8 +40,7 @@ if (file_exists(dirname(__FILE__).'/config.php')) {
            <div class="selectex">
               <div class="row">
                    <select name="filterFields[1][key]" size="1" data-core=''>
-
-
+                         <option>--filter field--</option>
                     </select>
                    <input type="text" name="filterFields[1][value]" />
                    <div class="plus">+</div>

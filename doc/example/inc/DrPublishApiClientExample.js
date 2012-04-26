@@ -48,7 +48,7 @@ var DrPublishApiClientExmample = {
                         var fieldSelectInput = $('[data-core="' + core + '"]');
                         fieldSelectInput.append('<option>--filter field--</option>');
                         $.each(data.items, function (index, element) {
-                            
+
                             fieldSelectInput.append('<option>' + element.name + '</option>');
                         })
                     }
