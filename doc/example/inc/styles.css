@@ -5,6 +5,7 @@ body {
     padding: 0 0 0 50px;
     width: 1100px;
     color: #255;
+    overflow-y: scroll;
 }
 
 h1 {
@@ -102,11 +103,26 @@ textarea {
     width: 550px;
     float: left;
     margin-right: 10px;
+
 }
 
 #active-form fieldset {
     background-color: #DEE;
-    padding: 8px;
+    padding: 8px 8px 20px 8px;
+    display: none;
+    width: 530px;
+    min-height: 100px;
+    position: relative;
+}
+
+#active-form fieldset:first-of-type {
+    display: block;
+}
+
+#active-form fieldset .doclinks {
+    position: absolute;
+    right: 10px;
+    bottom: 5px;
 }
 
 #form-pool {
@@ -114,8 +130,21 @@ textarea {
     float: left;
 }
 
-#form-pool fieldset  form {
-    display: none;
+#form-pool div {
+    float: left;
+    padding: 3px 8px;
+    background: #CDD;
+    margin: 3px;
+    cursor: pointer;
+    border: solid #366 2px;
+    border-radius: 3px;
+}
+
+#form-pool div:hover {
+    background: #DEE;
+}
+#form-pool div.active {
+    background: #CEE;
 }
 
 #active-form fieldset{
@@ -128,7 +157,7 @@ textarea {
     border: solid #336666 2px;
     border-radius: 3px;
     padding: 10px;
-    min-height: 150px;
+    min-height: 100px;
     background: #EFF;
 }
 
@@ -180,7 +209,7 @@ textarea {
 }
 
 .selectex input[type='text'] {
-    width: 240px;
+    width: 265px;
 }
 
 .selectex .type {
@@ -229,7 +258,3 @@ textarea {
     display: none;
 }
 
-.doclinks {
-    margin-top: 5px;
-    text-align: right;
-}

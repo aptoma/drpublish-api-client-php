@@ -13,7 +13,7 @@ if (file_exists(dirname(__FILE__) . '/config.php')) {
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-    <title>Web client test</title>
+    <title>DrPublisch API client example implementation</title>
     <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
     <script type="text/javascript" src="inc/jquery.min.js"></script>
     <script type="text/javascript" src="inc/DrPublishApiClientExample.js"></script>
@@ -33,7 +33,6 @@ if (file_exists(dirname(__FILE__) . '/config.php')) {
 </div>
 <div id="active-form">
     <fieldset>
-
         <legend>Search articles</legend>
         <form action="search">
             <? printSelectex('', 'title') ?>
@@ -42,8 +41,6 @@ if (file_exists(dirname(__FILE__) . '/config.php')) {
             <? printApiDocLink('articles') ?>
         </form>
     </fieldset>
-</div>
-<div id="form-pool">
     <fieldset>
         <legend>Get article</legend>
         <form action="article">
@@ -153,6 +150,9 @@ if (file_exists(dirname(__FILE__) . '/config.php')) {
             <? printApiDocLink('source') ?>
         </form>
     </fieldset>
+</div>
+<div id="form-pool">
+
 </div>
 <div style="clear: both"></div>
 <div id="api-response-wrap">

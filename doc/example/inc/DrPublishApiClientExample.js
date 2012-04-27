@@ -8,26 +8,39 @@ var DrPublishApiClientExmample = {
             }
         });
 
-        $('fieldset legend').click(function (e) {
-            var activatedElement = $(e.target).closest('fieldset');
-            var deactivatedElement = $('#active-form fieldset');
-            $('#active-form').prepend(activatedElement);
-            $('#form-pool').prepend(deactivatedElement);
-            activatedElement.find('input[type="text"]').first().focus();
-            var form = activatedElement.find('form');
-            if (form.attr('action').match(/search/)) {
-                var core = activatedElement.find('select.field-name').attr('data-core');
-                //if ( activatedElement.find('option').length == 1) {
-                DrPublishApiClientExmample.submitForm(form.get(0));
-                DrPublishApiClientExmample.fetchFields(core);
-                //}
+        var searchUis = $('#active-form fieldset');
+        searchUis.each(
+            function(index, element) {
+                var label = $(this).find('legend').html();
+                var menuElement = $('<div>' + label + '</div>');
+                menuElement.click( function() {
+                    $('#active-form fieldset').hide();
+                    $(element).show();
+                    $('#form-pool div').removeClass('active');
+                    $(this).addClass('active');
+                    $('#api-response').html('');
+                    $(element).find('input[type="text"]').first().focus();
+                    var form = $(element).find('form');
+                    if (form.attr('action').match(/search/)) {
+                        var core = $(element).find('select.field-name').attr('data-core');
+                        //if ( activatedElement.find('option').length == 1) {
+                        DrPublishApiClientExmample.submitForm(form.get(0));
+                        DrPublishApiClientExmample.fetchFields(core);
+                        //}
+                    }
+                });
+                $('#form-pool').append(menuElement);
             }
-            $('#api-response').html('');
-        });
+        );
+
         this.fetchFields('');
         $('#dp-url').change(function () {
             DrPublishApiClientExmample.fetchFields()
         });
+
+
+        $('#form-pool div').first().trigger('click');
+
 
     },
 
