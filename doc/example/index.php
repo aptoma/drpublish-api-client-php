@@ -232,7 +232,7 @@ function printApiDocLink($item)
 function printSubmit($providesInternalSearch)
 { ?>
 <div class="submit-div">
-<? if (0 and $providesInternalSearch) { ?>
+<? if ($providesInternalSearch) { ?>
         Request the internal core <input type="radio" name="internal" value="0" checked="checked" />no <input type="radio" name="internal" value="1" />yes
 <? } ?>
 <input type="submit" onclick="DrPublishApiClientExmample.submitForm(this); return false;" value="Search"/>

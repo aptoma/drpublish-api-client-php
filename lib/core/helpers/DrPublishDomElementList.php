@@ -50,11 +50,26 @@ class DrPublishDomElementList implements Iterator
 
     public function __toString()
     {
+        return $this->content();
+    }
+
+    public function content()
+    {
         $string = '';
         foreach ($this->elements as $domElement) {
-            $string .= (string)$domElement;
+            $string .= $domElement->content();
         }
         return $string;
+
+    }
+    public function innerContent()
+    {
+        $string = '';
+        foreach ($this->elements as $domElement) {
+            $string .= $domElement->innerContent();
+        }
+        return $string;
+
     }
 
     public function getAttributes($name)

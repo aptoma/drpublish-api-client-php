@@ -35,10 +35,25 @@ class DrPublishApiClientXmlElement extends DrPublishApiClientArticleElement
 
     function __toString()
     {
+       return $this->content();
+    }
+
+    public function content()
+    {
         if ($this->dom !== null) {
             return $this->dom->saveXml($this->dom->documentElement);
         }
         return (string)$this->data;
+    }
+
+    /**
+     * Returns the content of the root element
+     * @return string
+     * @deprecated
+     */
+    public function innerContent()
+    {
+        return preg_replace(array('#^<[^>]*>#','#</[^>]*>$#'), '', $this->content());
     }
 
 }

@@ -9,7 +9,6 @@ class DrPublishApiClientArticleElement
 
 	public function __construct($data, $options)
 	{
-
         $this->data = $data;
         $this->medium = $options->medium;
         $this->dataType = $options->dataType;
@@ -19,4 +18,6 @@ class DrPublishApiClientArticleElement
     {
         return (string) $this->data;
     }
+
+
 }

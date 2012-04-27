@@ -22,7 +22,7 @@ class DrPublishDomElement
 
     public function __toString()
     {
-        return $this->ownerDocument->saveXML($this->domElement);
+        return $this->content();
     }
 
     public function find($query)
@@ -122,5 +122,20 @@ class DrPublishDomElement
             $xpathQuery .= $parsed;
         }
         return $xpathQuery;
+    }
+
+    public function content()
+    {
+        return $this->ownerDocument->saveXML($this->domElement);
+    }
+
+    /**
+     * Returns the content of the root element
+     * @return string
+     * @deprecated
+     */
+    public function innerContent()
+    {
+       return preg_replace(array('#^<[^>]*>#','#</[^>]*>$#'), '', $this->content());
     }
 }
