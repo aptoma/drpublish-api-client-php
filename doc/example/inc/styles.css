@@ -108,7 +108,7 @@ textarea {
 
 #active-form fieldset {
     background-color: #DEE;
-    padding: 8px 8px 20px 8px;
+    padding: 8px 8px 40px 8px;
     display: none;
     width: 530px;
     min-height: 100px;
@@ -256,5 +256,16 @@ textarea {
 
 .condition {
     display: none;
+}
+
+.submit-div {
+    text-align: right;
+    margin-right: 10px;
+}
+
+.submit-div input[type='submit'] {
+    padding: 5px 10px;
+    font-size: 16px;
+
 }
 

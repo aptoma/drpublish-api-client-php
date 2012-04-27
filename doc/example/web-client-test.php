@@ -54,13 +54,7 @@ switch ($action) {
                $offset = isset($_GET['offset']) ? (int) $_GET['offset'] : 0;
            }
            $options = array();
-           if (!empty($offset)) {
-               $options['offset'] = $offset;
-           }
-           if (!empty($limit)) {
-               $options['limit'] = $limit;
-           }
-           $drPublishApiClientSearchList = $dpWebClient->searchArticles($query, $options);
+           $drPublishApiClientSearchList = $dpWebClient->searchArticles($query, $offset, $limit, $options);
            $mainView = 'search';
         } catch (DrPublishApiClientException $e) {
            $mainView = 'error';

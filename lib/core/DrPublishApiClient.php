@@ -119,8 +119,10 @@ class DrPublishApiClient
      * @return DrPublishApiClientList list elements are DrPublishApiClientArticle objects
      * @throws DrPublishApiClientException
      */
-    public function searchArticles($query, $options = array())
+    public function searchArticles($query, $offset = 0, $limit = 5, $options = array())
     {
+        $query .= "&offset={$offset}";
+        $query .= "&limit={$limit}";
         if (count($options) > 0) {
             foreach ($options as $key => $value) {
                 $query .= "&{$key}={$value}";
@@ -155,6 +157,20 @@ class DrPublishApiClient
         }
         return $this->createDrPublishApiClientArticle($result);
     }
+
+
+    public function getInternalArticle($id, $apikey)
+    {
+        $url = $this->url . '/articles/' . $id . '.json?scope=internal&apikey='. $apikey ;
+        $response = $this->curl($url);
+        $resultJson = $response->body;
+        $result = json_decode($resultJson);
+        if (empty($result)) {
+            throw new DrPublishApiClientException("No article data retrieved for article-id='{$id}'", DrPublishApiClientException::NO_DATA_ERROR);
+        }
+        return $this->createDrPublishApiClientArticle($result);
+    }
+
 
     public function searchAuthors($query, $offset = 0, $limit = 5)
     {
@@ -347,6 +363,7 @@ class DrPublishApiClient
         curl_setopt($ch, CURLOPT_HEADER, 1);
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         $res = curl_exec($ch);
         $info = curl_getinfo($ch);
         //if ($this->debug) {
@@ -405,11 +422,11 @@ class DrPublishApiClient
         curl_setopt($ch, CURLOPT_HEADER, 1);
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         $res = curl_exec($ch);
         $info = curl_getinfo($ch);
         //$header = substr($res, 0, $info['header_size']);
         $body = substr($res, $info['header_size']);
-        curl_close($ch);
         $props = json_decode($body, true);
         if (isset($props['error'])) {
             throw new DrPublishApiClientException('Error generating Image: ' . $props['error'], DrPublishApiClientException::IMAGE_CONVERTING_ERROR);

@@ -3,10 +3,14 @@ if (file_exists(dirname(__FILE__) . '/config.php')) {
     $configs = array();
     include (dirname(__FILE__) . '/config.php');
     $dpUrl = $configs['dp-url'];
+    $dpUrlInternal = $configs['dp-url-internal'];
     $publication = $configs['publication'];
+    $apikey = $configs['apikey'];
 } else {
     $dpUrl = 'http://stefan.aptoma.no:9000';
+    $dpUrlInternal = 'https://stefan.aptoma.no:9443';
     $publication = 'Solarius';
+    $apikey = '';
 }
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
@@ -26,10 +30,15 @@ if (file_exists(dirname(__FILE__) . '/config.php')) {
 <h1>DrPublishApiClient example implementation</h1>
 
 <div id="global-properties">
-    DrPublish API URL
+    Public API URL
     <input type="text" id="dp-url" name="dp-url" value="<?=$dpUrl?>" style="width: 300px"/>
+    Internal API URL
+    <input type="text" id="dp-url-internal" name="dp-url-url" value="<?=$dpUrlInternal?>" style="width: 300px"/>
+    <br/>
     Publication
     <input type="text" id="dp-publication" name="dp-publication" value="<?=$publication?>" style="width: 100px"/>
+    API key
+        <input type="text" id="dp-apikey" name="dp-apikey" value="<?=$apikey?>" style="width: 200px"/>
 </div>
 <div id="active-form">
     <fieldset>
@@ -37,7 +46,7 @@ if (file_exists(dirname(__FILE__) . '/config.php')) {
         <form action="search">
             <? printSelectex('', 'title') ?>
             <? printLimit(true) ?>
-            <input type="submit" name="run-search" onclick="DrPublishApiClientExmample.submitForm(this); return false;" value="Search"/>
+            <? printSubmit(true) ?>
             <? printApiDocLink('articles') ?>
         </form>
     </fieldset>
@@ -56,7 +65,7 @@ if (file_exists(dirname(__FILE__) . '/config.php')) {
         <form action="search-authors">
             <? printSelectex('users', 'fullname') ?>
             <? printLimit() ?>
-            <input type="submit" onclick="DrPublishApiClientExmample.submitForm(this); return false;" value="Search"/>
+            <? printSubmit() ?>
             <? printApiDocLink('users') ?>
         </form>
     </fieldset>
@@ -76,7 +85,7 @@ if (file_exists(dirname(__FILE__) . '/config.php')) {
         <form action="search-tags">
             <? printSelectex('tags', 'name') ?>
             <? printLimit() ?>
-            <input type="submit" onclick="DrPublishApiClientExmample.submitForm(this); return false;" value="Search"/>
+            <? printSubmit() ?>
             <? printApiDocLink('tags') ?>
         </form>
     </fieldset>
@@ -96,7 +105,7 @@ if (file_exists(dirname(__FILE__) . '/config.php')) {
         <form action="search-categories">
             <? printSelectex('categories', 'name') ?>
             <? printLimit() ?>
-            <input type="submit" onclick="DrPublishApiClientExmample.submitForm(this); return false;" value="Search"/>
+            <? printSubmit() ?>
             <? printApiDocLink('category') ?>
         </form>
     </fieldset>
@@ -116,7 +125,7 @@ if (file_exists(dirname(__FILE__) . '/config.php')) {
         <form action="search-dossiers">
             <? printSelectex('dossiers', 'name') ?>
             <? printLimit() ?>
-            <input type="submit" onclick="DrPublishApiClientExmample.submitForm(this); return false;" value="Search"/>
+            <? printSubmit() ?>
             <? printApiDocLink('dossiers') ?>
         </form>
     </fieldset>
@@ -136,7 +145,7 @@ if (file_exists(dirname(__FILE__) . '/config.php')) {
         <form action="search-sources">
             <? printSelectex('sources', 'name') ?>
             <? printLimit() ?>
-            <input type="submit" onclick="DrPublishApiClientExmample.submitForm(this); return false;" value="Search"/>
+            <? printSubmit() ?>
             <? printApiDocLink('sources') ?>
         </form>
     </fieldset>
@@ -218,4 +227,14 @@ function printApiDocLink($item)
     &nbsp;
 <a href="../usagedoc.php#<?=$item?>" target="_blank">How to process the retrieved data</a>
 </div>
+<? }
+
+function printSubmit($providesInternalSearch)
+{ ?>
+<div class="submit-div">
+<? if (0 and $providesInternalSearch) { ?>
+        Request the internal core <input type="radio" name="internal" value="0" checked="checked" />no <input type="radio" name="internal" value="1" />yes
 <? } ?>
+<input type="submit" onclick="DrPublishApiClientExmample.submitForm(this); return false;" value="Search"/>
+</div>
+<? }
