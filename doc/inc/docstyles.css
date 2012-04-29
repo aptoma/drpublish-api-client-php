@@ -67,6 +67,7 @@ code:after {
 }
 
 .output {
+    white-space: pre-line;
     text-indent: 60px;
     position: relative;
     font-family: courier, monospace;

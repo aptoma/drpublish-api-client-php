@@ -73,16 +73,31 @@ foreach ($drPublishApiClientSearchList as $drPublishApiWebClientArticle) {
    </ul>
 </div>
 <code class="indent1">
-$published = $drPublisApiWebClientArticle->getPublished();
-$categories = $drPublisApiWebClientArticle->getCategories();
-$title = $drPublisApiWebClientArticle->getTitle();
-$preamble = $drPublisApiWebClientArticle->getcodeamble();
+$published = $drPublishApiWebClientArticle->getPublished();
+$categories = $drPublishApiWebClientArticle->getCategories();
+$title = $drPublishApiWebClientArticle->getTitle();
+$preamble = $drPublishApiWebClientArticle->getPreamble();
 </code>
 <code class="indent1">
 print $published;
 </code>
 <div class="output indent1">
     Fri, 10 Feb 2012 15:35:00 +0100
+</div>
+<code class="indent1">
+$someElement = $drPublishWebClientArticle->find('div.foo')->item(0);
+print $someElement();
+print $someElement->content();
+print $someElement->innerContent();
+</code>
+<div class="code-comment indent1">
+While the toString method and the content() method return the complete content including the found element itself, the innerContent() method returns only the content of the element
+</div>
+
+<div class="output indent1">
+    &lt;div class="foo"&gt;This is &lt;strong&gt;really&lt;/strong&gt; important&lt;/div&gt;
+    &lt;div class="foo"&gt;This is &lt;strong&gt;really&lt;/strong&gt; important&lt;/div&gt;
+    This is &lt;strong&gt;really&lt;/strong&gt; important
 </div>
 
 <div class="code-comment indent1">
@@ -204,9 +219,35 @@ $drPublishDomElementList = $drPublisApiWebClientArticle->getStory()->find('img')
 $drPublishDomElementList->remove();
 </code>
 
+<h3 id="article-images">Handle article images</h3>
+<div class="code-comment">
+The DrPublishApiClient provides functionality for generating resized images in any format on the fly. Doing this will send a request to the DrPublish image converter service which will check if an image with the requested size already exists. If not, the service will create it and store it on disk.<br/>
+    DrPublishApiClient automatically change the appropriate parameters of the image object to match the generated one.
+</div>
+<code>
+    $images = $drPubishApiClient->getDPImages();
+    foreach ($images as $image) {
+        $image->resizeImage(325);
+    }
+</code>
 
-
-
+<h2 id="authors">Authors</h2>
+<div class="code-comment">
+    Request a list of authors or fetch a specific author by its id:
+</div>
+<code>
+$drPublishApiClientSearchList = $drPublishApiClient->searchAuthors('username=mschulze');
+$drPublishApiClientAuthor = $drPublishApiClient->getAuthor(123);
+</code>
+<div class="code-comment">
+ For processing a search result, the received DrPublishApiClientSearchList can be traversed as a list of DrPublishApiClientAuthor objects
+   Use the appropriate getter method og access the properties of a DrPublishApiClientAuthor object.
+</div>
+<code>
+foreach($drPublishApiClientSearchList as $drPublishApiClientAuthor) {
+    $fullName = $drPublishApiClientAuthor->getFullName();
+}
+</code>
 
 <h2 id="categories">Categories</h2>
 <div class="code-comment">
@@ -227,12 +268,65 @@ foreach($drPublishApiClientSearchList as $drPublishApiClientCategory) {
 }
 </code>
 
+<h2 id="tags">Tags</h2>
+<div class="code-comment">
+    Same procedure as for <a href=#categories">categories</a>, apart from the the objects are of type DrPublishApiClientTag
 </div>
+<code>
+$drPublishApiClientSearchList = $drPublishApiClient->searchTag('name=Sports');
+$drPublishApiClientTag = $drPublishApiClient->getTag(362);
+</code>
+<div class="code-comment">
+ For processing a search result, the received DrPublishApiClientSearchList can be traversed as a list of DrPublishApiClientTag objects
+   Use the appropriate getter method og access the properties of a DrPublishApiTag object.
+</div>
+<code>
+foreach($drPublishApiClientSearchList as $drPublishApiClientTag) {
+    $tagName = $drPublishApiClientTag->getName();
+}
+</code>
+
+<h2 id="dossiers">Dossiers</h2>
+<div class="code-comment">
+    Same procedure as for <a href=#categories">categories</a>, apart from the the objects are of type DrPublishApiClientDossier
+</div>
+<code>
+$drPublishApiClientSearchList = $drPublishApiClient->searchDossier('parentId=9876');
+$drPublishApiClientDossier = $drPublishApiClient->getDossier(76);
+</code>
+<div class="code-comment">
+ For processing a search result, the received DrPublishApiClientSearchList can be traversed as a list of DrPublishApiClientDossier objects
+   Use the appropriate getter method og access the properties of a dossier object.
+</div>
+<code>
+foreach($drPublishApiClientSearchList as $drPublishApiClientTag) {
+    $tagName = $drPublishApiClientTag->getName();
+}
+</code>
+
+
+<h2 id="sources">Sources</h2>
+<div class="code-comment">
+    Same procedure as for <a href=#categories">categories</a>, apart from the the objects are of type DrPublishApiClientSource
+    <br/>See <a href="apidoc.php#sources" target="_blank">API doc</a> for available search options
+</div>
+<code>
+$drPublishApiClientSearchList = $drPublishApiClient->searchSource('name=NTB');
+$drPublishApiClientSource = $drPublishApiClient->getSource(76);
+</code>
+<div class="code-comment">
+ For processing a search result, the received DrPublishApiClientSearchList can be traversed as a list of DrPublishApiClientSource objects
+   Use the appropriate getter method og access the properties of a DrPublishApiClientSource object.
+</div>
+<code>
+foreach($drPublishApiClientSearchList as $drPublishApiClientTag) {
+    $tagName = $drPublishApiClientTag->getName();
+}
+</code>
 
 
 
-
-
+</div>
 <script type="text/javascript">
     $(document).ready(function () {
          var h = [0, 0, 0, 0, 0], i, s, level, toc = $('.toc');
