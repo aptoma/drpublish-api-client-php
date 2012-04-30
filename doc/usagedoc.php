@@ -194,7 +194,7 @@ foreach( $drPublishDomElementList as $drPublishDomElement) {
   Adding the label "external link" to all links in the story element of the article:
 </div>
 <code>
-$links = $drpublishApiClientArticle->getStory()->find('a');
+$links = $drPublishApiClientArticle->getStory()->find('a');
 foreach ($links as $link) {
     $newContent =   $link . ' (external link)';
     $link->replaceBy($newContent);
@@ -208,14 +208,14 @@ foreach ($links as $link) {
     Example: Removing all images from the article:
 </div>
 <code>
-$drPublishDomElementList = $drPublisApiWebClientArticle->find('img');
+$drPublishDomElementList = $drPublishApiWebClientArticle->find('img');
 $drPublishDomElementList->remove();
 </code>
 <div class="code-comment">
  Removing all images only from the story (body) field:
 </div>
 <code>
-$drPublishDomElementList = $drPublisApiWebClientArticle->getStory()->find('img');
+$drPublishDomElementList = $drPublishApiWebClientArticle->getStory()->find('img');
 $drPublishDomElementList->remove();
 </code>
 
@@ -225,7 +225,7 @@ The DrPublishApiClient provides functionality for generating resized images in a
     DrPublishApiClient automatically change the appropriate parameters of the image object to match the generated one.
 </div>
 <code>
-    $images = $drPubishApiClient->getDPImages();
+    $images = $drPublishApiClient->getDPImages();
     foreach ($images as $image) {
         $image->resizeImage(325);
     }

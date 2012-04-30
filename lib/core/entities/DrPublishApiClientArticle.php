@@ -142,7 +142,7 @@ class DrPublishApiClientArticle
         $drPublishDomElementList =  $this->find("div.dp-article-image");
         $imageList = new DrPublishDomElementList();
         foreach($drPublishDomElementList as $drPublishDomElement) {
-            $drPublishApiClientArticleElement = new DrPublishApiClientArticleImageElement($drPublishDomElement);
+            $drPublishApiClientArticleElement = $this->createDrPublishApiClientArticleImageElement($drPublishDomElement);
             $drPublishApiClientArticleElement->setDrPublishApiClientArticle($this);
             $imageList->add($drPublishApiClientArticleElement);
         }
@@ -233,6 +233,11 @@ class DrPublishApiClientArticle
             $list->add($this->createDrPublishApiClientTag($tag));
         }
         return $list;
+    }
+
+    protected function createDrPublishApiClientArticleImageElement(DrPublishDomElement $image)
+    {
+       return new DrPublishApiClientArticleImageElement($image);
     }
 
     protected function createDrPublishApiClientAuthor($author)
