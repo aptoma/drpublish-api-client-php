@@ -83,7 +83,7 @@ class DrPublishApiClient
         }
     }
 
-    public function searchArticles($query, $offset = 0, $limit = 5, $options = array())
+    public function searchArticles($query, $limit = 5, $offset = 0, $options = array())
     {
         $query .= "&offset={$offset}";
         $query .= "&limit={$limit}";
@@ -127,7 +127,7 @@ class DrPublishApiClient
         return $this->createDrPublishApiClientArticle($result);
     }
 
-    public function searchAuthors($query, $offset = 0, $limit = 5)
+    public function searchAuthors($query, $limit = 5, $offset = 0)
     {
         $query = urldecode($query);
         $url = $this->url . '/users.json?' . $query . '&offset=' . $offset . '&limit=' . $limit;
@@ -154,7 +154,7 @@ class DrPublishApiClient
         return $this->createDrPublishApiClientAuthor($responseObject);
     }
 
-    public function searchTags($query, $offset = 0, $limit = 5)
+    public function searchTags($query, $limit = 5, $offset = 0)
     {
         $query = urldecode($query);
         $url = $this->url . '/tags.json?' . $query . '&offset=' . $offset . '&limit=' . $limit;
@@ -182,7 +182,7 @@ class DrPublishApiClient
         return $dpClientTag;
     }
 
-    public function searchCategories($query, $offset = 0, $limit = 5)
+    public function searchCategories($query, $limit = 5, $offset = 0)
     {
         $url = $this->url . '/categories.json?' . $query . '&offset=' . $offset . '&limit=' . $limit;
         $response = $this->curl($url);
@@ -208,7 +208,7 @@ class DrPublishApiClient
         return $this->createDrPublishApiClientCategory($responseObject);
     }
 
-    public function searchDossiers($query, $offset = 0, $limit = 5)
+    public function searchDossiers($query, $limit = 5, $offset = 0)
     {
         $url = $this->url . '/dossiers.json?' . $query . '&offset=' . $offset . '&limit=' . $limit;
         $response = $this->curl($url);
@@ -233,7 +233,7 @@ class DrPublishApiClient
         return $this->createDrPublishApiClientDossier($responseObject);
     }
 
-    public function searchSources($query, $offset = 0, $limit = 5)
+    public function searchSources($query, $limit = 5, $offset = 0)
     {
         $url = $this->url . '/sources.json?' . $query . '&offset=' . $offset . '&limit=' . $limit;
         $response = $this->curl($url);

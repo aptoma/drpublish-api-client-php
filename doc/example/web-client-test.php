@@ -54,7 +54,7 @@ switch ($action) {
                $offset = isset($_GET['offset']) ? (int) $_GET['offset'] : 0;
            }
            $options = array();
-           $drPublishApiClientSearchList = $dpWebClient->searchArticles($query, $offset, $limit, $options);
+           $drPublishApiClientSearchList = $dpWebClient->searchArticles($query, $limit, $offset, $options);
            $mainView = 'search';
         } catch (DrPublishApiClientException $e) {
            $mainView = 'error';
@@ -66,7 +66,7 @@ switch ($action) {
           $requestedFields = array();
           $limit = isset($_GET['limit']) ? (int) $_GET['limit'] : 5;
           $offset = isset($_GET['offset']) ? (int) $_GET['offset'] : 0;
-          $drPublishApiClientSearchList = $dpWebClient->searchAuthors($query, $offset, $limit);
+          $drPublishApiClientSearchList = $dpWebClient->searchAuthors($query, $limit, $offset);
           $mainView = 'search-authors';
         } catch (DrPublishApiClientException $e) {
             $mainView = 'error';
@@ -86,7 +86,7 @@ switch ($action) {
           $query = parseFilterFieldsRequest();
           $limit = isset($_GET['limit']) ? (int) $_GET['limit'] : 5;
           $offset = isset($_GET['offset']) ? (int) $_GET['offset'] : 0;
-          $drPublishApiClientSearchList = $dpWebClient->searchTags($query, $offset, $limit);
+          $drPublishApiClientSearchList = $dpWebClient->searchTags($query, $limit, $offset);
           $mainView = 'search-tags';
         } catch (DrPublishApiClientException $e) {
             $mainView = 'error';
@@ -106,7 +106,7 @@ switch ($action) {
           $query = parseFilterFieldsRequest();
           $limit = isset($_GET['limit']) ? (int) $_GET['limit'] : 5;
           $offset = isset($_GET['offset']) ? (int) $_GET['offset'] : 0;
-          $drPublishApiClientSearchList = $dpWebClient->searchCategories($query, $offset, $limit);
+          $drPublishApiClientSearchList = $dpWebClient->searchCategories($query, $limit, $offset);
           $mainView = 'search-categories';
         } catch (DrPublishApiClientException $e) {
             $mainView = 'error';
@@ -126,7 +126,7 @@ switch ($action) {
           $query = parseFilterFieldsRequest();
           $limit = isset($_GET['limit']) ? (int) $_GET['limit'] : 5;
           $offset = isset($_GET['offset']) ? (int) $_GET['offset'] : 0;
-          $drPublishApiClientSearchList = $dpWebClient->searchDossiers($query, $offset, $limit);
+          $drPublishApiClientSearchList = $dpWebClient->searchDossiers($query, $limit, $offset);
           $mainView = 'search-dossiers';
         } catch (DrPublishApiClientException $e) {
             $mainView = 'error';
@@ -146,7 +146,7 @@ switch ($action) {
           $query = parseFilterFieldsRequest();
           $limit = isset($_GET['limit']) ? (int) $_GET['limit'] : 5;
           $offset = isset($_GET['offset']) ? (int) $_GET['offset'] : 0;
-          $drPublishApiClientSearchList = $dpWebClient->searchSources($query, $offset, $limit);
+          $drPublishApiClientSearchList = $dpWebClient->searchSources($query, $limit, $offset);
           $mainView = 'search-sources';
         } catch (DrPublishApiClientException $e) {
             $mainView = 'error';

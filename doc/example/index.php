@@ -229,7 +229,7 @@ function printApiDocLink($item)
 </div>
 <? }
 
-function printSubmit($providesInternalSearch)
+function printSubmit($providesInternalSearch = false)
 { ?>
 <div class="submit-div">
 <? if ($providesInternalSearch) { ?>
