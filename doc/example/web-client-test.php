@@ -45,7 +45,7 @@ switch ($action) {
                    $query .= '&' . $key.  '=' . urlencode($value) ;
                }
            }  else {
-               $query = '&' . parseFilterFieldsRequest();
+               $query = parseFilterFieldsRequest();
                $order = isset($_GET['order']) ?  $_GET['order'] : false;
                if ($order && strpos($order, '--') === false ) {
                    $query .= '&order=' . urlencode($order);

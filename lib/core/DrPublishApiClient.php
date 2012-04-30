@@ -92,6 +92,12 @@ class DrPublishApiClient
                 $query .= "&{$key}={$value}";
             }
         }
+        if ($query[0] == '?') {
+            $query = substr($query, 1);
+        }
+        if ($query[0] != '&') {
+            $query = '&' . $query;
+        }
         $url = $this->url . '/articles.json?publication=' . $this->publicationName . $query;
         $response = $this->curl($url);
         $result = json_decode($response->body);
