@@ -1,5 +1,4 @@
 <?php
-$start = microtime(true);
 $dpcDirname = dirname(__FILE__);
 require($dpcDirname . '/helpers/DrPublishApiClientList.php');
 require($dpcDirname . '/helpers/DrPublishApiClientSearchList.php');
@@ -19,10 +18,7 @@ require($dpcDirname . '/content/DrPublishApiClientArticleElement.php');
 require($dpcDirname . '/content/DrPublishApiClientXmlElement.php');
 require($dpcDirname . '/content/DrPublishApiClientTextElement.php');
 require($dpcDirname . '/content/DrPublishApiClientArticleImageElement.php');
-require($dpcDirname . '/content/DrPublishApiClientImage.php');
-require($dpcDirname . '/content/DrPublishApiClientPhotographer.php');
 unset($dpcDirname);
-die(microtime(true) - $start);
 define('QUERY_TYPE_XPATH', 1);
 define('QUERY_TYPE_JQUERY', 2);
 
