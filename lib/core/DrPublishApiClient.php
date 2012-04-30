@@ -1,30 +1,30 @@
 <?php
-
+$start = microtime(true);
 $dpcDirname = dirname(__FILE__);
-require_once($dpcDirname . '/helpers/DrPublishApiClientList.php');
-require_once($dpcDirname . '/helpers/DrPublishApiClientSearchList.php');
-require_once($dpcDirname . '/helpers/DrPublishDomElementList.php');
-require_once($dpcDirname . '/helpers/DrPublishApiClientException.php');
-require_once($dpcDirname . '/helpers/DrPublishApiClientHttpException.php');
-require_once($dpcDirname . '/dom/DrPublishDomElement.php');
-require_once($dpcDirname . '/dom/DrPublishDomText.php');
-require_once($dpcDirname . '/entities/DrPublishApiClientArticleEntity.php');
-require_once($dpcDirname . '/entities/DrPublishApiClientArticle.php');
-require_once($dpcDirname . '/entities/DrPublishApiClientAuthor.php');
-require_once($dpcDirname . '/entities/DrPublishApiClientCategory.php');
-require_once($dpcDirname . '/entities/DrPublishApiClientTag.php');
-require_once($dpcDirname . '/entities/DrPublishApiClientDossier.php');
-require_once($dpcDirname . '/entities/DrPublishApiClientSource.php');
-require_once($dpcDirname . '/content/DrPublishApiClientArticleElement.php');
-require_once($dpcDirname . '/content/DrPublishApiClientXmlElement.php');
-require_once($dpcDirname . '/content/DrPublishApiClientTextElement.php');
-require_once($dpcDirname . '/content/DrPublishApiClientArticleImageElement.php');
-require_once($dpcDirname . '/content/DrPublishApiClientImage.php');
-require_once($dpcDirname . '/content/DrPublishApiClientPhotographer.php');
+require($dpcDirname . '/helpers/DrPublishApiClientList.php');
+require($dpcDirname . '/helpers/DrPublishApiClientSearchList.php');
+require($dpcDirname . '/helpers/DrPublishDomElementList.php');
+require($dpcDirname . '/helpers/DrPublishApiClientException.php');
+require($dpcDirname . '/helpers/DrPublishApiClientHttpException.php');
+require($dpcDirname . '/dom/DrPublishDomElement.php');
+require($dpcDirname . '/dom/DrPublishDomText.php');
+require($dpcDirname . '/entities/DrPublishApiClientArticleEntity.php');
+require($dpcDirname . '/entities/DrPublishApiClientArticle.php');
+require($dpcDirname . '/entities/DrPublishApiClientAuthor.php');
+require($dpcDirname . '/entities/DrPublishApiClientCategory.php');
+require($dpcDirname . '/entities/DrPublishApiClientTag.php');
+require($dpcDirname . '/entities/DrPublishApiClientDossier.php');
+require($dpcDirname . '/entities/DrPublishApiClientSource.php');
+require($dpcDirname . '/content/DrPublishApiClientArticleElement.php');
+require($dpcDirname . '/content/DrPublishApiClientXmlElement.php');
+require($dpcDirname . '/content/DrPublishApiClientTextElement.php');
+require($dpcDirname . '/content/DrPublishApiClientArticleImageElement.php');
+require($dpcDirname . '/content/DrPublishApiClientImage.php');
+require($dpcDirname . '/content/DrPublishApiClientPhotographer.php');
 unset($dpcDirname);
+die(microtime(true) - $start);
 define('QUERY_TYPE_XPATH', 1);
 define('QUERY_TYPE_JQUERY', 2);
-
 
 class DrPublishApiClient
 {
@@ -35,12 +35,6 @@ class DrPublishApiClient
     protected $publicationName;
     protected $medium = 'web';
 
-    /**
-     * Constructor for this class
-     *
-     * @param string $url URL to the Dr.Publish API
-     * @return void
-     */
     public function __construct($url, $publicationName)
     {
         $this->url = $url;
@@ -67,39 +61,21 @@ class DrPublishApiClient
         return $this->debug;
     }
 
-    /**
-     * Internal used to unit test the client
-     */
     public function setUnitTestMode()
     {
         $this->unitTestMode = true;
     }
 
-    /**
-     * Internal used to unit test the client
-     * @return boolean
-     */
     public function getUnitTestMode()
     {
         return $this->unitTestMode;
     }
 
-    /**
-     * Check if request is made from preview (backend)
-     *
-     * @return boolean
-     */
     protected function _isPreviewRequest()
     {
         return isset($_REQUEST['dp-preview']);
     }
 
-    /**
-     * Handle communications errors
-     *
-     * @param string $msg
-     * @return void
-     */
     public function serverError($msg, $httpStatusCode)
     {
         if ($httpStatusCode == 200) {
@@ -111,14 +87,6 @@ class DrPublishApiClient
         }
     }
 
-    /**
-     * Get list of articles from server
-     *
-     * @param string $query
-     * @param array options
-     * @return DrPublishApiClientList list elements are DrPublishApiClientArticle objects
-     * @throws DrPublishApiClientException
-     */
     public function searchArticles($query, $offset = 0, $limit = 5, $options = array())
     {
         $query .= "&offset={$offset}";
@@ -139,13 +107,6 @@ class DrPublishApiClient
         return $drPublishApiClientSearchList;
     }
 
-    /**
-     * Get article from server
-     *
-     * @param int $id
-     * @return DrPublishApiClientArticle
-     * @throws DrPublishApiClientException
-     */
     public function getArticle($id)
     {
         $url = $this->url . '/articles/' . $id . '.json';
@@ -158,10 +119,9 @@ class DrPublishApiClient
         return $this->createDrPublishApiClientArticle($result);
     }
 
-
     public function getInternalArticle($id, $apikey)
     {
-        $url = $this->url . '/articles/' . $id . '.json?scope=internal&apikey='. $apikey ;
+        $url = $this->url . '/articles/' . $id . '.json?scope=internal&apikey=' . $apikey;
         $response = $this->curl($url);
         $resultJson = $response->body;
         $result = json_decode($resultJson);
@@ -170,7 +130,6 @@ class DrPublishApiClient
         }
         return $this->createDrPublishApiClientArticle($result);
     }
-
 
     public function searchAuthors($query, $offset = 0, $limit = 5)
     {
@@ -351,12 +310,11 @@ class DrPublishApiClient
     protected function curl($url)
     {
         $url = str_replace(' ', '+', $url);
-        $this->requestUri =$url;
+        $this->requestUri = $url;
         if ($this->debug) {
             $url .= strpos($url, '?') === false ? '?' : '&';
             $url .= 'debug';
         }
-
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_COOKIESESSION, false);
@@ -366,7 +324,6 @@ class DrPublishApiClient
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         $res = curl_exec($ch);
         $info = curl_getinfo($ch);
-        //if ($this->debug) {
         $header = substr($res, 0, $info['header_size']);
         $this->searchQueryUrl = $header;
         $split = preg_split('#([\w|-]*): #', $header, -1, PREG_SPLIT_DELIM_CAPTURE);
@@ -375,11 +332,9 @@ class DrPublishApiClient
         for ($i = 1; $i < count($split) - 1; $i = $i + 2) {
             $headerArray[trim($split[$i])] = $split[$i + 1];
         }
-
         if (isset($headerArray['X-SearchServer-Query-URL'])) {
             $this->searchQueryUrl = $headerArray['X-SearchServer-Query-URL'];
         }
-        //}
         $body = substr($res, $info['header_size']);
         curl_close($ch);
         if ($info['http_code'] == 404) {
@@ -397,24 +352,13 @@ class DrPublishApiClient
         return $out;
     }
 
-    /**
-     * Create a resized image on harddisk
-     *
-     * @param string $currentSrc current image url (before resizing)
-     * @param string $type Image size descriptor
-     * @param string $imageServiceUrl DrPublish backoffice URL base, the one where the image resizer is located
-     * @param string $imagePublishUrl Out URL base for the generated image
-     * @throws DrPublishApiClientException;
-     */
     public static function resizeImage($currentSrc, $type, $imageServiceUrl, $imagePublishUrl)
     {
         $src = $currentSrc;
         $matches = mb_split('/', $src);
         $descriptorPos = count($matches) - 2;
-        //$descriptor = $matches[$descriptorPos];
         $matches[$descriptorPos] = $type;
         $newSrc = join('/', $matches);
-        // swap publish URL with service URL
         $newSrc = str_replace($imagePublishUrl, $imageServiceUrl, $newSrc);
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $newSrc . '?return-properties');
@@ -425,13 +369,11 @@ class DrPublishApiClient
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         $res = curl_exec($ch);
         $info = curl_getinfo($ch);
-        //$header = substr($res, 0, $info['header_size']);
         $body = substr($res, $info['header_size']);
         $props = json_decode($body, true);
         if (isset($props['error'])) {
             throw new DrPublishApiClientException('Error generating Image: ' . $props['error'], DrPublishApiClientException::IMAGE_CONVERTING_ERROR);
         }
-        // swap back to publish URL
         $props['src'] = str_replace($imageServiceUrl, $imagePublishUrl, $newSrc);
         return $props;
     }

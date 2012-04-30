@@ -62,6 +62,7 @@ class DrPublishDomElementList implements Iterator
         return $string;
 
     }
+
     public function innerContent()
     {
         $string = '';

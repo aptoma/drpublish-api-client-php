@@ -1,5 +1,4 @@
 <?php
-
 class DrPublishApiClientAuthor extends DrPublishApiClientArticleEntity
 {
 
@@ -13,10 +12,6 @@ class DrPublishApiClientAuthor extends DrPublishApiClientArticleEntity
         $this->userName = $data->username;
     }
 
-
-    /**
-     * Magic method to convert the autor to string (using its full name)
-     */
     public function __toString()
     {
         return $this->getFullName();

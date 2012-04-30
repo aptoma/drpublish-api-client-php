@@ -15,25 +15,16 @@ class DrPublishApiClientTag extends DrPublishApiClientArticleEntity
         $this->tagTypeName = $data->tagType->name;
     }
 
-    /**
-     * @return string
-     */
     public function getTagTypeName()
     {
         return $this->tagTypeName;
     }
 
-    /**
-     * @return string
-     */
     public function getTagTypeId()
     {
         return $this->tagTypeId;
     }
 
-    /**
-     * @return string
-     */
     public function getData()
     {
         return $this->data;

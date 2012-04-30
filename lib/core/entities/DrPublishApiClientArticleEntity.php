@@ -1,13 +1,15 @@
 <?
 abstract class DrPublishApiClientArticleEntity
 {
-    public function __construct($data) {
-        foreach($data as $key => $value) {
+    public function __construct($data)
+    {
+        foreach ($data as $key => $value) {
             $this->{$key} = $value;
         }
     }
 
-    public function __call($name, $arguments) {
+    public function __call($name, $arguments)
+    {
         if (substr($name, 0, 3) === 'get') {
             $varName = lcfirst(substr($name, 3));
             if (isset($this->{$varName})) {
@@ -17,5 +19,4 @@ abstract class DrPublishApiClientArticleEntity
             }
         }
     }
-
 }

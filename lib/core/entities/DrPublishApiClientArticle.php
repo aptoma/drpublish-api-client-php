@@ -16,7 +16,6 @@ class DrPublishApiClientArticle
         $this->buildArticleXmlContentElements();
     }
 
-
     public function __set($name, $value)
     {
         $this->data[$name] = $value;
@@ -106,19 +105,11 @@ class DrPublishApiClientArticle
         return $drPublishDomElementList;
     }
 
-    /**
-     * Get the image service url - used for image manipulation (resizing by now)
-     * @return string | null
-     */
     public function getImageServiceUrl()
     {
         return $this->data->service->imageServiceUrl;
     }
 
-    /**
-     * Get the image publish url - used for image manipulation (resizing by now)
-     * @return string | null
-     */
     public function getImagePublishUrl()
     {
         return $this->data->service->imagePublishUrl;
@@ -132,11 +123,6 @@ class DrPublishApiClientArticle
         }
     }
 
-    /**
-     * Gets all DPImages included in the article. A DPImage is an picture inserted by using the DrPublish image plugin
-     * @see DrPublishApiClientArticleImageElement
-     * @return DrPublishApiClientList List items type is DrPublishApiClientArticleImageElement
-     */
     public function getDPImages()
     {
         $drPublishDomElementList =  $this->find("div.dp-article-image");
@@ -154,21 +140,11 @@ class DrPublishApiClientArticle
 
     }
 
-    /**
-     * Gets the first DPImage of this article.
-     * @see DrPublishApiClientArticle::getDPImages()
-     * @return DrPublishApiClientArticleImageElement | null
-     */
     public function getLeadDPImage()
     {
         return $this->getDPImages()->item(0);
     }
 
-    /**
-   	 * Gets a list of DrPublishApiWebClientAuthor objects
-   	 * @see DrPublishApiClientAuthor
-   	 * @return DrPublishApiClientList
-   	 */
    	public function getDPAuthors($allData = false)
    	{
    		$list = new DrPublishApiClientList();

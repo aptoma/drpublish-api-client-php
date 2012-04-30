@@ -22,61 +22,36 @@ class DrPublishApiWebClientAuthor extends DrPublishApiClientAuthor
         }
     }
 
-    /**
-     * @param boolean $isOnAboutBox
-     * @return void
-     */
     public function setIsOnAboutBox($isOnAboutBox)
     {
         $this->isOnAboutBox = $isOnAboutBox;
     }
 
-    /**
-     * @return boolean
-     */
     public function getIsOnAboutBox()
     {
         return $this->isOnAboutBox;
     }
 
-    /**
-     * @param int $number
-     * @return void
-     */
     public function setCellPhone($number)
     {
         $this->cellPhone = $number;
     }
 
-    /**
-     * @return int
-     */
     public function getCellPhone()
     {
         return $this->cellPhone;
     }
 
-    /**
-     * @param string $name
-     * @return void
-     */
     public function setJobTitle($name)
     {
         $this->jobTitle = $name;
     }
 
-    /**
-     * @return string
-     */
     public function getJobTitle()
     {
         return $this->jobTitle;
     }
 
-    /**
-     * @param string $name
-     * @return void
-     */
     public function setTwitterUsername($name)
     {
         $this->twitterUsername = $name;
@@ -90,18 +65,11 @@ class DrPublishApiWebClientAuthor extends DrPublishApiClientAuthor
         return $this->twitterUsername;
     }
 
-    /**
-     * @param array $profileImages
-     * @return void
-     */
     public function setProfileImages($profileImages)
     {
         $this->profileImages = $profileImages;
     }
 
-    /**
-     * @return array key=image name
-     */
     public function getProfileImages()
     {
         return $this->profileImages;
