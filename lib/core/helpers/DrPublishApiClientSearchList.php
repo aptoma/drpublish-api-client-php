@@ -72,7 +72,7 @@ class DrPublishApiClientSearch
         if (isset($this->data->{$name})) {
             $this->data->{$name};
         }
-        return 'undefined';
+        return null;
     }
 
     public function __call($name, $arguments)
@@ -82,7 +82,7 @@ class DrPublishApiClientSearch
             if (isset($this->data->{$varName})) {
                 return $this->data->{$varName};
             }
-            return 'undefined';
+            return null;
         }
     }
 

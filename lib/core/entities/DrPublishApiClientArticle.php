@@ -77,11 +77,10 @@ class DrPublishApiClientArticle
                     return new DrPublishApiClientTextElement($content->{$varName}, $options);
                 }
             }
-            // customizable articletyp meta
             if (isset($this->data->meta->articleTypeMeta->{$varName})) {
                 return $this->data->meta->articleTypeMeta->{$varName};
             }
-            return 'undefined';
+            return null;
     }
 
     public function findImages()
