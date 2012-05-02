@@ -33,7 +33,7 @@ if (file_exists(dirname(__FILE__) . '/config.php')) {
     Public API URL
     <input type="text" id="dp-url" name="dp-url" value="<?=$dpUrl?>" style="width: 300px"/>
     Internal API URL
-    <input type="text" id="dp-url-internal" name="dp-url-url" value="<?=$dpUrlInternal?>" style="width: 300px"/>
+    <input type="text" id="dp-url-internal" name="dp-url-internal" value="<?=$dpUrlInternal?>" style="width: 300px"/>
     <br/>
     Publication
     <input type="text" id="dp-publication" name="dp-publication" value="<?=$publication?>" style="width: 100px"/>

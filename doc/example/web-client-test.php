@@ -9,11 +9,14 @@ require('inc/functions.php');
 ini_set('display_errors', 1);
 $action = isset($_GET['action']) ? $_GET['action'] : '';
 $publication = isset($_GET['publication']) ? $_GET['publication'] : '';
+$isInternal = isset($_GET['internal']) && $_GET['internal'] == '1';
+$apiKey = isset($_GET['dp-apikey']) ? $_GET['dp-apikey'] : null;
 $dpUrl = '';
-if (isset($_GET['dp-url'])) {
-	$dpUrl = $_GET['dp-url'];
-} else {
 
+if ($isInternal) {
+	$dpUrl = $_GET['dp-url-internal'];
+} else {
+	$dpUrl = $_GET['dp-url'];
 }
 
 $dpWebClient = new DrPublishApiWebClient($dpUrl, $publication);
@@ -23,7 +26,11 @@ switch ($action) {
     case 'article':
         try {
             $articleId = isset($_GET['article-id']) ? $_GET['article-id'] : 0;
-            $drpublishApiClientArticle = $dpWebClient->getArticle($articleId);
+            //$drPublishApiClientArticle = $dpWebClient->getArticle($articleId);
+           // $dpWebClient->triggerProtectedApiRequest($apiKey, $dpUrl);
+//            $drPublishProtectedApiClient = $dpWebClient->internalScopeClient($apiKey, $dpUrl);
+//            $drPublishApiClientArticle = $drPublishProtectedApiClient->getArticle(10069326);
+           // print_r($drPublishApiClientArticle); exit;
             $mainView = 'article';
         } catch (DrPublishApiClientException $e) {
             $mainView = 'error';
@@ -75,7 +82,7 @@ switch ($action) {
     case 'author':
         try {
             $authorId = isset($_GET['author-id']) ? $_GET['author-id'] : 0;
-            $drpublishApiClientAuthor = $dpWebClient->getAuthor($authorId);
+            $drPublishApiClientAuthor = $dpWebClient->getAuthor($authorId);
             $mainView = 'author';
         } catch (DrPublishApiClientException $e) {
             $mainView = 'error';
@@ -95,7 +102,7 @@ switch ($action) {
     case 'tag':
         try {
             $tagId = isset($_GET['tag-id']) ? $_GET['tag-id'] : 0;
-            $drpublishApiClientTag = $dpWebClient->getTag($tagId);
+            $drPublishApiClientTag = $dpWebClient->getTag($tagId);
             $mainView = 'tag';
         } catch (DrPublishApiClientException $e) {
             $mainView = 'error';
@@ -115,7 +122,7 @@ switch ($action) {
     case 'category':
         try {
             $categoryId = isset($_GET['category-id']) ? $_GET['category-id'] : 0;
-            $drpublishApiClientCategory = $dpWebClient->getCategory($categoryId);
+            $drPublishApiClientCategory = $dpWebClient->getCategory($categoryId);
             $mainView = 'category';
         } catch (DrPublishApiClientException $e) {
             $mainView = 'error';
@@ -135,7 +142,7 @@ switch ($action) {
     case 'dossier':
         try {
             $dossierId = isset($_GET['dossier-id']) ? $_GET['dossier-id'] : 0;
-            $drpublishApiClientDossier = $dpWebClient->getDossier($dossierId);
+            $drPublishApiClientDossier = $dpWebClient->getDossier($dossierId);
             $mainView = 'dossier';
         } catch (DrPublishApiClientException $e) {
             $mainView = 'error';
@@ -155,7 +162,7 @@ switch ($action) {
     case 'source':
         try {
             $sourceId = isset($_GET['source-id']) ? $_GET['source-id'] : 0;
-            $drpublishApiClientSource = $dpWebClient->getSource($sourceId);
+            $drPublishApiClientSource = $dpWebClient->getSource($sourceId);
             $mainView = 'source';
         } catch (DrPublishApiClientException $e) {
             $mainView = 'error';

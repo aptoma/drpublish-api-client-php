@@ -30,11 +30,47 @@ class DrPublishApiClient
     protected $debug = false;
     protected $publicationName;
     protected $medium = 'web';
+    private $protectedRequest = false;
+    private $protectedApiUrl;
+    private $apiKey;
+    private $internalScopeClient = null;
 
     public function __construct($url, $publicationName)
     {
         $this->url = $url;
+        $this->protectedApiUrl = $url;
         $this->publicationName = $publicationName;
+    }
+
+    public function internalScopeClient($apiKey, $protectedApiUrl = null)
+    {
+        if ($this->internalScopeClient !== null)
+        {
+            return $this->internalScopeClient;
+        }
+        if ($protectedApiUrl === null) {
+            $protectedApiUrl = $this->url;
+        }
+        $internalScopeClient = new DrPublishApiClient($protectedApiUrl, $this->publicationName);
+        $internalScopeClient->setApiKey($apiKey);
+        $internalScopeClient->setProtectedMode(true);
+        $this->internalScopeClient = $internalScopeClient;
+        return $internalScopeClient;
+    }
+
+    public function setApiKey($key)
+    {
+        $this->apiKey = $key;
+    }
+
+    public function setProtectedMode($bool)
+    {
+        $this->protectedRequest = $bool;
+    }
+    
+    public function setApiUrl($url)
+    {
+        $this->url = $url;
     }
 
     public function setMedium($medium)
@@ -98,7 +134,7 @@ class DrPublishApiClient
         if ($query[0] != '&') {
             $query = '&' . $query;
         }
-        $url = $this->url . '/articles.json?publication=' . $this->publicationName . $query;
+        $url = '/articles.json?publication=' . $this->publicationName . $query;
         $response = $this->curl($url);
         $result = json_decode($response->body);
         $drPublishApiClientSearchList = new DrPublishApiClientSearchList($result->search, $response->headers);
@@ -111,7 +147,7 @@ class DrPublishApiClient
 
     public function getArticle($id)
     {
-        $url = $this->url . '/articles/' . $id . '.json';
+        $url =  '/articles/' . $id . '.json';
         $response = $this->curl($url);
         $resultJson = $response->body;
         $result = json_decode($resultJson);
@@ -121,22 +157,11 @@ class DrPublishApiClient
         return $this->createDrPublishApiClientArticle($result);
     }
 
-    public function getInternalArticle($id, $apikey)
-    {
-        $url = $this->url . '/articles/' . $id . '.json?scope=internal&apikey=' . $apikey;
-        $response = $this->curl($url);
-        $resultJson = $response->body;
-        $result = json_decode($resultJson);
-        if (empty($result)) {
-            throw new DrPublishApiClientException("No article data retrieved for article-id='{$id}'", DrPublishApiClientException::NO_DATA_ERROR);
-        }
-        return $this->createDrPublishApiClientArticle($result);
-    }
 
     public function searchAuthors($query, $limit = 5, $offset = 0)
     {
         $query = urldecode($query);
-        $url = $this->url . '/users.json?' . $query . '&offset=' . $offset . '&limit=' . $limit;
+        $url =  '/users.json?' . $query . '&offset=' . $offset . '&limit=' . $limit;
         $response = $this->curl($url);
         $responseObject = json_decode($response->body);
         $drPublishApiClientSearchList = new DrPublishApiClientSearchList($responseObject->search, $response->headers);
@@ -151,7 +176,7 @@ class DrPublishApiClient
 
     public function getAuthor($id)
     {
-        $url = $this->url . '/users/' . $id . '.json';
+        $url =  '/users/' . $id . '.json';
         $response = $this->curl($url);
         $responseObject = json_decode($response->body);
         if (empty($responseObject)) {
@@ -163,7 +188,7 @@ class DrPublishApiClient
     public function searchTags($query, $limit = 5, $offset = 0)
     {
         $query = urldecode($query);
-        $url = $this->url . '/tags.json?' . $query . '&offset=' . $offset . '&limit=' . $limit;
+        $url =  '/tags.json?' . $query . '&offset=' . $offset . '&limit=' . $limit;
         $response = $this->curl($url);
         $responseObject = json_decode($response->body);
         $drPublishApiClientSearchList = new DrPublishApiClientSearchList($responseObject->search, $response->headers);
@@ -178,7 +203,7 @@ class DrPublishApiClient
 
     public function getTag($id)
     {
-        $url = $this->url . '/tags/' . $id . '.json';
+        $url = '/tags/' . $id . '.json';
         $response = $this->curl($url);
         $responseObject = json_decode($response->body);
         if (empty($responseObject)) {
@@ -190,7 +215,7 @@ class DrPublishApiClient
 
     public function searchCategories($query, $limit = 5, $offset = 0)
     {
-        $url = $this->url . '/categories.json?' . $query . '&offset=' . $offset . '&limit=' . $limit;
+        $url =  '/categories.json?' . $query . '&offset=' . $offset . '&limit=' . $limit;
         $response = $this->curl($url);
         $responseObject = json_decode($response->body);
         $drPublishApiClientSearchList = new DrPublishApiClientSearchList($responseObject->search, $response->headers);
@@ -205,7 +230,7 @@ class DrPublishApiClient
 
     public function getCategory($id)
     {
-        $url = $this->url . '/categories/' . $id . '.json';
+        $url =  '/categories/' . $id . '.json';
         $response = $this->curl($url);
         $responseObject = json_decode($response->body);
         if (empty($responseObject)) {
@@ -216,7 +241,7 @@ class DrPublishApiClient
 
     public function searchDossiers($query, $limit = 5, $offset = 0)
     {
-        $url = $this->url . '/dossiers.json?' . $query . '&offset=' . $offset . '&limit=' . $limit;
+        $url =  '/dossiers.json?' . $query . '&offset=' . $offset . '&limit=' . $limit;
         $response = $this->curl($url);
         $responseObject = json_decode($response->body);
         $drPublishApiClientSearchList = new DrPublishApiClientSearchList($responseObject->search, $response->headers);
@@ -230,7 +255,7 @@ class DrPublishApiClient
 
     public function getDossier($id)
     {
-        $url = $this->url . '/dossiers/' . $id . '.json';
+        $url = '/dossiers/' . $id . '.json';
         $response = $this->curl($url);
         $responseObject = json_decode($response->body);
         if (empty($responseObject)) {
@@ -241,7 +266,7 @@ class DrPublishApiClient
 
     public function searchSources($query, $limit = 5, $offset = 0)
     {
-        $url = $this->url . '/sources.json?' . $query . '&offset=' . $offset . '&limit=' . $limit;
+        $url =  '/sources.json?' . $query . '&offset=' . $offset . '&limit=' . $limit;
         $response = $this->curl($url);
         $responseObject = json_decode($response->body);
         $drPublishApiClientSearchList = new DrPublishApiClientSearchList($responseObject->search, $response->headers);
@@ -255,7 +280,7 @@ class DrPublishApiClient
 
     public function getSource($id)
     {
-        $url = $this->url . '/sources/' . $id . '.json';
+        $url =  '/sources/' . $id . '.json';
         $response = $this->curl($url);
         $responseObject = json_decode($response->body);
         if (empty($responseObject)) {
@@ -309,9 +334,16 @@ class DrPublishApiClient
         return new DrPublishApiClientCategory($category, $this);
     }
 
-    protected function curl($url)
+    protected function curl($params)
     {
-        $url = str_replace(' ', '+', $url);
+        $params = str_replace(' ', '+', $params);
+        if ($this->protectedRequest) {
+            $url = $this->protectedApiUrl . $params;
+            $url .= strpos($params, '?') === false ? '?' : '&';
+            $url .= 'scope=internal&apikey=' . $this->apiKey;
+        } else {
+            $url = $this->url . $params;
+        }
         $this->requestUri = $url;
         if ($this->debug) {
             $url .= strpos($url, '?') === false ? '?' : '&';
@@ -323,9 +355,11 @@ class DrPublishApiClient
         curl_setopt($ch, CURLOPT_HEADER, 1);
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
         $res = curl_exec($ch);
         $info = curl_getinfo($ch);
+        //$e = curl_error($ch);
         $header = substr($res, 0, $info['header_size']);
         $this->searchQueryUrl = $header;
         $split = preg_split('#([\w|-]*): #', $header, -1, PREG_SPLIT_DELIM_CAPTURE);
@@ -368,6 +402,7 @@ class DrPublishApiClient
         curl_setopt($ch, CURLOPT_HEADER, 1);
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         $res = curl_exec($ch);
         $info = curl_getinfo($ch);

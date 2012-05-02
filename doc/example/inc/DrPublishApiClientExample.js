@@ -51,7 +51,6 @@ var DrPublishApiClientExmample = {
             $('#api-response').fadeIn(120, function () {
                 var action = form.attr('action');
                 var params = 'action=' + action + '&' + form.serialize();
-                params += '&publication=' + $('#dp-publication').val();
                 DrPublishApiClientExmample.sendGetRequest(params);
             });
             return false;
@@ -90,7 +89,10 @@ var DrPublishApiClientExmample = {
     },
 
     sendGetRequest:function (params) {
+        params += '&publication=' + $('#dp-publication').val();
         params += '&dp-url=' + $('#dp-url').val();
+        params += '&dp-url-internal=' + $('#dp-url-internal').val();
+        params += '&dp-apikey=' + $('#dp-apikey').val();
         jQuery.get('web-client-test.php?' + params, function (data) {
             $('#api-response').fadeOut(120, function () {
                 $('#api-response').html('no response');
