@@ -129,13 +129,20 @@ class DrPublishDomElement
         return $this->ownerDocument->saveXML($this->domElement);
     }
 
-    /**
-     * Returns the content of the root element
-     * @return string
-     * @deprecated
-     */
     public function innerContent()
     {
        return preg_replace(array('#^<[^>]*>#','#</[^>]*>$#'), '', $this->content());
+    }
+
+    public function html()
+    {
+        $xml = $this->ownerDocument->saveXML($this->domElement, LIBXML_NOEMPTYTAG);
+        return preg_replace('!></(meta|link|base|basefont|param|img|br|hr|area|input)>!', ' />', $xml);
+    }
+
+    public function innerHtml()
+    {
+       $xhtml = $this->html();
+       return preg_replace(array('#^<[^>]*>#','#</[^>]*>$#'), '', $xhtml);
     }
 }

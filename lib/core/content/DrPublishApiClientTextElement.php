@@ -16,4 +16,14 @@ class DrPublishApiClientTextElement extends DrPublishApiClientArticleElement
        return $this->content();
     }
 
+    public function html()
+    {
+        return $this->content();
+    }
+
+    public function innerHtml()
+    {
+        return $this->innerContent();
+    }
+
 }

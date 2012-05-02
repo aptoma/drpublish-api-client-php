@@ -52,6 +52,8 @@ class DrPublishApiClient
             $protectedApiUrl = $this->url;
         }
         $internalScopeClient = new DrPublishApiClient($protectedApiUrl, $this->publicationName);
+        $internalScopeClient->setMedium($this->medium);
+        $internalScopeClient->setDebugMode($this->debug);
         $internalScopeClient->setApiKey($apiKey);
         $internalScopeClient->setProtectedMode(true);
         $this->internalScopeClient = $internalScopeClient;
@@ -349,6 +351,7 @@ class DrPublishApiClient
             $url .= strpos($url, '?') === false ? '?' : '&';
             $url .= 'debug';
         }
+
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_COOKIESESSION, false);
@@ -359,6 +362,7 @@ class DrPublishApiClient
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
         $res = curl_exec($ch);
         $info = curl_getinfo($ch);
+
         //$e = curl_error($ch);
         $header = substr($res, 0, $info['header_size']);
         $this->searchQueryUrl = $header;

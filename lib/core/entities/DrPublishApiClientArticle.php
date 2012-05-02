@@ -62,20 +62,23 @@ class DrPublishApiClientArticle
                 }
             }
             // article content
-            $content = $this->data->contents->{$this->medium};
-            if (isset($content->{$varName})) {
-                $templateElement = $this->data->templates->{$this->medium}->elements->{$varName};
-                if (isset($this->articleContentXmlElements[$varName])) {
-                    return $this->articleContentXmlElements[$varName];
+            if (isset($this->data->contents)) {
+                $content = $this->data->contents->{$this->medium};
+                if ($content !== null && isset($content->{$varName})) {
+                    $templateElement = $this->data->templates->{$this->medium}->elements->{$varName};
+                    if (isset($this->articleContentXmlElements[$varName])) {
+                        return $this->articleContentXmlElements[$varName];
+                    }
+                    $options = new stdClass();
+                    $options->medium = $this->medium;
+                    $options->dataType = $templateElement->dataType;
+                    if ($templateElement->dataType == 'xml') {
+                        return new DrPublishApiClientXmlElement($content->{$varName}, $options);
+                    } else {
+                        return new DrPublishApiClientTextElement($content->{$varName}, $options);
+                    }
                 }
-                $options = new stdClass();
-                $options->medium = $this->medium;
-                $options->dataType = $templateElement->dataType;
-                if ($templateElement->dataType == 'xml') {
-                    return new DrPublishApiClientXmlElement($content->{$varName}, $options);
-                } else {
-                    return new DrPublishApiClientTextElement($content->{$varName}, $options);
-                }
+
             }
             if (isset($this->data->meta->articleTypeMeta->{$varName})) {
                 return $this->data->meta->articleTypeMeta->{$varName};
@@ -132,11 +135,6 @@ class DrPublishApiClientArticle
             $imageList->add($drPublishApiClientArticleElement);
         }
         return $imageList;
-    }
-
-    public function getManiCategory()
-    {
-
     }
 
     public function getLeadDPImage()

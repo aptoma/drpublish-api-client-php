@@ -46,14 +46,24 @@ class DrPublishApiClientXmlElement extends DrPublishApiClientArticleElement
         return (string)$this->data;
     }
 
-    /**
-     * Returns the content of the root element
-     * @return string
-     * @deprecated
-     */
+    public function html()
+    {
+        if ($this->dom === null) {
+            $this->initDom();
+        }
+        $xml = $this->dom->saveXml($this->dom->documentElement, LIBXML_NOEMPTYTAG);
+        return preg_replace('!></(meta|link|base|basefont|param|img|br|hr|area|input)>!', ' />', $xml);
+    }
+
     public function innerContent()
     {
         return preg_replace(array('#^<[^>]*>#','#</[^>]*>$#'), '', $this->content());
+    }
+
+    public function innerHtml()
+    {
+       $xhtml = $this->html();
+       return preg_replace(array('#^<[^>]*>#','#</[^>]*>$#'), '', $xhtml);
     }
 
 }

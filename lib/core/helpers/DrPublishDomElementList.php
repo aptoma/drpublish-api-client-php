@@ -70,7 +70,24 @@ class DrPublishDomElementList implements Iterator
             $string .= $domElement->innerContent();
         }
         return $string;
+    }
 
+    public function html()
+    {
+        $string = '';
+        foreach ($this->elements as $domElement) {
+            $string .= $domElement->html();
+        }
+        return $string;
+    }
+
+    public function innerHtml()
+    {
+        $string = '';
+        foreach ($this->elements as $domElement) {
+            $string .= $domElement->innerHtml();
+        }
+        return $string;
     }
 
     public function getAttributes($name)

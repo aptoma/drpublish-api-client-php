@@ -20,17 +20,16 @@ if ($isInternal) {
 }
 
 $dpWebClient = new DrPublishApiWebClient($dpUrl, $publication);
+if ($isInternal) {
+    $dpWebClient = $dpWebClient->internalScopeClient($apiKey, $dpUrl);
+}
 $dpWebClient->setDebugMode();
 
 switch ($action) {
     case 'article':
         try {
             $articleId = isset($_GET['article-id']) ? $_GET['article-id'] : 0;
-            //$drPublishApiClientArticle = $dpWebClient->getArticle($articleId);
-           // $dpWebClient->triggerProtectedApiRequest($apiKey, $dpUrl);
-//            $drPublishProtectedApiClient = $dpWebClient->internalScopeClient($apiKey, $dpUrl);
-//            $drPublishApiClientArticle = $drPublishProtectedApiClient->getArticle(10069326);
-           // print_r($drPublishApiClientArticle); exit;
+            $drPublishApiClientArticle = $dpWebClient->getArticle($articleId);
             $mainView = 'article';
         } catch (DrPublishApiClientException $e) {
             $mainView = 'error';

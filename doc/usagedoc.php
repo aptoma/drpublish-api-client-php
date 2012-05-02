@@ -86,18 +86,25 @@ print $published;
 </div>
 <code class="indent1">
 $someElement = $drPublishWebClientArticle->find('div.foo')->item(0);
-print $someElement();
 print $someElement->content();
 print $someElement->innerContent();
+print $someElement->html();
+print $someElement->innerHtml();
 </code>
 <div class="code-comment indent1">
-While the toString method and the content() method return the complete content including the found element itself, the innerContent() method returns only the content of the element
+While the toString method and the content() method return the complete content including the found element itself, the innerContent() method returns only the content of the element.
+The html() and innerHtml() methods return a HTML interpretation of the value returned by content()/innerContent(), which means avoid non-empty tags compliant to W3C standards.
 </div>
 
 <div class="output indent1">
-    &lt;div class="foo"&gt;This is &lt;strong&gt;really&lt;/strong&gt; important&lt;/div&gt;
-    &lt;div class="foo"&gt;This is &lt;strong&gt;really&lt;/strong&gt; important&lt;/div&gt;
-    This is &lt;strong&gt;really&lt;/strong&gt; important
+    &lt;div class="foo"&gt;This is &lt;strong&gt;really&lt;/strong&gt; important &lt;iframe src="http://somewhere" /&gt; &lt;/div&gt;
+
+    This is &lt;strong&gt;really&lt;/strong&gt; important &lt;iframe src="http://somewhere" /&gt;
+
+    &lt;div class="foo"&gt;This is &lt;strong&gt;really&lt;/strong&gt; important &lt;iframe src="http://somewhere" &gt;&lt;/iframe&gt; &lt;/div&gt;
+
+    This is &lt;strong&gt;really&lt;/strong&gt; important &lt;iframe src="http://somewhere" &gt;&lt;/iframe&gt;
+
 </div>
 
 <div class="code-comment indent1">
@@ -219,17 +226,34 @@ $drPublishDomElementList = $drPublishApiWebClientArticle->getStory()->find('img'
 $drPublishDomElementList->remove();
 </code>
 
-<h3 id="article-images">Handle article images</h3>
+<h3 id="article-images">Handle article images; resizing on the fly</h3>
 <div class="code-comment">
 The DrPublishApiClient provides functionality for generating resized images in any format on the fly. Doing this will send a request to the DrPublish image converter service which will check if an image with the requested size already exists. If not, the service will create it and store it on disk.<br/>
     DrPublishApiClient automatically change the appropriate parameters of the image object to match the generated one.
 </div>
 <code>
-    $images = $drPublishApiClient->getDPImages();
-    foreach ($images as $image) {
-        $image->resizeImage(325);
-    }
+$images = $drPublishApiClient->getDPImages();
+foreach ($images as $image) {
+    $image->resizeImage(325);
+}
 </code>
+
+<h3 id="internal-articles">Accessing unpublished articles for preview and other internal use</h3>
+<div class="code-comment">
+ Internal data can be accessed via HTTPS and the use of an API key. This key can be generated for any user in the DrPublish account admin area.<br/>
+ The default address of the internal scope is: <strong>https://your-host:9443</strong>, but the address/port may differ from this dependent on your server setup. Please ask your system administrator.
+</div>
+<code>
+$apiKey = 'DREF12FU78PAUYYI9902E474';
+$internalScopeUrl = 'https://stefan.aptoma.no:9443';
+$internalScopeClient = $drPublishApiWebClient->internalScopeClient($apiKey, $internalScopeUrl);
+$drPublishApiClientSearchList = $internalScopeClient->searchArticles($query);
+$drPubishApiClientArticle = $internalScopeClient->getArticle(23422);
+</code>
+<div class="code-comment">
+ $internalScopeClient in the example above is a secured instance of DrPublishApiClient, thus it includes all its functionality but the data will be accessed in an encrypted way.
+</div>
+
 
 <h2 id="authors">Authors</h2>
 <div class="code-comment">
@@ -323,6 +347,9 @@ foreach($drPublishApiClientSearchList as $drPublishApiClientTag) {
     $tagName = $drPublishApiClientTag->getName();
 }
 </code>
+
+
+
 
 
 
