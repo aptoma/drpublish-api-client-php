@@ -6,7 +6,7 @@
         <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
         <head>
             <title>DrPublish API doc</title>
-            <script type="text/javascript" src="inc/jquery.min.js"></script>
+            <script type="text/javascript" src="inc/jquery.js"></script>
             <link rel="stylesheet" href="inc/toc.css" type="text/css" media="all" charset="utf-8" />
         </head>
         <body>

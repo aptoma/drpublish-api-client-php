@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
     <title>DrPublishWebClient doc</title>
-    <script type="text/javascript" src="inc/jquery.min.js"></script>
+    <script type="text/javascript" src="inc/jquery.js"></script>
     <link type="text/css" rel="stylesheet" media="all" href="inc/docstyles.css"/>
     <link type="text/css" rel="stylesheet" media="all" href="inc/toc.css"/>
 </head>
