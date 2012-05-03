@@ -1,15 +1,15 @@
 <h2>Tag search</h2>
 <? include('inc/search-meta.inc.php') ?>
 <ul>
-<? foreach ($drPublishApiClientSearchList as $drpublishApiClientTag) { ?>
+<? foreach ($drPublishApiClientSearchList as $drPublishApiClientTag) { ?>
         <li>
-            <strong><?= $drpublishApiClientTag->getName() ?></strong>
-             [id=<?= $drpublishApiClientTag->getId() ?>]
+            <strong><?= $drPublishApiClientTag->getName() ?></strong>
+             [id=<?= $drPublishApiClientTag->getId() ?>]
             <br />
             <span style="color: #666">
-            Type: <?=$drpublishApiClientTag->getTagTypeName(); ?> (id=<?=$drpublishApiClientTag->getTagTypeId(); ?>)
+            Type: <?=$drPublishApiClientTag->getTagTypeName(); ?> (id=<?=$drPublishApiClientTag->getTagTypeId(); ?>)
                 <br/>
-            Content:  <?= htmlentities($drpublishApiClientTag->getContent()); ?>
+            Content:  <?= htmlentities($drPublishApiClientTag->getContent()); ?>
             </span>
         </li>
 <? } ?>

@@ -5,18 +5,18 @@
 <ul>
 
 <?php
-	foreach ($drPublishApiClientSearchList as $drpublishApiClientArticle) {
+	foreach ($drPublishApiClientSearchList as $drPublishApiClientArticle) {
 		?>
 		<li>
-				[<?=$drpublishApiClientArticle->getId()?>]
-				<strong><?=$drpublishApiClientArticle->getTitle()?></strong>
+				[<?=$drPublishApiClientArticle->getId()?>]
+				<strong><?=$drPublishApiClientArticle->getTitle()?></strong>
                 <br/>
             <span style="color: #555">
-                published: <?=$drpublishApiClientArticle->getPublished() ?> | written by: <?=$drpublishApiClientArticle->getDPAuthors() ?> |
-                categories: <?=$drpublishApiClientArticle->getDPCategories() ?> |
-                tags:  <?=$drpublishApiClientArticle->getDPTags() ?>
+                published: <?=$drPublishApiClientArticle->getPublished() ?> | written by: <?=$drPublishApiClientArticle->getDPAuthors() ?> |
+                categories: <?=$drPublishApiClientArticle->getDPCategories() ?> |
+                tags:  <?=$drPublishApiClientArticle->getDPTags() ?>
                 <br/>
-               <?=$drpublishApiClientArticle->getPreamble()?>
+               <?=$drPublishApiClientArticle->getPreamble()?>
                 </span>
 		</li>
 		<?php

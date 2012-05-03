@@ -15,7 +15,7 @@ abstract class DrPublishApiClientArticleEntity
             if (isset($this->{$varName})) {
                 return $this->{$varName};
             } else {
-                return 'undefined';
+                return null;
             }
         }
     }

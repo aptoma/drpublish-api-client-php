@@ -2,10 +2,10 @@
 <? include('inc/search-meta.inc.php') ?>
 <br/>
 <ul>
-<? foreach ($drPublishApiClientSearchList as $drpublishApiClientSource) { ?>
+<? foreach ($drPublishApiClientSearchList as $drPublishApiClientSource) { ?>
         <li>
-            <strong><?= $drpublishApiClientSource->getName() ?></strong>
-             [id=<?= $drpublishApiClientSource->getId() ?>]
+            <strong><?= $drPublishApiClientSource->getName() ?></strong>
+             [id=<?= $drPublishApiClientSource->getId() ?>]
             <br />
             <span style="color: #666">
             </span>

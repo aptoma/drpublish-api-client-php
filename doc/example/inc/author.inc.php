@@ -1,13 +1,13 @@
 <h2>Author</h2>
 
-Name: <strong><?=$drpublishApiClientAuthor->getFullName() ?></strong> <br/>
+Name: <strong><?=$drPublishApiClientAuthor->getFullName() ?></strong> <br/>
 
-Username : <?=$drpublishApiClientAuthor->getUserName() ?> <br/>
-Email : <?=$drpublishApiClientAuthor->getEmail() ?> <br/>
+Username : <?=$drPublishApiClientAuthor->getUserName() ?> <br/>
+Email : <?=$drPublishApiClientAuthor->getEmail() ?> <br/>
 
  <hr />
  All properties :
 <pre>
 
-<? print_r($drpublishApiClientAuthor)?>
+<? print_r($drPublishApiClientAuthor)?>
 </pre>

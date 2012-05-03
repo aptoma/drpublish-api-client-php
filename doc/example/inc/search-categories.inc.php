@@ -1,12 +1,12 @@
 <h2>Category search</h2>
 <? include('inc/search-meta.inc.php') ?>
 <ul>
-<? foreach ($drPublishApiClientSearchList as $drpublishApiClientCategory) { ?>
+<? foreach ($drPublishApiClientSearchList as $drPublishApiClientCategory) { ?>
         <li>
-            <strong><?= $drpublishApiClientCategory->getName() ?></strong>
-             [id=<?= $drpublishApiClientCategory->getId() ?>]
+            <strong><?= $drPublishApiClientCategory->getName() ?></strong>
+             [id=<?= $drPublishApiClientCategory->getId() ?>]
             <br />
-            Parent category: <?=$drpublishApiClientCategory->getParentName() ?>
+            Parent category: <?=$drPublishApiClientCategory->getParentName() ?>
             <span style="color: #666">
             </span>
         </li>

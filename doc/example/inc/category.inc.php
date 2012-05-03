@@ -1,9 +1,9 @@
 <h2>Category</h2>
-    <strong><?= $drpublishApiClientCategory->getName() ?></strong>
-     [id=<?= $drpublishApiClientCategory->getId() ?>]
+    <strong><?= $drPublishApiClientCategory->getName() ?></strong>
+     [id=<?= $drPublishApiClientCategory->getId() ?>]
     <br />
-    Parent category id: <?=$drpublishApiClientCategory->getParentId() ?>
+    Parent category id: <?=$drPublishApiClientCategory->getParentId() ?>
     <br />
-    Parent category name: <?=$drpublishApiClientCategory->getParentName() ?>
+    Parent category name: <?=$drPublishApiClientCategory->getParentName() ?>
     <span style="color: #666">
     </span>

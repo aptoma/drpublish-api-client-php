@@ -105,18 +105,18 @@ DrPublishApiWebClient::getDPTags()]</h3>
 <h3>DPImages</h3>
 <div class="result">
     <h4>Including wrapping markups [DrPublishApiClientList DrPublishApiWebClient::getDPImages()]</h4>
-    <? $drpublishApiClientImages = $drPublishApiClientArticle->getDPImages(); ?>
+    <? $drPublishApiClientImages = $drPublishApiClientArticle->getDPImages(); ?>
     <div class="content-container">
-        <?=$drpublishApiClientImages?>
+        <?=$drPublishApiClientImages?>
         
         <?php
-        foreach ($drpublishApiClientImages as $drpublishApiClientImage) {
+        foreach ($drPublishApiClientImages as $drPublishApiClientImage) {
             print "<br/><br/> photographer: ";
-            printResult($drpublishApiClientImage->getPhotographer());
-            print "<br/> title: " . $drpublishApiClientImage->getTitle();
-            print "<br/> description: " . $drpublishApiClientImage->getDescription();
-            print "<br/> source: " . $drpublishApiClientImage->getSource();
-            //print "<br/> image element " . 	$drpublishApiClientImage->getImage();
+            printResult($drPublishApiClientImage->getPhotographer());
+            print "<br/> title: " . $drPublishApiClientImage->getTitle();
+            print "<br/> description: " . $drPublishApiClientImage->getDescription();
+            print "<br/> source: " . $drPublishApiClientImage->getSource();
+            //print "<br/> image element " . 	$drPublishApiClientImage->getImage();
         }
 
         ?>
@@ -124,12 +124,12 @@ DrPublishApiWebClient::getDPTags()]</h3>
     DrPublishApiWebClientImageElement::getThumbnail(size)]</h4>
     <pre>
     <?php
-    foreach ($drpublishApiClientImages as $drpublishApiClientImageElement) {
-        $drpublishApiClientImage = $drpublishApiClientImageElement->getResizedImage(75);
-        print printResult($drpublishApiClientImage);
-        print ($drpublishApiClientImage);
-        print " width=" . $drpublishApiClientImage->getWidth();
-        print " src=" . $drpublishApiClientImage->getUrl();
+    foreach ($drPublishApiClientImages as $drPublishApiClientImageElement) {
+        $drPublishApiClientImage = $drPublishApiClientImageElement->getResizedImage(75);
+        print printResult($drPublishApiClientImage);
+        print ($drPublishApiClientImage);
+        print " width=" . $drPublishApiClientImage->getWidth();
+        print " src=" . $drPublishApiClientImage->getUrl();
     }
     exit;
     ?>

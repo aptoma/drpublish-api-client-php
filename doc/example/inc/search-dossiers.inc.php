@@ -1,10 +1,10 @@
 <h2>Dossier search</h2>
 <? include('inc/search-meta.inc.php') ?>
 <ul>
-<? foreach ($drPublishApiClientSearchList as $drpublishApiClientDossier) { ?>
+<? foreach ($drPublishApiClientSearchList as $drPublishApiClientDossier) { ?>
         <li>
-            <strong><?= $drpublishApiClientDossier->getName() ?></strong>
-             [id=<?= $drpublishApiClientDossier->getId() ?>]
+            <strong><?= $drPublishApiClientDossier->getName() ?></strong>
+             [id=<?= $drPublishApiClientDossier->getId() ?>]
             <br />
             <span style="color: #666">
             </span>

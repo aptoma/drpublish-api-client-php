@@ -1,14 +1,14 @@
 <h2>Dossier</h2>
-    <strong><?= $drpublishApiClientDossier->getName() ?></strong>
-     [id=<?= $drpublishApiClientDossier->getId() ?>]
+    <strong><?= $drPublishApiClientDossier->getName() ?></strong>
+     [id=<?= $drPublishApiClientDossier->getId() ?>]
     <br />
-     Parent dossier name: <?=$drpublishApiClientDossier->getParentName() ?>
+     Parent dossier name: <?=$drPublishApiClientDossier->getParentName() ?>
     <br />
-     original id: <?=$drpublishApiClientDossier->getOriginalId()?>
+     original id: <?=$drPublishApiClientDossier->getOriginalId()?>
     <br />
-     start: <?=$drpublishApiClientDossier->getStart()?>
+     start: <?=$drPublishApiClientDossier->getStart()?>
     <br />
-    expire: <?=$drpublishApiClientDossier->getExpire()?>
+    expire: <?=$drPublishApiClientDossier->getExpire()?>
     <span style="color: #666">
     <br/>
     </span>

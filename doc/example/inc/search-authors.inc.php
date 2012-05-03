@@ -1,10 +1,10 @@
 <? include('inc/search-meta.inc.php') ?>
 <h2>Author search</h2>
 <ul>
-<? foreach ($drPublishApiClientSearchList as $drpublishApiClientAuthor) { ?>
+<? foreach ($drPublishApiClientSearchList as $drPublishApiClientAuthor) { ?>
         <li>
-            <strong><?= $drpublishApiClientAuthor->getFullName() ?></strong>
-             [id=<?= $drpublishApiClientAuthor->getId() ?>, username=<?= $drpublishApiClientAuthor->getUserName() ?>]
+            <strong><?= $drPublishApiClientAuthor->getFullName() ?></strong>
+             [id=<?= $drPublishApiClientAuthor->getId() ?>, username=<?= $drPublishApiClientAuthor->getUserName() ?>]
         </li>
 <? } ?>
 </ul>
