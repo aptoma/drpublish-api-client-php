@@ -4,6 +4,7 @@ class DrPublishApiClientTag extends DrPublishApiClientArticleEntity
 {
     protected $id;
     protected $name;
+    protected $content;
     protected $data;
     protected $tagTypeId;
     protected $tagTypeName;
@@ -23,11 +24,6 @@ class DrPublishApiClientTag extends DrPublishApiClientArticleEntity
     public function getTagTypeId()
     {
         return $this->tagTypeId;
-    }
-
-    public function getData()
-    {
-        return $this->data;
     }
 
     public function __toString()

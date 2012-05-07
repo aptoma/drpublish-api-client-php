@@ -5,22 +5,18 @@ class DrPublishApiClientDossier extends DrPublishApiClientArticleEntity
     protected $id;
     protected $name;
     protected $parentId;
-    protected $isMain;
+    protected $parentName;
+    protected $publicationId;
+    protected $priority;
+    protected $originalId;
+    protected $deleted;
+    protected $start;
+    protected $expire;
     protected $parent;
-
-    public function getParentId()
-    {
-        return $this->parentId;
-    }
 
     public function getParent(DrPublishApiClient $dpClient)
     {
         return $dpClient->getCategory($this->parentId);
-    }
-
-    public function getIsMain()
-    {
-        return $this->isMain;
     }
 
     public function getParentName()

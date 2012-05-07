@@ -7,7 +7,6 @@ class DrPublishApiClientArticle
     protected $medium;
     protected $articleContentXmlElements = null;
 
-
     public function __construct($data, DrPublishApiClient $dpClient)
     {
         $this->data = $data;
@@ -96,7 +95,7 @@ class DrPublishApiClientArticle
             $this->buildArticleXmlContentElements();
         }
         $drPublishDomElementList = new DrPublishDomElementList();
-        foreach ($this->articleContentXmlElements as $drPublishApiClientXmlElement) {
+        if (!empty($this->articleContentXmlElements))foreach ($this->articleContentXmlElements as $drPublishApiClientXmlElement) {
             if ($drPublishApiClientXmlElement instanceof DrPublishApiClientXmlElement) {
                 $drPublishDomElements = $drPublishApiClientXmlElement->find($query);
                 foreach($drPublishDomElements as $drPublishDomElement) {
@@ -120,8 +119,10 @@ class DrPublishApiClientArticle
     private function buildArticleXmlContentElements()
     {
         $this->articleContentXmlElements = array();
-        foreach($this->data->templates->{$this->medium}->elements as $templateName => $templateElement) {
-                $this->articleContentXmlElements[$templateName] =  $this->{'get'. ucfirst($templateName)}();
+        if (!empty($this->data->templates->{$this->medium}->elements)) {
+               foreach($this->data->templates->{$this->medium}->elements as $templateName => $templateElement) {
+                   $this->articleContentXmlElements[$templateName] =  $this->{'get'. ucfirst($templateName)}();
+            }
         }
     }
 
@@ -145,7 +146,7 @@ class DrPublishApiClientArticle
    	public function getDPAuthors($allData = false)
    	{
    		$list = new DrPublishApiClientList();
-   		foreach ($this->data->meta->authors as $author) {
+   		if (!empty($this->data->meta->authors)) foreach ($this->data->meta->authors as $author) {
                if ($allData) {
    			      $dpClientAuthor = $this->dpClient->getAuthor($author->id);
                } else {
@@ -156,15 +157,19 @@ class DrPublishApiClientArticle
    		return $list;
    	}
 
-    /**
-     * Gets a category list of DrPublishApiClientCategory objects
-     * @see DrPublishApiClientCategory
-     * @return DrPublishApiClientList
-     */
+    public function getDPDossiers()
+    {
+        $list = new DrPublishApiClientList();
+        if (!empty($this->data->meta->dossiers)) foreach ($this->data->meta->dossiers as $dossier) {
+            $list->add($this->createDrPublishApiClientDossier($dossier));
+        }
+        return $list;
+    }
+
     public function getDPCategories()
     {
         $list = new DrPublishApiClientList();
-        foreach ($this->data->meta->categories as $category) {
+        if (!empty($this->data->meta->categories)) foreach ($this->data->meta->categories as $category) {
             $list->add($this->createDrPublishApiClientCategory($category));
         }
         return $list;
@@ -172,18 +177,14 @@ class DrPublishApiClientArticle
 
     public function getMainDPCategory()
     {
-        foreach ($this->data->meta->categories as $category) {
+        if (!empty($this->data->meta->categories)) foreach ($this->data->meta->categories as $category) {
             if ($category->isMain) {
                 return $this->createDrPublishApiClientCategory($category);
             }
-            return null;
         }
+        return null;
     }
 
-    /**
-     * Gets a DrPublishApiClientSource object
-     * @return DrPublishApiClientSource
-     */
     public function getDPSource()
     {
         if (empty($this->data->meta->source)) {
@@ -195,10 +196,6 @@ class DrPublishApiClientArticle
         return new DrPublishApiClientSource($data);
     }
 
-    /**
-     * Gets a tag list of DrPublishApiClientTag objects
-     * @return DrPublishApiClientList
-     */
     public function getDPTags()
     {
         $list = new DrPublishApiClientList();
@@ -221,6 +218,11 @@ class DrPublishApiClientArticle
     protected function createDrPublishApiClientCategory($category)
     {
        return new DrPublishApiClientCategory($category, $this->dpClient);
+    }
+
+    protected function createDrPublishApiClientDossier($dossier)
+    {
+       return new DrPublishApiClientDossier($dossier);
     }
 
     protected function createDrPublishApiClientTag($tag)
