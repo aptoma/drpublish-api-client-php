@@ -32,6 +32,6 @@ class DrPublishApiClientTag extends DrPublishApiClientArticleEntity
 
     public function __toString()
     {
-        return $this->name;
+        return isset($this->name) ? $this->name : '';
     }
 }
