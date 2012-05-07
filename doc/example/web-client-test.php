@@ -9,7 +9,7 @@ require('inc/functions.php');
 ini_set('display_errors', 1);
 $action = isset($_GET['action']) ? $_GET['action'] : '';
 $publication = isset($_GET['publication']) ? $_GET['publication'] : '';
-$isInternal = isset($_GET['internal']) && $_GET['internal'] == '1';
+$isInternal = false;// isset($_GET['internal']) && $_GET['internal'] == '1';
 $apiKey = isset($_GET['dp-apikey']) ? $_GET['dp-apikey'] : null;
 $dpUrl = '';
 

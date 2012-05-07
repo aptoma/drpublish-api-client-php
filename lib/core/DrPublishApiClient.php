@@ -313,6 +313,7 @@ class DrPublishApiClient
         $dpClientAuthor->setFullName($dpClientAuthor->getProperty('fullname'));
         $dpClientAuthor->setUserName($dpClientAuthor->getProperty('username'));
         $dpClientAuthor->setEmail($dpClientAuthor->getProperty('email'));
+        print_r($dpClientAuthor); exit;
         return $dpClientAuthor;
     }
 

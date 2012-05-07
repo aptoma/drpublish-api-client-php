@@ -3,7 +3,11 @@ class DrPublishApiClientAuthor extends DrPublishApiClientArticleEntity
 {
 
     protected $fullName;
+    protected $fullname;
     protected $userName;
+    protected $username;
+    protected $email;
+    protected $id;
 
     public function __construct($data)
     {

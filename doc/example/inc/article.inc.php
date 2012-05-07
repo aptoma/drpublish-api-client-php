@@ -19,8 +19,7 @@
 DrPublishApiWebClient::getDPTags()]</h3>
 <div class="result">
     <pre>
-<?= printResult($drPublishApiClientArticle->getDPTags()) ?>
-
+<?=printResult($drPublishApiClientArticle->getDPTags()) ?>
     </pre>
 </div>
 
@@ -58,12 +57,10 @@ DrPublishApiWebClient::getDPTags()]</h3>
     </pre>
 </div>
 
-
 <h3>Source [DrPublishApiClientArticleElement DrPublishApiWebClient::getSourceName()]</h3>
 <div class="result">
     <?=$drPublishApiClientArticle->getSource()?>
 </div>
-
 
 <h2>-- Article Content --</h2>
 
@@ -95,9 +92,9 @@ DrPublishApiWebClient::getDPTags()]</h3>
 <div class="result">
     <div class="content-container"><?=$drPublishApiClientArticle->findImages()?>
     <h4>Image URL's [array DrPublishApiClientList::getAttributes('src')]</h4>
-        <pre>
-             <? print_r($drPublishApiClientArticle->findImages()->getAttributes('src'))?>
-        </pre>
+    <pre>
+<? print_r($drPublishApiClientArticle->findImages()->getAttributes('src'))?>
+    </pre>
 </div>
 </div>
 
@@ -108,7 +105,6 @@ DrPublishApiWebClient::getDPTags()]</h3>
     <? $drPublishApiClientImages = $drPublishApiClientArticle->getDPImages(); ?>
     <div class="content-container">
         <?=$drPublishApiClientImages?>
-        
         <?php
         foreach ($drPublishApiClientImages as $drPublishApiClientImage) {
             print "<br/><br/> photographer: ";
@@ -116,24 +112,22 @@ DrPublishApiWebClient::getDPTags()]</h3>
             print "<br/> title: " . $drPublishApiClientImage->getTitle();
             print "<br/> description: " . $drPublishApiClientImage->getDescription();
             print "<br/> source: " . $drPublishApiClientImage->getSource();
-            //print "<br/> image element " . 	$drPublishApiClientImage->getImage();
         }
 
         ?>
     <h4>Thumbnails [DrPublishApiWebClientArticleElement
     DrPublishApiWebClientImageElement::getThumbnail(size)]</h4>
-    <pre>
-    <?php
-    foreach ($drPublishApiClientImages as $drPublishApiClientImageElement) {
-        $drPublishApiClientImage = $drPublishApiClientImageElement->getResizedImage(75);
-        print printResult($drPublishApiClientImage);
-        print ($drPublishApiClientImage);
-        print " width=" . $drPublishApiClientImage->getWidth();
-        print " src=" . $drPublishApiClientImage->getUrl();
-    }
-    exit;
-    ?>
-    </div>
+        <pre>
+<?php
+foreach ($drPublishApiClientImages as $drPublishApiClientImageElement) {
+    $drPublishApiClientImage = $drPublishApiClientImageElement->getResizedImage(75);
+    print printResult($drPublishApiClientImage);
+    print ($drPublishApiClientImage);
+    print " width=" . $drPublishApiClientImage->getWidth();
+    print " src=" . $drPublishApiClientImage->getUrl();
+}
+?>
+        </div>
     </pre>
 </div>
 
@@ -141,3 +135,4 @@ DrPublishApiWebClient::getDPTags()]</h3>
 <div class="result">
     <div class="content-container"><?=$drPublishApiClientArticle->getFactBoxes();?></div>
 </div>
+<?= printSourceCode() ?>

@@ -3,13 +3,14 @@
 <br/>
 <ul>
 <? foreach ($drPublishApiClientSearchList as $drPublishApiClientSource) { ?>
-        <li>
-            <strong><?= $drPublishApiClientSource->getName() ?></strong>
-             [id=<?= $drPublishApiClientSource->getId() ?>]
-            <br />
-            <span style="color: #666">
-            </span>
-        </li>
+    <li>
+        <strong><?= $drPublishApiClientSource->getName() ?></strong>
+         [id=<?= $drPublishApiClientSource->getId() ?>]
+        <br />
+        <span style="color: #666">
+        </span>
+    </li>
 <? } ?>
 </ul>
 <? include('inc/search-paginator.inc.php') ?>
+<?= printSourceCode() ?>
