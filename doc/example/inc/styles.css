@@ -26,7 +26,7 @@ h3 {
 }
 
 #global-properties {
-    margin: 8px 0 5px 3px;
+    margin: 8px 0 5px 0;
     vertical-align: top;
     border: solid #336666 2px;
     padding: 3px;
@@ -47,7 +47,7 @@ pre {
 
 .result {
     padding: 5px;
-    margin:5px 0 15px 0;
+    margin: 5px 0 15px 0;
 
 }
 
@@ -113,6 +113,7 @@ textarea {
     width: 530px;
     min-height: 100px;
     position: relative;
+    margin: 0;
 }
 
 #active-form fieldset:first-of-type {
@@ -126,13 +127,14 @@ textarea {
 }
 
 #form-pool {
-    width: 480px;
+    margin-top: 10px;
+    width: 450px;
     float: left;
 }
 
 #form-pool div {
     float: left;
-    padding: 3px 8px;
+    padding: 2px 6px;
     background: #CDD;
     margin: 3px;
     cursor: pointer;
@@ -143,16 +145,18 @@ textarea {
 #form-pool div:hover {
     background: #DEE;
 }
+
 #form-pool div.active {
     background: #CEE;
 }
 
-#active-form fieldset{
-   float: none;
+#active-form fieldset {
+    float: none;
 }
 
 #api-response-wrap {
     margin-top: 10px;
+    margin-bottom: 30px;
     width: 1000px;
     border: solid #336666 2px;
     border-radius: 3px;
@@ -165,13 +169,12 @@ textarea {
     margin-bottom: 20px;
 }
 
-.selectex .labels div:first-child
-{
+.selectex .labels div:first-child {
     float: left;
     margin-left: 20px;
 }
-.selectex .labels div:last-child
-{
+
+.selectex .labels div:last-child {
     float: right;
     margin-right: 200px;
 }
@@ -184,7 +187,7 @@ textarea {
     width: 130px;
 }
 
-.selectex .row.first .condition-type  {
+.selectex .row.first .condition-type {
     visibility: hidden;
 }
 
@@ -217,7 +220,6 @@ textarea {
     width: 40px;
 }
 
-
 .request-info {
     margin: -10px -10px 0 -10px;
     background: #CDD;
@@ -230,10 +232,11 @@ textarea {
 .request-info a {
     color: #366;
 
-}.request-info a:hover {
-    color: #333;
 }
 
+.request-info a:hover {
+    color: #333;
+}
 
 .request-info input {
     width: 800px;
@@ -269,18 +272,16 @@ textarea {
 
 }
 
-
 .source-code {
     position: relative;
     height: auto;
-    max-height:none;
+    max-height: none;
     background: #CDD;
     color: #444;
     padding-top: 25px;
     margin: 20px -10px -10px -10px;
     border-top: solid #666 2px;
 }
-
 
 .source-code:before {
     position: absolute;

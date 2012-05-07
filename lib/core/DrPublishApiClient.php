@@ -110,15 +110,32 @@ class DrPublishApiClient
         return isset($_REQUEST['dp-preview']);
     }
 
-    public function serverError($msg, $httpStatusCode)
+    public function serverError($info, $body)
     {
-        if ($httpStatusCode == 200) {
-            throw new DrPublishApiClientException($msg, DrPublishApiClientException::NO_DATA_ERROR);
+        $statusCode =  $info['http_code'];
+        if (!empty($body)) {
+            $response = json_decode($body);
+            if (!empty($response)) {
+                 $message = urldecode($response->error->rawMessage);
+                if (empty($message)) {
+                    $message = $response->error->description;
+                }
+            } else {
+                $message = 'Empty response';
+            }
         } else {
-            $e = new DrPublishApiClientHttpException($msg, DrPublishApiClientException::HTTP_ERROR);
-            $e->setHttpError($httpStatusCode);
-            throw $e;
+            $message = 'Unknown error';
         }
+        if ($statusCode == 404) {
+            if (empty($body)) {
+                throw new DrPublishApiClientHttpException('Could not connect to DrPublish API server', DrPublishApiClientException::HTTP_ERROR);
+            } else {
+                throw new DrPublishApiClientException($message, DrPublishApiClientException::NO_DATA_ERROR);
+            }
+        } else if ($statusCode == 401) {
+            throw new DrPublishApiClientException($message, DrPublishApiClientException::UNAUTHORIZED_ACCESS_ERROR);
+        }
+        throw new DrPublishApiClientException($message, DrPublishApiClientException::UNKNOWN_ERROR);
     }
 
     public function searchArticles($query, $limit = 5, $offset = 0, $options = array())
@@ -378,11 +395,8 @@ class DrPublishApiClient
         }
         $body = substr($res, $info['header_size']);
         curl_close($ch);
-        if ($info['http_code'] == 404) {
-            $this->serverError("Could not connect to DrPublish API: Server down or address misspelled? (requested URL=\"{$url}\") ", $info['http_code']);
-        }
-        else if ($info['http_code'] != 200) {
-            $this->serverError("Error requesting DrPublish API: \"{$body}\" HTTP code is {$info['http_code']} ", $info['http_code']);
+        if ($info['http_code'] != 200) {
+            $this->serverError($info, $body);
         }
         if (empty($body) || $body == '{}') {
             $this->serverError('No data responded by DrPublishAPI', $info['http_code']);

@@ -45,7 +45,6 @@ class DrPublishApiClientArticle
 
     private function parseGetCall($name, $arguments) {
             $varName = lcfirst(substr($name, 3));
-            // meta
             if (isset($this->data->meta->{$varName})) {
                 switch ($varName) {
                     case 'authors' :
@@ -60,24 +59,24 @@ class DrPublishApiClientArticle
                         return $this->data->meta->{$varName};
                 }
             }
-            // article content
             if (isset($this->data->contents)) {
                 $content = $this->data->contents->{$this->medium};
                 if ($content !== null && isset($content->{$varName})) {
-                    $templateElement = $this->data->templates->{$this->medium}->elements->{$varName};
-                    if (isset($this->articleContentXmlElements[$varName])) {
-                        return $this->articleContentXmlElements[$varName];
-                    }
-                    $options = new stdClass();
-                    $options->medium = $this->medium;
-                    $options->dataType = $templateElement->dataType;
-                    if ($templateElement->dataType == 'xml') {
-                        return new DrPublishApiClientXmlElement($content->{$varName}, $options);
-                    } else {
-                        return new DrPublishApiClientTextElement($content->{$varName}, $options);
+                    if (isset($this->data->templates->{$this->medium}->elements->{$varName})) {
+                        $templateElement = $this->data->templates->{$this->medium}->elements->{$varName};
+                        if (isset($this->articleContentXmlElements[$varName])) {
+                            return $this->articleContentXmlElements[$varName];
+                        }
+                        $options = new stdClass();
+                        $options->medium = $this->medium;
+                        $options->dataType = $templateElement->dataType;
+                        if ($templateElement->dataType == 'xml') {
+                            return new DrPublishApiClientXmlElement($content->{$varName}, $options);
+                        } else {
+                            return new DrPublishApiClientTextElement($content->{$varName}, $options);
+                        }
                     }
                 }
-
             }
             if (isset($this->data->meta->articleTypeMeta->{$varName})) {
                 return $this->data->meta->articleTypeMeta->{$varName};
