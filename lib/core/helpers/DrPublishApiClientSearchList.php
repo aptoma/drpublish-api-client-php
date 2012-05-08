@@ -7,6 +7,9 @@ class DrPublishApiClientSearchList extends DrPublishApiClientList
 
     public function __construct($search, $headers)
     {
+        if ($search === null) {
+            $search = new stdClass();
+        }
         $search->status = $headers['status'];
         $search->links = new stdClass();
         if (isset($headers['Link'])) {
