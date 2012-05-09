@@ -6,6 +6,7 @@ class DrPublishApiClientArticleSlideShowElement extends DrPublishDomElement
 
     public function __construct(DrPublishDomElement $drPublishDomElement)
     {
+        parent::__construct($drPublishDomElement->domElement);
         $drPublishDomElementList =  $drPublishDomElement->find("div.dp-article-image");
         $imageList = new DrPublishDomElementList();
         foreach($drPublishDomElementList as $drPublishDomElement) {
@@ -13,6 +14,11 @@ class DrPublishApiClientArticleSlideShowElement extends DrPublishDomElement
             $imageList->add($drPublishApiClientArticleElement);
         }
         $this->dpImages = $imageList;
+    }
+
+    public function getId()
+    {
+        return $this->getAttribute('id');
     }
 
     public function getDPImages()
