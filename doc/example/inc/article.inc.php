@@ -1,3 +1,16 @@
+<? $drPublishApiClientSlideshows = $drPublishApiClientArticle->getDPSlideshows(); ?>
+<div class="content-container">
+    <?php
+    foreach ($drPublishApiClientSlideshows as $drPublishApiClientSlideshow) {
+      //  $drPublishApiClientSlideshow->replaceBy('<h1>diaschau</h1>');
+        $dpImages = $drPublishApiClientSlideshow->getDPImages();
+        foreach($dpImages as $dpImage) {
+            print $dpImage->getImage();
+        }
+    }
+exit;
+    ?>
+
 <h2>-- Article Meta --</h2>
 
 <h3>Published [DrPublishApiClientArticleElement DrPublishApiWebClient::getPublished()]</h3>
@@ -18,9 +31,9 @@
 <h3>DPTags as dedicated DrPublishApiClientTag objects [DrPublishApiClientList
 DrPublishApiWebClient::getDPTags()]</h3>
 <div class="result">
-    <pre>
+ <pre>
 <?=printResult($drPublishApiClientArticle->getDPTags()) ?>
-    </pre>
+</pre>
 </div>
 
 <h3>Categories [DrPublishApiClientList DrPublishApiWebClient::getCategories()]</h3>
@@ -95,32 +108,28 @@ DrPublishApiWebClient::getDPTags()]</h3>
     <div class="content-container"><?=$drPublishApiClientArticle->getBodyText()?></div>
 </div>
 
-<h3>All images [DrPublishApiClientList DrPublishApiWebClient::getImages()]</h3>
-<div class="result">
-    <div class="content-container"><?=$drPublishApiClientArticle->findImages()?>
-    <h4>Image URL's [array DrPublishApiClientList::getAttributes('src')]</h4>
-    <pre>
-<? print_r($drPublishApiClientArticle->findImages()->getAttributes('src'))?>
-    </pre>
-</div>
-</div>
-
 
 <h3>DPImages</h3>
 <div class="result">
-    <h4>Including wrapping markups [DrPublishApiClientList DrPublishApiWebClient::getDPImages()]</h4>
+    <h4>All images including wrapping markups [DrPublishApiClientList DrPublishApiWebClient::getDPImages()]</h4>
     <? $drPublishApiClientImages = $drPublishApiClientArticle->getDPImages(); ?>
     <div class="content-container">
-        <?=$drPublishApiClientImages?>
         <?php
         foreach ($drPublishApiClientImages as $drPublishApiClientImage) {
-            print "<br/><br/> photographer: ";
-            printResult($drPublishApiClientImage->getPhotographer());
+            print $drPublishApiClientImage;
             print "<br/> title: " . $drPublishApiClientImage->getTitle();
             print "<br/> description: " . $drPublishApiClientImage->getDescription();
+            print "<br/> photographer (simple): " . $drPublishApiClientImage->getPhotographer();
             print "<br/> source: " . $drPublishApiClientImage->getSource();
+            print "<br/> url: " . $drPublishApiClientImage->getSrc();
+            print "<br/> width: " . $drPublishApiClientImage->getWidth();
+            print "<br/> height: " . $drPublishApiClientImage->getHeight();
+            print "<br/><br/> photographer (advanced, DrPublishApiClientImage::getDPPhotographer() ";
+            print "<pre>";
+            print printResult($drPublishApiClientImage->getDPPhotographer());
+            print "</pre>";
+            print "<hr/>";
         }
-
         ?>
     <h4>Thumbnails [DrPublishApiWebClientArticleElement
     DrPublishApiWebClientImageElement::getThumbnail(size)]</h4>

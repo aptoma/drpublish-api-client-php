@@ -19,5 +19,4 @@ class DrPublishApiClientArticleElement
         return (string) $this->data;
     }
 
-
 }

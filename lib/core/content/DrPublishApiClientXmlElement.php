@@ -66,4 +66,15 @@ class DrPublishApiClientXmlElement extends DrPublishApiClientArticleElement
        return preg_replace(array('#^<[^>]*>#','#</[^>]*>$#'), '', $xhtml);
     }
 
+    public function getDPImages()
+    {
+        $drPublishDomElementList =  $this->find("div.dp-article-image");
+        $imageList = new DrPublishDomElementList();
+        foreach($drPublishDomElementList as $drPublishDomElement) {
+            $drPublishApiClientArticleElement = new DrPublishApiClientArticleImageElement($drPublishDomElement);
+            $imageList->add($drPublishApiClientArticleElement);
+        }
+        return $imageList;
+    }
+
 }

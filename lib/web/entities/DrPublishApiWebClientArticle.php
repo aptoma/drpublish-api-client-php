@@ -18,4 +18,9 @@ class DrPublishApiWebClientArticle extends DrPublishApiClientArticle
         return $this->find('div.dp-fact-box');
     }
 
+    public function findImages()
+    {
+        return $this->find('img');
+    }
+
 }

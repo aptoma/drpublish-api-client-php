@@ -226,19 +226,58 @@ $drPublishDomElementList = $drPublishApiWebClientArticle->getStory()->find('img'
 $drPublishDomElementList->remove();
 </code>
 
-<h3 id="article-images">Handle article images; resizing on the fly</h3>
+<h3 id="article-images">Handle article images</h3>
+<div class="code-comment">
+ Images including their wrapping markup can be extracted by calling DrPublishApiClientArticle::getDPImages(). The returned list objects of type DrPublishApiClientArticleImageElement
+ provide methods for getting all properties of the image as well as the content of the describing elements
+</div>
+<code>
+$drPublishApiClientList = $drPublishApiClient->getDPImages();
+$drPublishApiClientArticleImageElement = $drPublishApiClientList->item(0);
+
+// extracting article image properties
+print $drPublishApiClientArticleImageElement->getTitle();
+print $drPublishApiClientArticleImageElement->getDescription();
+print $drPublishApiClientArticleImageElement->getPhotographer();
+print $drPublishApiClientArticleImageElement->getSource();
+print $drPublishApiClientArticleImageElement->getSrc();
+print $drPublishApiClientArticleImageElement->getWidth();
+print $drPublishApiClientArticleImageElement->getHeight();
+</code>
+
+<div class="code-comment">
+ It's also possible to only extract images from one specific article element
+</div>
+<code>
+// extract only images located in the "leadAsset" element of the article
+$drPublishApiClientList = $drPublishApiClient->getLeadAsset()->getDPImages();
+</code>
+
+<h4 id="article-images">Resizing images on the fly</h4>
 <div class="code-comment">
 The DrPublishApiClient provides functionality for generating resized images in any format on the fly. Doing this will send a request to the DrPublish image converter service which will check if an image with the requested size already exists. If not, the service will create it and store it on disk.<br/>
     DrPublishApiClient automatically change the appropriate parameters of the image object to match the generated one.
 </div>
 <code>
-$images = $drPublishApiClient->getDPImages();
-foreach ($images as $image) {
-    $image->resizeImage(325);
+$drPublishApiClientList = $drPublishApiClient->getDPImages();
+foreach ($drPublishApiClientList as $drPublishApiClientArticleImageElement) {
+    $drPublishApiClientArticleImageElement->resizeImage(325);
+}
+</code>
+<h4 id="article-images-slideshows">Slide shows</h4>
+<code>
+$drPublishApiClientSlideShows = $drPublishApiClientArticle->getDPSlideShows();
+foreach ($drPublishApiClientSlideShows as $drPublishApiClientSlideShow) {
+    $dpImages = $drPublishApiClientSlideShow->getDPImages();
+    foreach($dpImages as $dpImage) {
+        print $dpImage->getImage();
+    }
+    $yourHtmlCode = doYourStuff($dpImages);
+    $drPublishApiClientSlideShow->replaceBy($yourHtmlCode);
 }
 </code>
 
-<h3 id="internal-articles">Accessing unpublished articles for preview and other internal use</h3>
+<h3 id="internal-articles-resizing">Accessing unpublished articles for preview and other internal use</h3>
 <div class="code-comment">
  Internal data can be accessed via HTTPS and the use of an API key. This key can be generated for any user in the DrPublish account admin area.<br/>
  The default address of the internal scope is: <strong>https://your-host:9443</strong>, but the address/port may differ from this dependent on your server setup. Please ask your system administrator.

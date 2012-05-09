@@ -3,9 +3,7 @@
 class DrPublishApiClientArticleImageElement extends DrPublishDomElement
 {
 
-    protected $dpClientImage;
-
-    protected $drPublishApiClientArticle;
+    protected $dpClientImage = null;
 
     public function __construct(DrPublishDomElement $drPublishDomElement)
     {
@@ -15,59 +13,57 @@ class DrPublishApiClientArticleImageElement extends DrPublishDomElement
             require($dir . '/DrPublishApiClientPhotographer.php');
         }
         parent::__construct($drPublishDomElement->domElement);
-        $this->dpClientImage = $this->getImage();
     }
 
-    public function setDrPublishApiClientArticle(DrPublishApiClientArticle $drPublishApiClientArticle)
-    {
-        $this->drPublishApiClientArticle = $drPublishApiClientArticle;
-    }
-
-    /**
-     * Gets the image title
-     * @return string
-     */
     public function getTitle()
     {
-        return $this->find("div[@class='dp-article-image-title'][1]/text()");
+        return $this->find("*.dp-article-image-title")->innerContent();
     }
 
-    /**
-     * Gets the image description
-     * @return string
-     */
     public function getDescription()
     {
-        return $this->find("div[@class='dp-article-image-description'][1]/text()");
+        return $this->find("*.dp-article-image-description")->innerContent();
     }
 
-    /**
-     * Gets the image source
-     * @return string
-     */
     public function getSource()
     {
-        return $this->find("div[@class='dp-article-image-source'][1]/text()");
+        return $this->find("*.dp-article-image-source")->innerContent();
     }
 
-    /**
-     * Create a resized image on harddisk
-     *
-     * @param string $type image type as mapped up in settings.php (thumbnail, main, illustration etc);
-     * @return DrPublishApiClientImage
-     * @throw DrPublishApiClientException
-     */
+    public function getPhotographer()
+    {
+        return $this->find("*.dp-article-image-author")->innerContent();
+    }
+
+    public function getSrc()
+    {
+        return $this->getImage()->getSrc();
+    }
+
+    public function getUrl()
+    {
+        return $this->getSrc();
+    }
+
+    public function getWidth()
+    {
+        return $this->getImage()->getWidth();
+    }
+
+    public function getHeight()
+    {
+        return $this->getImage()->getHeight();
+    }
+
     public function getResizedImage($type)
     {
-        $imageElement = $this->dpClientImage;
+        $imageElement = $this->getImage();
         if (empty($imageElement)) {
             return null;
         }
-        $imageServiceUrl = $this->drPublishApiClientArticle->getImageServiceUrl();
-        $imagePublishUrl = $this->drPublishApiClientArticle->getImagePublishUrl();
         $currentSrc = $imageElement->getAttribute('src');
         try {
-            $properties = DrPublishApiClient::resizeImage($currentSrc, $type, $imageServiceUrl, $imagePublishUrl);
+            $properties = DrPublishApiClient::resizeImage($currentSrc, $type, DrPublishApiClientArticle::getImageServiceUrl(),  DrPublishApiClientArticle::getImagePublishUrl());
         } catch (DrPublishApiClientException $e) {
             throw $e;
         }
@@ -86,27 +82,20 @@ class DrPublishApiClientArticleImageElement extends DrPublishDomElement
         return $this->getResizedImage($size);
     }
 
-
-    /**
-     * Returns the image element (img tag) of this DPImage
-     *
-     * @return DrPublishApiClientImage
-     */
     public function getImage()
     {
-
-        $imageElement = $this->domElement->getElementsByTagName('img')->item(0);
-        if (empty($imageElement)) {
-            return null;
+        if ($this->dpClientImage === null) {
+            $imageElement = $this->domElement->getElementsByTagName('img')->item(0);
+            if (empty($imageElement)) {
+                return null;
+            }
+            $this->dpClientImage = new DrPublishApiClientImage($imageElement);
         }
-        return new DrPublishApiClientImage($imageElement);
+        return $this->dpClientImage;
     }
 
-    /**
-     * Gets the photographer (author) of this DPImage
-     * @return DrPublishApiClientPhotographer
-     */
-    public function getPhotographer()
+
+    public function getDPPhotographer()
     {
         $photographer = new DrPublishApiClientPhotographer();
         $photographer->setId($this->getAttribute('data-author-id'));

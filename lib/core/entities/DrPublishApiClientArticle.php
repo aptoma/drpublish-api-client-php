@@ -6,6 +6,8 @@ class DrPublishApiClientArticle
     protected $dpClient;
     protected $medium;
     protected $articleContentXmlElements = null;
+    protected static $imageServiceUrl;
+    protected static $imagePublishUrl;
 
     public function __construct($data, DrPublishApiClient $dpClient)
     {
@@ -13,6 +15,9 @@ class DrPublishApiClientArticle
         $this->dpClient = $dpClient;
         $this->setMedium($dpClient->getMedium());
         $this->buildArticleXmlContentElements();
+        self::$imagePublishUrl =  $this->data->service->imagePublishUrl;
+        self::$imageServiceUrl =  $this->data->service->imageServiceUrl;
+
     }
 
     public function __set($name, $value)
@@ -84,11 +89,6 @@ class DrPublishApiClientArticle
             return null;
     }
 
-    public function findImages()
-    {
-        return $this->find('img');
-    }
-
     public function find($query) {
         if ($this->articleContentXmlElements === null) {
             $this->buildArticleXmlContentElements();
@@ -105,14 +105,14 @@ class DrPublishApiClientArticle
         return $drPublishDomElementList;
     }
 
-    public function getImageServiceUrl()
+    public static function getImageServiceUrl()
     {
-        return $this->data->service->imageServiceUrl;
+        return self::$imageServiceUrl;
     }
 
     public function getImagePublishUrl()
     {
-        return $this->data->service->imagePublishUrl;
+        return self::$imagePublishUrl;
     }
 
     private function buildArticleXmlContentElements()
@@ -125,13 +125,24 @@ class DrPublishApiClientArticle
         }
     }
 
+    public function getDPSlideShows()
+    {
+        $drPublishDomElementList =  $this->find("div.dp-slideshow");
+        $slideShowList = new DrPublishDomElementList();
+        require_once(dirname(__FILE__) . '/../content/DrPublishApiClientArticleSlideShowElement.php');
+        foreach($drPublishDomElementList as $drPublishDomElement) {
+            $drPublishApiClientArticleElement = $this->createDrPublishApiClientArticleSlideShowElement($drPublishDomElement);
+            $slideShowList->add($drPublishApiClientArticleElement);
+        }
+        return $slideShowList;
+    }
+
     public function getDPImages()
     {
         $drPublishDomElementList =  $this->find("div.dp-article-image");
         $imageList = new DrPublishDomElementList();
         foreach($drPublishDomElementList as $drPublishDomElement) {
             $drPublishApiClientArticleElement = $this->createDrPublishApiClientArticleImageElement($drPublishDomElement);
-            $drPublishApiClientArticleElement->setDrPublishApiClientArticle($this);
             $imageList->add($drPublishApiClientArticleElement);
         }
         return $imageList;
@@ -207,6 +218,11 @@ class DrPublishApiClientArticle
     protected function createDrPublishApiClientArticleImageElement(DrPublishDomElement $image)
     {
        return new DrPublishApiClientArticleImageElement($image);
+    }
+
+    protected function createDrPublishApiClientArticleSlideShowElement(DrPublishDomElement $slideShow)
+    {
+       return new DrPublishApiClientArticleSlideShowElement($slideShow);
     }
 
     protected function createDrPublishApiClientAuthor($author)

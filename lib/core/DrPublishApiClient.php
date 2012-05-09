@@ -409,6 +409,7 @@ class DrPublishApiClient
 
     public static function resizeImage($currentSrc, $type, $imageServiceUrl, $imagePublishUrl)
     {
+
         $src = $currentSrc;
         $matches = mb_split('/', $src);
         $descriptorPos = count($matches) - 2;
