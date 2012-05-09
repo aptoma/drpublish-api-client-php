@@ -1,16 +1,3 @@
-<? $drPublishApiClientSlideshows = $drPublishApiClientArticle->getDPSlideshows(); ?>
-<div class="content-container">
-    <?php
-    foreach ($drPublishApiClientSlideshows as $drPublishApiClientSlideshow) {
-      //  $drPublishApiClientSlideshow->replaceBy('<h1>diaschau</h1>');
-        $dpImages = $drPublishApiClientSlideshow->getDPImages();
-        foreach($dpImages as $dpImage) {
-            print $dpImage->getImage();
-        }
-    }
-exit;
-    ?>
-
 <h2>-- Article Meta --</h2>
 
 <h3>Published [DrPublishApiClientArticleElement DrPublishApiWebClient::getPublished()]</h3>
