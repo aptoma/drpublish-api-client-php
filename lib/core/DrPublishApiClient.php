@@ -31,14 +31,12 @@ class DrPublishApiClient
     protected $publicationName;
     protected $medium = 'web';
     private $protectedRequest = false;
-    private $protectedApiUrl;
     private $apiKey;
     private $internalScopeClient = null;
 
     public function __construct($url, $publicationName)
     {
         $this->url = $url;
-        $this->protectedApiUrl = $url;
         $this->publicationName = $publicationName;
     }
 
@@ -177,6 +175,18 @@ class DrPublishApiClient
         return $this->createDrPublishApiClientArticle($result);
     }
 
+    public function getArticlePreview($id, $apiKey, $internalScopeApiUrl)
+    {
+        $internalScopeClient = $this->internalScopeClient($apiKey, $internalScopeApiUrl);
+        try {
+            return $internalScopeClient->getArticle($id);
+        } catch(DrPublishApiClientException $e) {
+            if ($e->getCode() === DrPublishApiClientException::NO_DATA_ERROR) {
+                return $this->getArticle($id);
+            }
+            throw($e);
+        }
+    }
 
     public function searchAuthors($query, $limit = 5, $offset = 0)
     {
@@ -331,7 +341,6 @@ class DrPublishApiClient
         $dpClientAuthor->setFullName($dpClientAuthor->getProperty('fullname'));
         $dpClientAuthor->setUserName($dpClientAuthor->getProperty('username'));
         $dpClientAuthor->setEmail($dpClientAuthor->getProperty('email'));
-        print_r($dpClientAuthor); exit;
         return $dpClientAuthor;
     }
 
@@ -359,7 +368,7 @@ class DrPublishApiClient
     {
         $params = str_replace(' ', '+', $params);
         if ($this->protectedRequest) {
-            $url = $this->protectedApiUrl . $params;
+            $url = $this->url . $params;
             $url .= strpos($params, '?') === false ? '?' : '&';
             $url .= 'scope=internal&apikey=' . $this->apiKey;
         } else {

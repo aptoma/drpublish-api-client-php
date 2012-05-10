@@ -12,7 +12,7 @@ $publication = isset($_GET['publication']) ? $_GET['publication'] : '';
 $isInternal = isset($_GET['internal']) && $_GET['internal'] == '1';
 $apiKey = isset($_GET['dp-apikey']) ? $_GET['dp-apikey'] : null;
 $dpUrl = '';
-
+$dpUrlInternal = $_GET['dp-url-internal'];
 if ($isInternal) {
 	$dpUrl = $_GET['dp-url-internal'];
 } else {
@@ -21,7 +21,7 @@ if ($isInternal) {
 
 $dpWebClient = new DrPublishApiWebClient($dpUrl, $publication);
 if ($isInternal) {
-    $dpWebClient = $dpWebClient->internalScopeClient($apiKey, $dpUrl);
+    $dpWebClient = $dpWebClient->internalScopeClient($apiKey, $dpUrlInternal);
 }
 $dpWebClient->setDebugMode();
 
@@ -29,7 +29,8 @@ switch ($action) {
     case 'article':
         try {
             $articleId = isset($_GET['article-id']) ? $_GET['article-id'] : 0;
-            $drPublishApiClientArticle = $dpWebClient->getArticle($articleId);
+            //$drPublishApiClientArticle = $dpWebClient->getArticle($articleId);
+            $drPublishApiClientArticle = $dpWebClient->getArticlePreview($articleId, $apiKey, $dpUrlInternal);
             $mainView = 'article';
         } catch (DrPublishApiClientException $e) {
             $mainView = 'error';

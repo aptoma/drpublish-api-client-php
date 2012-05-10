@@ -309,7 +309,23 @@ function doYourStuff(DrPublishApiClientArticleSlideShowElement $drPublishApiClie
 }
 </code>
 
-<h3 id="internal-articles-resizing">Accessing unpublished articles for preview and other internal use</h3>
+<h3 id="article-preview">Article preview, including unpublished changes</h3>
+<div class="code-comment">
+Use the DrPublishApiClient::articlePreview() for previewing articles. This method will run either one or two requests to the API, dependent on if the article
+has unpublished changes or not. <br/>
+First call goes to the internal data core to check if there exists an article with unpublished changes. If so, the changed article will be returned. </br>
+When no article data can be found in the internal core (the article has probably been published or re-published), the public core will be requested. <br/>
+If the article can't be found there neither, a DrPublishApiClientExceptions will be thrown.
+</div>
+<code>
+$apiKey = 'DREF12FU78PAUYYI9902E474';
+$apiUrl = 'http://stefan.aptoma.no:9000';
+$internalScopeApiUrl = 'https://stefan.aptoma.no:9443';
+$drPublishApiWebClient = new DrPublishApiClient($apiUrl, 'Solarius');
+$drPublishApiWebClient->articlePreview(12345, $apiKey, $internalScopeUrl);
+</code>
+
+<h3 id="internal-articles">Accessing unpublished articles for internal use</h3>
 <div class="code-comment">
  Internal data can be accessed via HTTPS and the use of an API key. This key can be generated for any user in the DrPublish account admin area.<br/>
  The default address of the internal scope is: <strong>https://your-host:9443</strong>, but the address/port may differ from this dependent on your server setup. Please ask your system administrator.
