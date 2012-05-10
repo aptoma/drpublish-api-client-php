@@ -51,7 +51,8 @@ class DrPublishApiClient
         if ($protectedApiUrl === null) {
             $protectedApiUrl = $this->url;
         }
-        $internalScopeClient = new DrPublishApiClient($protectedApiUrl, $this->publicationName);
+        $className = get_class($this);
+        $internalScopeClient = new $className($protectedApiUrl, $this->publicationName);
         $internalScopeClient->setMedium($this->medium);
         $internalScopeClient->setDebugMode($this->debug);
         $internalScopeClient->setApiKey($apiKey);
