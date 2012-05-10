@@ -29,8 +29,8 @@ switch ($action) {
     case 'article':
         try {
             $articleId = isset($_GET['article-id']) ? $_GET['article-id'] : 0;
-            //$drPublishApiClientArticle = $dpWebClient->getArticle($articleId);
-            $drPublishApiClientArticle = $dpWebClient->getArticlePreview($articleId, $apiKey, $dpUrlInternal);
+            $drPublishApiClientArticle = $dpWebClient->getArticle($articleId);
+            //$drPublishApiClientArticle = $dpWebClient->getArticlePreview($articleId, $apiKey, $dpUrlInternal);
             $mainView = 'article';
         } catch (DrPublishApiClientException $e) {
             $mainView = 'error';
