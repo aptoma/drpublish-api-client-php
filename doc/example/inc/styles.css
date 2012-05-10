@@ -267,10 +267,10 @@ textarea {
     margin-right: 10px;
 }
 
-.submit-div input[type='submit'] {
+input[type='submit'] {
     padding: 5px 10px;
     font-size: 16px;
-
+    float: right;
 }
 
 .source-code {

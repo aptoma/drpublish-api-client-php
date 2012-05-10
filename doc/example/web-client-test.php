@@ -9,7 +9,8 @@ require('inc/functions.php');
 ini_set('display_errors', 1);
 $action = isset($_GET['action']) ? $_GET['action'] : '';
 $publication = isset($_GET['publication']) ? $_GET['publication'] : '';
-$isInternal = isset($_GET['internal']) && $_GET['internal'] == '1';
+$isInternal = isset($_GET['internal']) && ($_GET['internal'] == '1');
+$isArticlePreview = isset($_GET['internal']) && ($_GET['internal'] == '2');
 $apiKey = isset($_GET['dp-apikey']) ? $_GET['dp-apikey'] : null;
 $dpUrl = '';
 $dpUrlInternal = $_GET['dp-url-internal'];
@@ -29,8 +30,11 @@ switch ($action) {
     case 'article':
         try {
             $articleId = isset($_GET['article-id']) ? $_GET['article-id'] : 0;
-            $drPublishApiClientArticle = $dpWebClient->getArticle($articleId);
-            //$drPublishApiClientArticle = $dpWebClient->getArticlePreview($articleId, $apiKey, $dpUrlInternal);
+            if ($isArticlePreview) {
+                $drPublishApiClientArticle = $dpWebClient->getArticlePreview($articleId, $apiKey, $dpUrlInternal);
+            } else {
+                $drPublishApiClientArticle = $dpWebClient->getArticle($articleId);
+            }
             $mainView = 'article';
         } catch (DrPublishApiClientException $e) {
             $mainView = 'error';

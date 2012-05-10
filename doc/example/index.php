@@ -55,7 +55,14 @@ if (file_exists(dirname(__FILE__) . '/config.php')) {
         <form action="article">
             Article id:
             <input type="text" value="" name="article-id" style="width: 80px"/>
-            Request the internal core <input type="radio" name="internal" value="0" checked="checked" />no <input type="radio" name="internal" value="1" />yes
+            <br/>
+            <br/>
+            Which core shall be requested?
+            <br/>
+            <input type="radio" name="internal" value="0" checked="checked" />published
+            <input type="radio" name="internal" value="1" />internal
+            <input type="radio" name="internal" value="2" />both (for article preview)
+            <br/>
             <input type="submit" onclick="DrPublishApiClientExmample.submitForm(this); return false;" value="Show article"/>
             <? printApiDocLink('article') ?>
         </form>
@@ -234,7 +241,7 @@ function printSubmit($providesInternalSearch = false)
 { ?>
 <div class="submit-div">
 <? if ($providesInternalSearch) { ?>
-        Request the internal core <input type="radio" name="internal" value="0" checked="checked" />no <input type="radio" name="internal" value="1" />yes
+        <input type="radio" name="internal" value="0" checked="checked" />published <input type="radio" name="internal" value="1" />internal &nbsp;
 <? } ?>
 <input type="submit" onclick="DrPublishApiClientExmample.submitForm(this); return false;" value="Search"/>
 </div>
