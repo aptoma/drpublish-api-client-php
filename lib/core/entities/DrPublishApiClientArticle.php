@@ -110,7 +110,7 @@ class DrPublishApiClientArticle
         return self::$imageServiceUrl;
     }
 
-    public function getImagePublishUrl()
+    public static function getImagePublishUrl()
     {
         return self::$imagePublishUrl;
     }
