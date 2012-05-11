@@ -31,7 +31,7 @@ class DrPublishApiClient
     protected $publicationName;
     protected $medium = 'web';
     private $protectedRequest = false;
-    private $apiKey;
+    protected $apiKey;
     private $internalScopeClient = null;
 
     public function __construct($url, $publicationName)
@@ -62,6 +62,11 @@ class DrPublishApiClient
     public function setApiKey($key)
     {
         $this->apiKey = $key;
+    }
+
+    protected function getApiKey()
+    {
+        return $this->apiKey;
     }
 
     public function setProtectedMode($bool)
