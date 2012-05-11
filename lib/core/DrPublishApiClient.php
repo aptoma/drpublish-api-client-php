@@ -163,6 +163,34 @@ class DrPublishApiClient
         return $drPublishApiClientSearchList;
     }
 
+    public function getArticlePreview($id, $apiKey, $internalScopeApiUrl)
+    {
+        $publicScopeApiUrl = $this->url;
+        $params =  '/articles/' . $id . '.json';
+        try {
+            $this->setProtectedMode(true);
+            $this->setApiKey($apiKey);
+            $this->url = $internalScopeApiUrl;
+            $response = $this->curl($params);
+            $this->setProtectedMode(false);
+            $this->url = $publicScopeApiUrl;
+        } catch(DrPublishApiClientException $e) {
+            if ($e->getCode() === DrPublishApiClientException::NO_DATA_ERROR) {
+               $this->url = $publicScopeApiUrl;
+               $this->setProtectedMode(false);
+               $response = $this->curl($params);
+            } else {
+               throw($e);
+            }
+        }
+        $resultJson = $response->body;
+        $result = json_decode($resultJson);
+       if (empty($result)) {
+           throw new DrPublishApiClientException("No article data retrieved for article-id='{$id}'", DrPublishApiClientException::NO_DATA_ERROR);
+       }
+       return $this->createDrPublishApiClientArticle($result);
+    }
+
     public function getArticle($id)
     {
         $url =  '/articles/' . $id . '.json';
@@ -173,19 +201,6 @@ class DrPublishApiClient
             throw new DrPublishApiClientException("No article data retrieved for article-id='{$id}'", DrPublishApiClientException::NO_DATA_ERROR);
         }
         return $this->createDrPublishApiClientArticle($result);
-    }
-
-    public function getArticlePreview($id, $apiKey, $internalScopeApiUrl)
-    {
-        $internalScopeClient = $this->internalScopeClient($apiKey, $internalScopeApiUrl);
-        try {
-            return $internalScopeClient->getArticle($id);
-        } catch(DrPublishApiClientException $e) {
-            if ($e->getCode() === DrPublishApiClientException::NO_DATA_ERROR) {
-                return $this->getArticle($id);
-            }
-            throw($e);
-        }
     }
 
     public function searchAuthors($query, $limit = 5, $offset = 0)
