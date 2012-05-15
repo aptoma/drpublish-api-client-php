@@ -36,9 +36,9 @@ class DrPublishApiClientXmlElement extends DrPublishApiClientArticleElement
     function __toString()
     {
        if ($this->medium == 'web') {
-           return $this->html();
+           return $this->innerHtml();
        } else {
-           return $this->content();
+           return $this->innerContent();
        }
     }
 
