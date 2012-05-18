@@ -158,11 +158,21 @@ class DrPublishApiClientArticle
    		$list = new DrPublishApiClientList();
    		if (!empty($this->data->meta->authors)) foreach ($this->data->meta->authors as $author) {
                if ($allData) {
-   			      $dpClientAuthor = $this->dpClient->getAuthor($author->id);
+                   try {
+   			              $dpClientAuthor = $this->dpClient->getAuthor($author->id);
+                   } catch (DrPublishApiClientException $e) {
+                       if ($e->getCode() == DrPublishApiClientException::NO_DATA_ERROR) {
+                           $dpClientAuthor = null;
+                       } else {
+                           throw($e);
+                       }
+                   }
                } else {
                    $dpClientAuthor = $this->createDrPublishApiClientAuthor($author);
                }
-   			$list->add($dpClientAuthor);
+            if ($dpClientAuthor !== null) {
+   			   $list->add($dpClientAuthor);
+            }
    		}
    		return $list;
    	}
@@ -173,6 +183,7 @@ class DrPublishApiClientArticle
         if (!empty($this->data->meta->dossiers)) foreach ($this->data->meta->dossiers as $dossier) {
             $list->add($this->createDrPublishApiClientDossier($dossier));
         }
+
         return $list;
     }
 
