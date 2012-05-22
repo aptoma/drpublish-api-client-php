@@ -416,7 +416,7 @@ class DrPublishApiClient
     {
         $cacheDir = self::cacheDirGen($identifier, true);
         file_put_contents($cacheDir . '.tmp', serialize($data));
-        copy($cacheDir . '.tmp', $cacheDir . '.dat');
+        rename($cacheDir . '.tmp', $cacheDir . '.dat');
         unlink($cacheDir . '.tmp');
     }
 
