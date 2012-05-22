@@ -1,5 +1,7 @@
 <?php
 $dpcDirname = dirname(__FILE__);
+
+
 require($dpcDirname . '/helpers/DrPublishApiClientList.php');
 require($dpcDirname . '/helpers/DrPublishApiClientSearchList.php');
 require($dpcDirname . '/helpers/DrPublishDomElementList.php');
@@ -22,6 +24,7 @@ unset($dpcDirname);
 define('QUERY_TYPE_XPATH', 1);
 define('QUERY_TYPE_JQUERY', 2);
 
+
 class DrPublishApiClient
 {
     protected $url;
@@ -33,17 +36,42 @@ class DrPublishApiClient
     private $protectedRequest = false;
     protected $apiKey;
     private $internalScopeClient = null;
+    protected static $configs = null;
 
     public function __construct($url, $publicationName)
     {
         $this->url = $url;
         $this->publicationName = $publicationName;
+        $this->readConfigs();
+    }
+
+    protected function readConfigs()
+    {
+        if (self::$configs !== null) {
+            return;
+        }
+        $configs = array();
+        $dir = dirname(__FILE__);
+        require($dir . '/../config.default.php');
+        if (file_exists($dir . '/../config.php')) {
+            $tmpConfigs = $configs;
+            require($dir . '/../config.php');
+            $configs = array_merge($tmpConfigs, $configs);
+
+        }
+        self::$configs = $configs;
+    }
+
+    public static function getConfig($name)
+    {
+        if (isset(self::$configs[$name])) {
+            return self::$configs[$name];
+        }
     }
 
     public function internalScopeClient($apiKey, $protectedApiUrl = null)
     {
-        if ($this->internalScopeClient !== null)
-        {
+        if ($this->internalScopeClient !== null) {
             return $this->internalScopeClient;
         }
         if ($protectedApiUrl === null) {
@@ -73,7 +101,7 @@ class DrPublishApiClient
     {
         $this->protectedRequest = $bool;
     }
-    
+
     public function setApiUrl($url)
     {
         $this->url = $url;
@@ -116,11 +144,11 @@ class DrPublishApiClient
 
     public function serverError($info, $body)
     {
-        $statusCode =  $info['http_code'];
+        $statusCode = $info['http_code'];
         if (!empty($body)) {
             $response = json_decode($body);
             if (!empty($response)) {
-                 $message = urldecode($response->error->rawMessage);
+                $message = urldecode($response->error->rawMessage);
                 if (empty($message)) {
                     $message = $response->error->description;
                 }
@@ -171,7 +199,7 @@ class DrPublishApiClient
     public function getArticlePreview($id, $apiKey, $internalScopeApiUrl)
     {
         $publicScopeApiUrl = $this->url;
-        $params =  '/articles/' . $id . '.json';
+        $params = '/articles/' . $id . '.json';
         try {
             $this->setProtectedMode(true);
             $this->setApiKey($apiKey);
@@ -179,26 +207,26 @@ class DrPublishApiClient
             $response = $this->curl($params);
             $this->setProtectedMode(false);
             $this->url = $publicScopeApiUrl;
-        } catch(DrPublishApiClientException $e) {
+        } catch (DrPublishApiClientException $e) {
             if ($e->getCode() === DrPublishApiClientException::NO_DATA_ERROR) {
-               $this->url = $publicScopeApiUrl;
-               $this->setProtectedMode(false);
-               $response = $this->curl($params);
+                $this->url = $publicScopeApiUrl;
+                $this->setProtectedMode(false);
+                $response = $this->curl($params);
             } else {
-               throw($e);
+                throw($e);
             }
         }
         $resultJson = $response->body;
         $result = json_decode($resultJson);
-       if (empty($result)) {
-           throw new DrPublishApiClientException("No article data retrieved for article-id='{$id}'", DrPublishApiClientException::NO_DATA_ERROR);
-       }
-       return $this->createDrPublishApiClientArticle($result);
+        if (empty($result)) {
+            throw new DrPublishApiClientException("No article data retrieved for article-id='{$id}'", DrPublishApiClientException::NO_DATA_ERROR);
+        }
+        return $this->createDrPublishApiClientArticle($result);
     }
 
     public function getArticle($id)
     {
-        $url =  '/articles/' . $id . '.json';
+        $url = '/articles/' . $id . '.json';
         $response = $this->curl($url);
         $resultJson = $response->body;
         $result = json_decode($resultJson);
@@ -211,7 +239,7 @@ class DrPublishApiClient
     public function searchAuthors($query, $limit = 5, $offset = 0)
     {
         $query = urldecode($query);
-        $url =  '/users.json?' . $query . '&offset=' . $offset . '&limit=' . $limit;
+        $url = '/users.json?' . $query . '&offset=' . $offset . '&limit=' . $limit;
         $response = $this->curl($url);
         $responseObject = json_decode($response->body);
         $drPublishApiClientSearchList = new DrPublishApiClientSearchList($responseObject->search, $response->headers);
@@ -226,7 +254,7 @@ class DrPublishApiClient
 
     public function getAuthor($id)
     {
-        $url =  '/users/' . $id . '.json';
+        $url = '/users/' . $id . '.json';
         $response = $this->curl($url);
         $responseObject = json_decode($response->body);
         if (empty($responseObject)) {
@@ -238,7 +266,7 @@ class DrPublishApiClient
     public function searchTags($query, $limit = 5, $offset = 0)
     {
         $query = urldecode($query);
-        $url =  '/tags.json?' . $query . '&offset=' . $offset . '&limit=' . $limit;
+        $url = '/tags.json?' . $query . '&offset=' . $offset . '&limit=' . $limit;
         $response = $this->curl($url);
         $responseObject = json_decode($response->body);
         $drPublishApiClientSearchList = new DrPublishApiClientSearchList($responseObject->search, $response->headers);
@@ -265,7 +293,7 @@ class DrPublishApiClient
 
     public function searchCategories($query, $limit = 5, $offset = 0)
     {
-        $url =  '/categories.json?' . $query . '&offset=' . $offset . '&limit=' . $limit;
+        $url = '/categories.json?' . $query . '&offset=' . $offset . '&limit=' . $limit;
         $response = $this->curl($url);
         $responseObject = json_decode($response->body);
         $drPublishApiClientSearchList = new DrPublishApiClientSearchList($responseObject->search, $response->headers);
@@ -280,7 +308,7 @@ class DrPublishApiClient
 
     public function getCategory($id)
     {
-        $url =  '/categories/' . $id . '.json';
+        $url = '/categories/' . $id . '.json';
         $response = $this->curl($url);
         $responseObject = json_decode($response->body);
         if (empty($responseObject)) {
@@ -291,7 +319,7 @@ class DrPublishApiClient
 
     public function searchDossiers($query, $limit = 5, $offset = 0)
     {
-        $url =  '/dossiers.json?' . $query . '&offset=' . $offset . '&limit=' . $limit;
+        $url = '/dossiers.json?' . $query . '&offset=' . $offset . '&limit=' . $limit;
         $response = $this->curl($url);
         $responseObject = json_decode($response->body);
         $drPublishApiClientSearchList = new DrPublishApiClientSearchList($responseObject->search, $response->headers);
@@ -316,7 +344,7 @@ class DrPublishApiClient
 
     public function searchSources($query, $limit = 5, $offset = 0)
     {
-        $url =  '/sources.json?' . $query . '&offset=' . $offset . '&limit=' . $limit;
+        $url = '/sources.json?' . $query . '&offset=' . $offset . '&limit=' . $limit;
         $response = $this->curl($url);
         $responseObject = json_decode($response->body);
         $drPublishApiClientSearchList = new DrPublishApiClientSearchList($responseObject->search, $response->headers);
@@ -330,7 +358,7 @@ class DrPublishApiClient
 
     public function getSource($id)
     {
-        $url =  '/sources/' . $id . '.json';
+        $url = '/sources/' . $id . '.json';
         $response = $this->curl($url);
         $responseObject = json_decode($response->body);
         if (empty($responseObject)) {
@@ -379,9 +407,46 @@ class DrPublishApiClient
         return new DrPublishApiClientTag($tag, $this);
     }
 
-    protected function createDrPublishApiClientCategory($category)
+    public function createDrPublishApiClientCategory($category)
     {
         return new DrPublishApiClientCategory($category, $this);
+    }
+
+    public static function writeCache($identifier, $data)
+    {
+        $cacheDir = self::cacheDirGen($identifier, true);
+        file_put_contents($cacheDir . '.dat', serialize($data));
+    }
+
+    public static function readCache($identifier)
+    {
+        $cacheDir = self::cacheDirGen($identifier);
+        if (file_exists($cacheDir . '.dat')) {
+            return unserialize(file_get_contents($cacheDir . '.dat'));
+        }
+        return false;
+    }
+
+    private static function cacheDirGen($identifier, $write = false)
+    {
+        $baseDir = self::getConfig('CACHE_DIR');
+        $identifier = md5($identifier);
+        $len = strlen($identifier);
+        $dirString = '';
+        for ($i = 0; $i < $len; $i++) {
+            $dirString .= $identifier[$i] . '/';
+        }
+        $cacheDir = $baseDir . '/' . $dirString;
+        if ($write === true) {
+            if(!is_writable($baseDir)) {
+                throw new DrPublishApiClientException("Data cache directory '{$baseDir}' is now writable" );
+            }
+            if (!is_dir($cacheDir)) {
+                umask(0000);
+                mkdir($cacheDir, 0777, true);
+            }
+        }
+        return $cacheDir;
     }
 
     protected function curl($params)
@@ -439,7 +504,11 @@ class DrPublishApiClient
 
     public static function resizeImage($currentSrc, $type, $imageServiceUrl, $imagePublishUrl)
     {
-
+        $cacheIdentifier = 'imageData' . $imagePublishUrl . $type;
+        $cacheData = self::readCache($cacheIdentifier);
+        if ($cacheData !== false) {
+            return $cacheData;
+        }
         $src = $currentSrc;
         $matches = mb_split('/', $src);
         $descriptorPos = count($matches) - 2;
@@ -462,6 +531,7 @@ class DrPublishApiClient
             throw new DrPublishApiClientException('Error generating Image: ' . $props['error'], DrPublishApiClientException::IMAGE_CONVERTING_ERROR);
         }
         $props['src'] = str_replace($imageServiceUrl, $imagePublishUrl, $newSrc);
+        self::writeCache($cacheIdentifier, $props);
         return $props;
     }
 }
