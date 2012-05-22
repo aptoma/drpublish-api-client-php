@@ -415,7 +415,9 @@ class DrPublishApiClient
     public static function writeCache($identifier, $data)
     {
         $cacheDir = self::cacheDirGen($identifier, true);
-        file_put_contents($cacheDir . '.dat', serialize($data));
+        file_put_contents($cacheDir . '.tmp', serialize($data));
+        copy($cacheDir . '.tmp', $cacheDir . '.dat');
+        unlink($cacheDir . '.tmp');
     }
 
     public static function readCache($identifier)
@@ -439,7 +441,7 @@ class DrPublishApiClient
         $cacheDir = $baseDir . '/' . $dirString;
         if ($write === true) {
             if(!is_writable($baseDir)) {
-                throw new DrPublishApiClientException("Data cache directory '{$baseDir}' is now writable" );
+                throw new DrPublishApiClientException("Data cache directory '{$baseDir}' is not writable" );
             }
             if (!is_dir($cacheDir)) {
                 umask(0000);
@@ -504,10 +506,14 @@ class DrPublishApiClient
 
     public static function resizeImage($currentSrc, $type, $imageServiceUrl, $imagePublishUrl)
     {
-        $cacheIdentifier = 'imageData' . $imagePublishUrl . $type;
-        $cacheData = self::readCache($cacheIdentifier);
-        if ($cacheData !== false) {
-            return $cacheData;
+        $cachingEnabled =  self::getConfig('ENABLE_IMAGE_DATA_CACHING');
+        if ($cachingEnabled) {
+            $cacheIdentifier = 'imageData' . $currentSrc . $type;
+            $cacheData = self::readCache($cacheIdentifier);
+            if ($cacheData !== false) {
+                return $cacheData;
+            }
+
         }
         $src = $currentSrc;
         $matches = mb_split('/', $src);
@@ -531,7 +537,9 @@ class DrPublishApiClient
             throw new DrPublishApiClientException('Error generating Image: ' . $props['error'], DrPublishApiClientException::IMAGE_CONVERTING_ERROR);
         }
         $props['src'] = str_replace($imageServiceUrl, $imagePublishUrl, $newSrc);
-        self::writeCache($cacheIdentifier, $props);
+        if ($cachingEnabled) {
+            self::writeCache($cacheIdentifier, $props);
+        }
         return $props;
     }
 }
