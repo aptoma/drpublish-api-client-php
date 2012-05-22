@@ -415,9 +415,10 @@ class DrPublishApiClient
     public static function writeCache($identifier, $data)
     {
         $cacheDir = self::cacheDirGen($identifier, true);
-        file_put_contents($cacheDir . '.tmp', serialize($data));
-        rename($cacheDir . '.tmp', $cacheDir . '.dat');
-        unlink($cacheDir . '.tmp');
+        if ($cacheDir !== false) {
+            file_put_contents($cacheDir . '.tmp', serialize($data));
+            rename($cacheDir . '.tmp', $cacheDir . '.dat');
+        }
     }
 
     public static function readCache($identifier)
@@ -441,11 +442,13 @@ class DrPublishApiClient
         $cacheDir = $baseDir . '/' . $dirString;
         if ($write === true) {
             if(!is_writable($baseDir)) {
-                throw new DrPublishApiClientException("Data cache directory '{$baseDir}' is not writable" );
-            }
-            if (!is_dir($cacheDir)) {
-                umask(0000);
-                mkdir($cacheDir, 0777, true);
+                trigger_error("Data cache directory '{$baseDir}' is not writable. DrPublishApiClient can't cache your data!", E_USER_WARNING);
+                return false;
+            } else {
+                if (!is_dir($cacheDir)) {
+                    umask(0000);
+                    mkdir($cacheDir, 0777, true);
+                }
             }
         }
         return $cacheDir;
