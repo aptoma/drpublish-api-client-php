@@ -159,9 +159,10 @@ class DrPublishApiClientArticle
    		if (!empty($this->data->meta->authors)) foreach ($this->data->meta->authors as $author) {
                if ($allData) {
                    try {
-   			              $dpClientAuthor = $this->dpClient->getAuthor($author->id);
+   			             $dpClientAuthor = $this->dpClient->getAuthor($author->id);
                    } catch (DrPublishApiClientException $e) {
                        if ($e->getCode() == DrPublishApiClientException::NO_DATA_ERROR) {
+                           trigger_error('DrPublishApiClient error: no data responded for author id= "' . $author->id . '"' , E_USER_WARNING);
                            $dpClientAuthor = null;
                        } else {
                            throw($e);

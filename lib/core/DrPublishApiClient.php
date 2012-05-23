@@ -258,7 +258,7 @@ class DrPublishApiClient
         $response = $this->curl($url);
         $responseObject = json_decode($response->body);
         if (empty($responseObject)) {
-            throw new DrPublishApiClientException("No or invalid author data retrieved for article-id='{$id}'", DrPublishApiClientException::NO_DATA_ERROR);
+            throw new DrPublishApiClientException("No or invalid author data retrieved for author id='{$id}'", DrPublishApiClientException::NO_DATA_ERROR);
         }
         return $this->createDrPublishApiClientAuthor($responseObject);
     }
@@ -285,7 +285,7 @@ class DrPublishApiClient
         $response = $this->curl($url);
         $responseObject = json_decode($response->body);
         if (empty($responseObject)) {
-            throw new DrPublishApiClientException("No or invalid author data retrieved for article-id='{$id}'", DrPublishApiClientException::NO_DATA_ERROR);
+            throw new DrPublishApiClientException("No or invalid author data retrieved for tag id='{$id}'", DrPublishApiClientException::NO_DATA_ERROR);
         }
         $dpClientTag = $this->createDrPublishApiClientTag($responseObject);
         return $dpClientTag;
@@ -414,18 +414,18 @@ class DrPublishApiClient
 
     public static function writeCache($identifier, $data)
     {
-        $cacheDir = self::cacheDirGen($identifier, true);
-        if ($cacheDir !== false) {
-            file_put_contents($cacheDir . '.tmp', serialize($data));
-            rename($cacheDir . '.tmp', $cacheDir . '.dat');
+        $cacheFile = self::cacheDirGen($identifier, true);
+        if ($cacheFile !== false) {
+            file_put_contents($cacheFile . '.tmp', serialize($data));
+            rename($cacheFile . '.tmp', $cacheFile);
         }
     }
 
     public static function readCache($identifier)
     {
-        $cacheDir = self::cacheDirGen($identifier);
-        if (file_exists($cacheDir . '.dat')) {
-            return unserialize(file_get_contents($cacheDir . '.dat'));
+        $cacheFile = self::cacheDirGen($identifier);
+        if (file_exists($cacheFile)) {
+            return unserialize(file_get_contents($cacheFile));
         }
         return false;
     }
@@ -433,12 +433,8 @@ class DrPublishApiClient
     private static function cacheDirGen($identifier, $write = false)
     {
         $baseDir = self::getConfig('CACHE_DIR');
-        $identifier = md5($identifier);
-        $len = strlen($identifier);
-        $dirString = '';
-        for ($i = 0; $i < $len; $i++) {
-            $dirString .= $identifier[$i] . '/';
-        }
+        $id = md5($identifier);
+        $dirString = $id[0] . $id[1] . '/' . $id[2] . $id[3] . '/' . $id[4] . $id[5];
         $cacheDir = $baseDir . '/' . $dirString;
         if ($write === true) {
             if(!is_writable($baseDir)) {
@@ -451,7 +447,7 @@ class DrPublishApiClient
                 }
             }
         }
-        return $cacheDir;
+        return $cacheDir . '/' . $id . '.dat';
     }
 
     protected function curl($params)
@@ -511,7 +507,7 @@ class DrPublishApiClient
     {
         $cachingEnabled =  self::getConfig('ENABLE_IMAGE_DATA_CACHING');
         if ($cachingEnabled) {
-            $cacheIdentifier = 'imageData' . $currentSrc . $type;
+            $cacheIdentifier = $currentSrc . $type;
             $cacheData = self::readCache($cacheIdentifier);
             if ($cacheData !== false) {
                 return $cacheData;
