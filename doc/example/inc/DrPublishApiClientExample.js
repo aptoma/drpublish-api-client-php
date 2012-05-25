@@ -59,10 +59,11 @@ var DrPublishApiClientExmample = {
 
     fetchFields:function (core) {
         var apiUrl = $('#dp-url').val();
+        var coreName = core == '' ? 'pa' : core;
         if (apiUrl) {
             $.ajax(
                 {
-                    url:apiUrl + '/fields/core/' + core + '.json',
+                    url:apiUrl + '/fields/core/' + coreName + '.json',
                     dataType:'json',
                     success:function (data) {
                         var fieldSelectInput = $('[data-core="' + core + '"]');
