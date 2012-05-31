@@ -64,7 +64,7 @@ class DrPublishApiClientArticle
                         return $this->data->meta->{$varName};
                 }
             }
-            if (isset($this->data->contents)) {
+            if (isset($this->data->contents) && isset($this->data->contents->{$this->medium})) {
                 $content = $this->data->contents->{$this->medium};
                 if ($content !== null && isset($content->{$varName})) {
                     if (isset($this->data->templates->{$this->medium}->elements->{$varName})) {

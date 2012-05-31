@@ -160,14 +160,18 @@ class DrPublishApiClient
         }
         if ($statusCode == 404) {
             if (empty($body)) {
-                throw new DrPublishApiClientHttpException('Could not connect to DrPublish API server', DrPublishApiClientException::HTTP_ERROR);
+                $e = new DrPublishApiClientHttpException('Could not connect to DrPublish API server', DrPublishApiClientException::HTTP_ERROR);
             } else {
-                throw new DrPublishApiClientException($message, DrPublishApiClientException::NO_DATA_ERROR);
+                $e = new DrPublishApiClientException($message, DrPublishApiClientException::NO_DATA_ERROR);
             }
         } else if ($statusCode == 401) {
-            throw new DrPublishApiClientException($message, DrPublishApiClientException::UNAUTHORIZED_ACCESS_ERROR);
+            $e = new DrPublishApiClientException($message, DrPublishApiClientException::UNAUTHORIZED_ACCESS_ERROR);
+
+        } else {
+            $e = new DrPublishApiClientException($message, DrPublishApiClientException::UNKNOWN_ERROR);
         }
-        throw new DrPublishApiClientException($message, DrPublishApiClientException::UNKNOWN_ERROR);
+        $e->setRequestUrl($this->requestUri);
+        throw $e;
     }
 
     public function searchArticles($query, $limit = 5, $offset = 0, $options = array())

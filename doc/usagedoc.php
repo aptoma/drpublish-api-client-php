@@ -435,6 +435,30 @@ foreach($drPublishApiClientSearchList as $drPublishApiClientTag) {
 }
 </code>
 
+<h2 id="error-handling">Error handling</h2>
+<div class="code-comment">
+    Several methods in DrPublishApiClient may throw an exception of type <strong>DrPublishApiClientException</strong>. This object contains the information
+    <ul>
+        <li>Error type</li>
+        <li>Error message</li>
+        <li>Request URL that provoked the error</li>
+    </ul>
+</div>
+
+<code>
+try {
+    $drpublishApiClientArticle = $drPublishApiClient->getArticle(123);
+} catch (DrpublishApiClientException $e) {
+    $message = $e->getMessage();
+    $errorCode = $e->getCause();
+    $requestUrl = $e->getRequestUrl();
+    $this->myErrorHandler($message, $errorCode, $requestUrl);
+}
+</code>
+
+<div class="code-comment">
+    Non-critical errors trigger a PHP warning (E_USER_WARNING)
+</div>
 
 
 
