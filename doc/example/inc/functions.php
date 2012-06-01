@@ -11,7 +11,8 @@ function printSourceCode() {
    $trace = debug_backtrace(false);
    $source = file_get_contents($trace[0]['file']);
    $source = preg_replace('#<\?=\s?printSourceCode\(\)\s?\?>#', '', $source);
-   $out = '<pre class="source-code">';
+   $out = '<div style="clear:both"></div>';
+   $out .= '<pre class="source-code">';
    $out .= htmlentities($source);
    $out.= '</pre>';
    return $out;

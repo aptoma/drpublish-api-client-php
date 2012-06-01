@@ -1,3 +1,28 @@
+<h3>Title [DrPublishApiClientArticleElement DrPublishApiWebClient::getTitle()]</h3>
+<div class="result">
+    <h4><?=$drPublishApiClientArticle->getTitle()?></h4>
+</div>
+
+<h3>Preamble [DrPublishApiClientArticleElement DrPublishApiWebClient::getPreamble()]</h3>
+<div class="result">
+    <div class="content-container"><b> <?=$drPublishApiClientArticle->getPreamble()?>
+    </b></div>
+</div>
+
+<h3>LeadAsset [DrPublishApiClientArticleElement DrPublishApiWebClient::getLeadAsset()]</h3>
+<div class="result">
+    <?php $leadAsset = $drPublishApiClientArticle->getLeadAsset() ?>
+    <div class="content-container"><?=$leadAsset?>
+    <div style="clear: both"></div>
+    </div>
+</div>
+
+<h3>Body Text [DrPublishApiClientArticleElement DrPublishApiWebClient::getBodyText()]</h3>
+<div class="result">
+    <div class="content-container"><?=$drPublishApiClientArticle->getBodyText()?></div>
+</div>
+
+
 <h2>-- Article Meta --</h2>
 
 <h3>Published [DrPublishApiClientArticleElement DrPublishApiWebClient::getPublished()]</h3>
@@ -69,32 +94,7 @@ DrPublishApiWebClient::getDPTags()]</h3>
     <?=$drPublishApiClientArticle->getSource()?>
 </div>
 
-<h2>-- Article Content --</h2>
-
-<h3>Title [DrPublishApiClientArticleElement DrPublishApiWebClient::getTitle()]</h3>
-<div class="result">
-    <h4><?=$drPublishApiClientArticle->getTitle()?></h4>
-</div>
-
-<h3>Preamble [DrPublishApiClientArticleElement DrPublishApiWebClient::getPreamble()]</h3>
-<div class="result">
-    <div class="content-container"><b> <?=$drPublishApiClientArticle->getPreamble()?>
-    </b></div>
-</div>
-
-<h3>LeadAsset [DrPublishApiClientArticleElement DrPublishApiWebClient::getLeadAsset()]</h3>
-<div class="result">
-    <?php $leadAsset = $drPublishApiClientArticle->getLeadAsset() ?>
-    <div class="content-container"><?=$leadAsset?>
-    <div style="clear: both"></div>
-    </div>
-</div>
-
-<h3>Body Text [DrPublishApiClientArticleElement DrPublishApiWebClient::getBodyText()]</h3>
-<div class="result">
-    <div class="content-container"><?=$drPublishApiClientArticle->getBodyText()?></div>
-</div>
-
+<h2>Enrichments</h2>
 
 <h3>DPImages</h3>
 <div class="result">
