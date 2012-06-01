@@ -201,7 +201,8 @@ function parseFilterFieldsRequest()
 }
 $curlInfo = $dpWebClient->getCurlInfo();
 $curlTime = $curlInfo['total_time'];
-
+$curlDLSpeed = round(($curlInfo['speed_download'] * 8) / (1024*1024)) ;
+$curlDLSize = round($curlInfo['size_download'] / (1024*1024), 2);
 
 // Render views
 

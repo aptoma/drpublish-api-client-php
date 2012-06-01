@@ -14,10 +14,10 @@ if (strpos($url, '?') !== false) {
     API request parameters: <input type="text" class="api-request" value="<?= $params ?>" /><br/>
     API request URL: <a href="<?=$url ?>" target="_blank"><?=$url ?></a><br/>
     Search server URL: <a href="<?=str_replace('"', '%22', $searchServerUrl )?>" target="_blank"><?=$searchServerUrl ?></a>
-<div>
-    <strong>Process time</strong> curl request: <?=round($curlTime,3) ?>sec, processing and rendering: <span id="procRendTime"></span>,
-    total: <span id="procTime"></span>
 
+<div>
+    <strong>Process time: <span id="procTime"></span> sec</strong> [curl request: <?=round($curlTime,3) ?> sec, processing and rendering: <span id="procRendTime"></span>],
+    download speed: <?=$curlDLSpeed ?> MBit/s, data transfered: <?=$curlDLSize?> MB
 </div>
 </div>
 
