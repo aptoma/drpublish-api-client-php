@@ -12,7 +12,9 @@ var DrPublishApiClientExmample = {
         searchUis.each(
             function(index, element) {
                 var label = $(this).find('legend').html();
+                var name = $(this).find('form').attr('action');
                 var menuElement = $('<div>' + label + '</div>');
+                menuElement.attr('id', 'menu-button-' + name);
                 menuElement.click( function() {
                     $('#active-form fieldset').hide();
                     $(element).show();
@@ -47,12 +49,10 @@ var DrPublishApiClientExmample = {
             $('#api-response').fadeIn(120, function () {
                 var action = form.attr('action');
                 if (form.attr('id') == 'search-raw-query') {
-                   // console.debug()
                     var requestParameters = form.find('#raw-query').val() + '&readyRequest=1';
                 } else {
                     var requestParameters = form.serialize();
                 }
-                console.debug(requestParameters);
                 var params = 'action=' + action + '&' + requestParameters;
                 DrPublishApiClientExmample.sendGetRequest(params);
             });
@@ -104,6 +104,12 @@ var DrPublishApiClientExmample = {
                 $('#api-response').fadeIn();
             });
         });
+    },
+
+    showArticle:function(articleId) {
+        $('#menu-button-article').trigger('click');
+        $('#article-id').val(articleId);
+        $('#search-article-submit').trigger('click');
     }
 
 }
@@ -172,6 +178,7 @@ var Selectex = {
         }
     }
 }
+
 
 $(document).ready(function () {
     DrPublishApiClientExmample.init();

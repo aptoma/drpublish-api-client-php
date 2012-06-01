@@ -57,11 +57,12 @@ if (file_exists(dirname(__FILE__) . '/config.php')) {
         </form>
         <? printApiDocLink('articles') ?>
     </fieldset>
+
     <fieldset>
         <legend>Get article</legend>
         <form action="article">
             Article id:
-            <input type="text" value="" name="article-id" style="width: 80px"/>
+            <input type="text" value="" name="article-id" id="article-id" style="width: 80px"/>
             <br/>
             <br/>
             Which core shall be requested?
@@ -70,7 +71,7 @@ if (file_exists(dirname(__FILE__) . '/config.php')) {
             <input type="radio" name="internal" value="1" />internal
             <input type="radio" name="internal" value="2" />both (for article preview)
             <br/>
-            <input type="submit" onclick="DrPublishApiClientExmample.submitForm(this); return false;" value="Show article"/>
+            <input type="submit" id="search-article-submit" onclick="DrPublishApiClientExmample.submitForm(this); return false;" value="Show article"/>
             <? printApiDocLink('article') ?>
         </form>
     </fieldset>

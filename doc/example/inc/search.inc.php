@@ -6,7 +6,7 @@
 foreach ($drPublishApiClientSearchList as $drPublishApiClientArticle) { ?>
     <li>
         [<?=$drPublishApiClientArticle->getId()?>]
-        <strong><?=$drPublishApiClientArticle->getTitle()?></strong>
+        <a href="#" onclick="DrPublishApiClientExmample.showArticle('<?=$drPublishApiClientArticle->getId()?>');return false"><strong><?=$drPublishApiClientArticle->getTitle()?></strong></a>
         <br/>
         <span style="color: #555">
             published: <?=$drPublishApiClientArticle->getPublished() ?> | written by: <?=$drPublishApiClientArticle->getDPAuthors() ?> |
