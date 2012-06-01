@@ -43,12 +43,19 @@ if (file_exists(dirname(__FILE__) . '/config.php')) {
 <div id="active-form">
     <fieldset>
         <legend>Search articles</legend>
-        <form action="search">
+        <a href="#" class="active-search search-ui-link" onclick="$(this).parent().find('form').toggle(); $(this).parent().find('a.search-ui-link').toggleClass('active-search');return false;">Query builder</a>
+        <a href="#" class="search-ui-link" onclick="$(this).parent().find('form').toggle().find('a'); $(this).parent().find('a.search-ui-link').toggleClass('active-search');return false;">Raw query</a>
+        <br/><br/>
+        <form action="search" id="search-query-builder">
             <? printSelectex('', 'title') ?>
             <? printLimit(true) ?>
             <? printSubmit(true) ?>
-            <? printApiDocLink('articles') ?>
         </form>
+        <form action="search" id="search-raw-query" style="display:none">
+        <textarea name="raw-query" id="raw-query"></textarea>
+        <input type="submit" value="Search" onclick="DrPublishApiClientExmample.submitForm(this); return false;"  />
+        </form>
+        <? printApiDocLink('articles') ?>
     </fieldset>
     <fieldset>
         <legend>Get article</legend>

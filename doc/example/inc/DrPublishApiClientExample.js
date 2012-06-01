@@ -32,15 +32,11 @@ var DrPublishApiClientExmample = {
                 $('#form-pool').append(menuElement);
             }
         );
-
         this.fetchFields('');
         $('#dp-url').change(function () {
             DrPublishApiClientExmample.fetchFields()
         });
-
-
         $('#form-pool div').first().trigger('click');
-
 
     },
 
@@ -50,7 +46,14 @@ var DrPublishApiClientExmample = {
             $('#api-response').html('loading...');
             $('#api-response').fadeIn(120, function () {
                 var action = form.attr('action');
-                var params = 'action=' + action + '&' + form.serialize();
+                if (form.attr('id') == 'search-raw-query') {
+                   // console.debug()
+                    var requestParameters = form.find('#raw-query').val() + '&readyRequest=1';
+                } else {
+                    var requestParameters = form.serialize();
+                }
+                console.debug(requestParameters);
+                var params = 'action=' + action + '&' + requestParameters;
                 DrPublishApiClientExmample.sendGetRequest(params);
             });
             return false;

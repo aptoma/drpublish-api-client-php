@@ -20,6 +20,7 @@ if ($isInternal) {
 	$dpUrl = $_GET['dp-url'];
 }
 
+$procStart = microtime(true);
 $dpWebClient = new DrPublishApiWebClient($dpUrl, $publication);
 if ($isInternal) {
     $dpWebClient = $dpWebClient->internalScopeClient($apiKey, $dpUrlInternal);
@@ -44,8 +45,8 @@ switch ($action) {
         try {
            if (isset($_GET['readyRequest'])) {
                $get = $_GET;
-               $offset = $get['offset'];
-               $limit = $get['limit'];
+               $offset = isset($get['offset']) ? $get['offset'] : 0;
+               $limit = isset($get['limit']) ? $get['limit'] : 5;
                unset($get['offset']);
                unset($get['limit']);
                unset($get['readyRequest']);
@@ -198,6 +199,8 @@ function parseFilterFieldsRequest()
 
     return $query;
 }
+$curlInfo = $dpWebClient->getCurlInfo();
+$curlTime = $curlInfo['total_time'];
 
 
 // Render views
@@ -205,5 +208,6 @@ function parseFilterFieldsRequest()
 include('inc/head.inc.php');
 include('inc/api-request.inc.php');
 include('inc/' . $mainView . '.inc.php');
+$procDuration = microtime(true) - $procStart;
 include('inc/foot.inc.php');
 

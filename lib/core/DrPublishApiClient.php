@@ -37,6 +37,7 @@ class DrPublishApiClient
     protected $apiKey;
     private $internalScopeClient = null;
     protected static $configs = null;
+    private $curlInfo;
 
     public function __construct($url, $publicationName)
     {
@@ -480,6 +481,7 @@ class DrPublishApiClient
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
         $res = curl_exec($ch);
         $info = curl_getinfo($ch);
+        $this->curlInfo = $info;
 
         //$e = curl_error($ch);
         $header = substr($res, 0, $info['header_size']);
@@ -544,5 +546,10 @@ class DrPublishApiClient
             self::writeCache($cacheIdentifier, $props);
         }
         return $props;
+    }
+
+    public function getCurlInfo()
+    {
+        return $this->curlInfo;
     }
 }
