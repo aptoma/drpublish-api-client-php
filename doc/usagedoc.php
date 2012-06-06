@@ -226,6 +226,28 @@ $drPublishDomElementList = $drPublishApiWebClientArticle->getStory()->find('img'
 $drPublishDomElementList->remove();
 </code>
 
+<h4 id="xml-dom">Using DOM and XPath objects for customized processing</h4>
+<div class="code-comment">
+    Objects of type <strong>DrPublishApiClientXmlElement</strong> provide the methods getDom()/getXpath() for further processing of "raw" article element data
+</div>
+<code>
+$storyDom = $drPublishApiWebClientArticle->getStory()->getDom();
+
+// Fetch data from DOM object
+$myNodeList1 = $storyDom->getElementsByTagName('a');
+
+// Fetch data using XPath
+$storyXpath = $drPublishApiWebClientArticle->getStory()->getXpath();
+$myNodeList2 = $storyXpath('//h3');
+$mySubTitles = array();
+foreach($myNodeList2 as $domElement)
+{
+    $mySubTitles[] = $domElement->nodeValue;
+    // or perhaps do this
+    //$mySubTitles[] = $storyDom->saveXml($domElement);
+}
+</code>
+
 <h3 id="article-images">Handle article images</h3>
 <div class="code-comment">
  Images including their wrapping markup can be extracted by calling DrPublishApiClientArticle::getDPImages(). The returned list objects of type DrPublishApiClientArticleImageElement

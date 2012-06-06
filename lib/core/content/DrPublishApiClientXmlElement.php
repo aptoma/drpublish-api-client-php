@@ -35,11 +35,11 @@ class DrPublishApiClientXmlElement extends DrPublishApiClientArticleElement
 
     function __toString()
     {
-       if ($this->medium == 'web') {
-           return $this->innerHtml();
-       } else {
-           return $this->innerContent();
-       }
+        if ($this->medium == 'web') {
+            return $this->innerHtml();
+        } else {
+            return $this->innerContent();
+        }
     }
 
     public function content()
@@ -61,20 +61,20 @@ class DrPublishApiClientXmlElement extends DrPublishApiClientArticleElement
 
     public function innerContent()
     {
-        return preg_replace(array('#^<[^>]*>#','#</[^>]*>$#'), '', $this->content());
+        return preg_replace(array('#^<[^>]*>#', '#</[^>]*>$#'), '', $this->content());
     }
 
     public function innerHtml()
     {
-       $xhtml = $this->html();
-       return preg_replace(array('#^<[^>]*>#','#</[^>]*>$#'), '', $xhtml);
+        $xhtml = $this->html();
+        return preg_replace(array('#^<[^>]*>#', '#</[^>]*>$#'), '', $xhtml);
     }
 
     public function getDPImages()
     {
-        $drPublishDomElementList =  $this->find("div.dp-article-image");
+        $drPublishDomElementList = $this->find("div.dp-article-image");
         $imageList = new DrPublishDomElementList();
-        foreach($drPublishDomElementList as $drPublishDomElement) {
+        foreach ($drPublishDomElementList as $drPublishDomElement) {
             $drPublishApiClientArticleElement = new DrPublishApiClientArticleImageElement($drPublishDomElement);
             $imageList->add($drPublishApiClientArticleElement);
         }
@@ -83,14 +83,30 @@ class DrPublishApiClientXmlElement extends DrPublishApiClientArticleElement
 
     public function getDPSlideShows()
     {
-        $drPublishDomElementList =  $this->find("div.dp-slideshow");
+        $drPublishDomElementList = $this->find("div.dp-slideshow");
         $slideShowList = new DrPublishDomElementList();
         require_once(dirname(__FILE__) . '/../content/DrPublishApiClientArticleSlideShowElement.php');
-        foreach($drPublishDomElementList as $drPublishDomElement) {
+        foreach ($drPublishDomElementList as $drPublishDomElement) {
             $drPublishApiClientArticleElement = new DrPublishApiClientArticleSlideShowElement($drPublishDomElement);
             $slideShowList->add($drPublishApiClientArticleElement);
         }
         return $slideShowList;
+    }
+
+    public function getDom()
+    {
+        if ($this->dom === null) {
+            $this->initDom();
+        }
+        return $this->dom;
+    }
+
+    public function getXpath()
+    {
+        if ($this->dom === null) {
+            $this->initDom();
+        }
+        return $this->xpath;
     }
 
 }
