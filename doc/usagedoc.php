@@ -482,6 +482,18 @@ try {
     Non-critical errors trigger a PHP warning (E_USER_WARNING)
 </div>
 
+<h3 id="error-types">Exception types</h3>
+<div class="code-comment">
+
+    <ul>
+        <li><strong>HTTP_ERROR</strong> Connecting to DrPublish APO failed</li>
+        <li><strong>NO_DATA_ERROR</strong> No date received from established connection</li>
+        <li><strong>IMAGE_CONVERTING_ERROR</strong> Problems while resizing images</li>
+        <li><strong>UNAUTHORIZED_ACCESS_ERROR</strong> Permission denied on internal API calls</li>
+        <li><strong>PUBLICATION_ACCESS_ERROR</strong> Article is not connected to chosen publication</li>
+
+    </ul>
+</div>
 
 
 

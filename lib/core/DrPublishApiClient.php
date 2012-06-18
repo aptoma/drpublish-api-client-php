@@ -236,7 +236,14 @@ class DrPublishApiClient
         $resultJson = $response->body;
         $result = json_decode($resultJson);
         if (empty($result)) {
-            throw new DrPublishApiClientException("No article data retrieved for article-id='{$id}'", DrPublishApiClientException::NO_DATA_ERROR);
+            $e =  new DrPublishApiClientException("No article data retrieved for article-id='{$id}'", DrPublishApiClientException::NO_DATA_ERROR);
+            $e->setRequestUrl($this->requestUri);
+            throw $e;
+        }
+        if (!isset($result->meta->publication->name) || $result->meta->publication->name != $this->publicationName) {
+            $e =  new DrPublishApiClientException("Article article-id='{$id}' is not connected to publication '{$this->publicationName}'", DrPublishApiClientException:: PUBLICATION_ACCESS_ERROR);
+            $e->setRequestUrl($this->requestUri);
+            throw $e;
         }
         return $this->createDrPublishApiClientArticle($result);
     }
