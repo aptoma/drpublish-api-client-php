@@ -16,9 +16,10 @@ class DrPublishApiClientException extends Exception
         $causes = array(
             1 => 'HTTP error',
             2 => 'publication access error',
-            3 => 'image converting error',
-            4 => 'unauthorized access error',
-            5 => 'unknown error'
+            3 => 'no data error',
+            4 => 'image converting error',
+            5 => 'unauthorized access error',
+            6 => 'unknown error'
         );
         if (isset($causes[$this->code])) {
             return  $causes[$this->code];
