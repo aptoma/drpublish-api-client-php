@@ -70,13 +70,20 @@ class DrPublishApiClient
         }
     }
 
-    public function internalScopeClient($apiKey, $protectedApiUrl = null)
+    public function internalScopeClient($apiKey = null, $protectedApiUrl = null)
     {
         if ($this->internalScopeClient !== null) {
             return $this->internalScopeClient;
         }
         if ($protectedApiUrl === null) {
             $protectedApiUrl = $this->url;
+        }
+        if ($apiKey === null) {
+            if (empty($this->apiKey)) {
+                throw new DrPublishApiClientException('Can not instantiate internal scope client without API key', DrPublishApiClientException::UNAUTHORIZED_ACCESS_ERROR);
+            } else {
+                $apiKey = $this->apiKey;
+            }
         }
         $className = get_class($this);
         $internalScopeClient = new $className($protectedApiUrl, $this->publicationName);
