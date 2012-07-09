@@ -16,6 +16,8 @@
                 <br/>
                 <a href="apidoc.php">API request documentation</a>
                 <br/>
+                <a href="querydoc.php">How to query the API - best practices</a>
+                <br/>
                 <a href="example/">The example client application. Try it out!</a>
             </div>
         </div>
