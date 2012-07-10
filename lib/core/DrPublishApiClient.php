@@ -70,6 +70,16 @@ class DrPublishApiClient
         }
     }
 
+    public function setConfig($name, $value)
+    {
+        self::$configs[$name] = $value;
+    }
+
+    public function setCacheDir($path)
+    {
+        $this->setConfig('CACHE_DIR', $path);
+    }
+
     public function internalScopeClient($apiKey = null, $protectedApiUrl = null)
     {
         if ($this->internalScopeClient !== null) {
@@ -243,12 +253,12 @@ class DrPublishApiClient
         $resultJson = $response->body;
         $result = json_decode($resultJson);
         if (empty($result)) {
-            $e =  new DrPublishApiClientException("No article data retrieved for article-id='{$id}'", DrPublishApiClientException::NO_DATA_ERROR);
+            $e = new DrPublishApiClientException("No article data retrieved for article-id='{$id}'", DrPublishApiClientException::NO_DATA_ERROR);
             $e->setRequestUrl($this->requestUri);
             throw $e;
         }
         if (!isset($result->meta->publication->name) || $result->meta->publication->name != $this->publicationName) {
-            $e =  new DrPublishApiClientException("Article article-id='{$id}' is not connected to publication '{$this->publicationName}'", DrPublishApiClientException:: PUBLICATION_ACCESS_ERROR);
+            $e = new DrPublishApiClientException("Article article-id='{$id}' is not connected to publication '{$this->publicationName}'", DrPublishApiClientException:: PUBLICATION_ACCESS_ERROR);
             $e->setRequestUrl($this->requestUri);
             throw $e;
         }
@@ -456,7 +466,7 @@ class DrPublishApiClient
         $dirString = $id[0] . $id[1] . '/' . $id[2] . $id[3] . '/' . $id[4] . $id[5];
         $cacheDir = $baseDir . '/' . $dirString;
         if ($write === true) {
-            if(!is_writable($baseDir)) {
+            if (!is_writable($baseDir)) {
                 trigger_error("Data cache directory '{$baseDir}' is not writable. DrPublishApiClient can't cache your data!", E_USER_WARNING);
                 return false;
             } else {
@@ -525,7 +535,7 @@ class DrPublishApiClient
 
     public static function resizeImage($currentSrc, $type, $imageServiceUrl, $imagePublishUrl)
     {
-        $cachingEnabled =  self::getConfig('ENABLE_IMAGE_DATA_CACHING');
+        $cachingEnabled = self::getConfig('ENABLE_IMAGE_DATA_CACHING');
         if ($cachingEnabled) {
             $cacheIdentifier = $currentSrc . $type;
             $cacheData = self::readCache($cacheIdentifier);
