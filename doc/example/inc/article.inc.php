@@ -103,6 +103,7 @@ DrPublishApiWebClient::getDPTags()]</h3>
     <div class="content-container">
         <?php
         foreach ($drPublishApiClientImages as $drPublishApiClientImage) {
+            print "bild!";
             print $drPublishApiClientImage;
             print "<br/> title: " . $drPublishApiClientImage->getTitle();
             print "<br/> description: " . $drPublishApiClientImage->getDescription();

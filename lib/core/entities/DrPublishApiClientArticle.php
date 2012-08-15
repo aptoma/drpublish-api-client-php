@@ -139,7 +139,11 @@ class DrPublishApiClientArticle
 
     public function getDPImages()
     {
-        $drPublishDomElementList =  $this->find("div.dp-article-image");
+        DrPublishDomElement::$queryMode = QUERY_TYPE_XPATH;
+        $q = 'div[@class and contains(concat(" ",normalize-space(@class)," ")," dp-article-image ") and descendant::img]';
+       // $drPublishDomElementList =  $this->find("div.dp-article-image");
+        $drPublishDomElementList =  $this->find($q);
+        DrPublishDomElement::$queryMode = QUERY_TYPE_JQUERY;
         $imageList = new DrPublishDomElementList();
         foreach($drPublishDomElementList as $drPublishDomElement) {
             $drPublishApiClientArticleElement = $this->createDrPublishApiClientArticleImageElement($drPublishDomElement);
