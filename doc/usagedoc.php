@@ -286,6 +286,25 @@ foreach ($drPublishApiClientList as $drPublishApiClientArticleImageElement) {
     $drPublishApiClientArticleImageElement->resizeImage(325);
 }
 </code>
+
+<div class="code-comment">
+    Example resizing the first image of the article:
+</code>
+<code>
+&lt;?php
+$leadImage = $drPublishApiClientArticle->getLeadDPImage();
+$leadImage->getResizedImage(850);
+?&gt;
+&lt;div&gt;
+    &lt;img src="&lt;?=$leadImage->getSrc()?&gt;" width="&lt;?=$leadImage->getWidth()?&gt;" height="&lt;?=$leadImage->getHeight()?&gt;" /&gt;
+    &lt;div&gt;&lt;?=$leadImage->getTitle()?&gt;&lt;/div&gt;
+    &lt;div&gt;&lt;?=$leadImage->getDescription()?&gt;&lt;/div&gt;
+    &lt;div&gt;&lt;?=$leadImage->getPhotographer()?&gt;&lt;/div&gt;
+&lt;/div&gt;
+</code>
+
+
+
 <h4 id="article-images-slideshows">Slide shows (image galleries)</h4>
 <div class="code-comment">
 </div>
