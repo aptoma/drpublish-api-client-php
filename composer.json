@@ -1,0 +1,14 @@
+{
+    "name": "aptoma/drpublish-api-client",
+    "description": "API client for DrPublish",
+    "minimum-stability": "dev",
+    "authors": [
+        {
+            "name": "Stefan Grunert",
+            "email": "stefan@aptoma.com"
+        }
+    ],
+    "require": {
+
+    }
+}
