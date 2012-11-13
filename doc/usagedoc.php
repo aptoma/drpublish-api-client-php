@@ -350,14 +350,24 @@ function doYourStuff(DrPublishApiClientArticleSlideShowElement $drPublishApiClie
 }
 </code>
 
+<h4 id="image-data-caching">Image data caching</h4>
+    <div class="code-comment">
+   To avoid unnecessary HTTP requests for repeatedly gathering of already processed image information, DrPublishApiClient has a built-in data cache. This is a simple flat-file based data storage and may be located at any place that is readable and writable by the application.<br/>
+        The cache has te be configurated in the <strong>config.php</strong> (inside root dir of the lib folder), use config.default.php as pattern<br/>
+        enable/disable the cache: boolean ENABLE_IMAGE_DATA_CACHING<br/>
+        cache location: string CACHE_DIR
+    </div>
+    <code>
+$configs = array(
+    'ENABLE_IMAGE_DATA_CACHING' => true,
+    'CACHE_DIR' => '/path/to/your/cache/<directory></directory>'
+);
+</code>
+
+
+
 <h3 id="article-preview">Article preview, including unpublished changes</h3>
-<div class="code-comment">
-Use the DrPublishApiClient::articlePreview() for previewing articles. This method will run either one or two requests to the API, dependent on if the article
-has unpublished changes or not. <br/>
-First call goes to the internal data core to check if there exists an article with unpublished changes. If so, the changed article will be returned. </br>
-When no article data can be found in the internal core (the article has probably been published or re-published), the public core will be requested. <br/>
-If the article can't be found there neither, a DrPublishApiClientExceptions will be thrown.
-</div>
+
 <code>
 $apiKey = 'DREF12FU78PAUYYI9902E474';
 $apiUrl = 'http://stefan.aptoma.no:9000';
