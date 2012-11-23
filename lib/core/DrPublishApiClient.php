@@ -489,6 +489,25 @@ class DrPublishApiClient
         } else {
             $url = $this->url . $params;
         }
+
+        $q_pos = mb_strpos($url, '?');
+        if ($q_pos > 0) {
+            $pre_url = mb_substr($url, 0, $q_pos);
+            $split = mb_substr($url, $q_pos+1);
+            $split = explode('&', $split);
+            $params = array();
+            foreach ($split as $sp) {
+                $s = explode('=', $sp);
+                if (isset($s[1])) {
+                    $params[urldecode($s[0])] = urldecode(trim($s[1]));
+                } else {
+                    $params[urldecode($s[0])] = true;
+                }
+            }
+            $params = http_build_query($params);
+            $url = $pre_url.'?'.$params;
+        }
+
         $this->requestUri = $url;
         if ($this->debug) {
             $url .= strpos($url, '?') === false ? '?' : '&';

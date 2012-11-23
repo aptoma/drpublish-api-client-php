@@ -183,15 +183,13 @@ function parseFilterFieldsRequest()
     $query = '';
     $filterFields = isset($_GET['filterFields']) ?  $_GET['filterFields'] : false;
     if ($filterFields) {
+        $params = array();
         foreach ($filterFields as  $filterField) {
             if (strpos($filterField['key'], '--') === false) {
-                $val = urlencode( $filterField['value']);
-                if ($query != '') {
-                    $query .= '&';
-                }
-                $query .= $filterField['key'].  '=' . $val ;
+                $params[$filterField['key']] = $filterField['value'];
             }
         }
+        $query = http_build_query($params);
     }
     if ($filterFields && count($filterFields) > 1 && isset($_GET['conditionType'])) {
        $query .= '&conditionType=' . $_GET['conditionType'];
