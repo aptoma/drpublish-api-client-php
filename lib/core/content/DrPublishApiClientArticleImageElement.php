@@ -55,26 +55,20 @@ class DrPublishApiClientArticleImageElement extends DrPublishDomElement
         return $this->getImage()->getHeight();
     }
 
+    /**
+     * Resize the image
+     *
+     * @param string $type the image format/ratio/type to resize to
+     * @return DrPublishApiClientImage
+     */
     public function getResizedImage($type)
     {
-        $imageElement = $this->getImage();
-        if (empty($imageElement)) {
+        $image = $this->getImage();
+        if (empty($image)) {
             return null;
         }
-        $currentSrc = $imageElement->getAttribute('src');
-        try {
-            $properties = DrPublishApiClient::resizeImage($currentSrc, $type, DrPublishApiClientArticle::getImageServiceUrl(),  DrPublishApiClientArticle::getImagePublishUrl());
-        } catch (DrPublishApiClientException $e) {
-            throw $e;
-        }
-        $imageElement->setAttribute('src', $properties['src']);
-        if (array_key_exists('width', $properties)) {
-            $imageElement->setAttribute('width', $properties['width']);
-        }
-        if (array_key_exists('height', $properties)) {
-            $imageElement->setAttribute('height', $properties['height']);
-        }
-        return $imageElement;
+
+        return $image->resize($type);
     }
 
     public function getThumbnail($size = 100)
