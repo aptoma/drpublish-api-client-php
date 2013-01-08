@@ -1,4 +1,4 @@
-<?
+<?php
 class DrPublishApiClientXmlElement extends DrPublishApiClientArticleElement
 {
     protected $dom = null;

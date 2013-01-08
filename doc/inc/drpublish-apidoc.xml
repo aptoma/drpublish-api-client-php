@@ -1,761 +1,953 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?xml-stylesheet href="docstyles.css" type="text/css"?>
-<?xml-stylesheet href="drpublish-apidoc.xsl" type="text/xsl"?>
-<DrPublish:links xmlns:DrPublish="http://aptoma.no/xml/drpublish">
-    <DrPublish:link>
-        <name>article</name>
-        <description>Fetch article by id - this is actually the URI for the article and will be used for PUT/DELETE
-            actions as well
+<DrLib:documentation xmlns:DrLib="http://aptoma.no/xml/drlib">
+    <general>
+        <parameters>
+            <any>
+                <parameter>
+                    <name>callback</name>
+                    <example>
+                        <ul>
+                            <li>/articles.json?publication=AptomaPub&amp;callback=bla - Fetch the AptomaPub articles.
+                                Wrap
+                                the result in a jsonp callback called bla.
+                            </li>
+                        </ul>
+                    </example>
+                    <description>Specifies a wrapping jsonp function. The result will be jsonp compatible for any query
+                        sent
+                        to the API, including administrative ones, errors, etc.
+                    </description>
+                    <incompatibilities>Not compatible with responses in other format than json</incompatibilities>
+                </parameter>
+            </any>
+        </parameters>
+    </general>
+    <route id="items">
+        <link>{core-name}</link>
+        <link-replacement-values>
+            The
+            <b>{core-name}</b>
+            can be replaced with any valid core name.
+            The only exception is "articles" which is the reserved alias for published/saved articles.
+            Actual core names in the Search Server are pa/sa, but they are
+            <b>never</b>
+            used in the API.
+            To get a list of possible core names, see:
+            <a href="#cores-list">cores list</a>
+        </link-replacement-values>
+        <example>
+            <ul>
+                <li>/articles - fetch a list of articles</li>
+                <li>/tags - fetch a list of tags</li>
+            </ul>
+        </example>
+        <description>Main gateway for accessing the data (reads/writes). Defaults to XML format</description>
+        <link-variations>
+            <variation>
+                <link>{core-name}.json</link>
+                <example>
+                    <ul>
+                        <li>/articles.json - fetch a list of articles in json format</li>
+                        <li>/categories.json - fetch a list of categories in json format</li>
+                    </ul>
+                </example>
+                <description>JSON format</description>
+            </variation>
+            <variation>
+                <link>{core-name}.xml</link>
+                <example>
+                    <ul>
+                        <li>/articles.xml - fetch a list of articles in XML format</li>
+                        <li>/categories.xml - fetch a list of categories in XML format</li>
+                    </ul>
+                </example>
+                <description>XML format</description>
+            </variation>
+            <variation>
+                <link>{core-name}/{id}</link>
+                <example>
+                    <ul>
+                        <li>/articles/1203 - fetch article with ID 1203</li>
+                        <li>/tags/4 - fetch tag with ID 4</li>
+                    </ul>
+                </example>
+                <description>Fetches a specific item from the core. Main gateway for reads/writes for that item.
+                    Consider it the URI of the item.
+                </description>
+            </variation>
+            <variation>
+                <link>{core-name}/{id}.json</link>
+                <example>
+                    <ul>
+                        <li>/articles/1203.json - fetch article with ID 1203 in JSON format</li>
+                        <li>/tags/4.json - fetch tag with ID 4 in JSON format</li>
+                    </ul>
+                </example>
+                <description>Fetches a specific item from the core, in JSON format. Main gateway for reads/writes for
+                    that item.
+                    Consider it the URI of the item.
+                </description>
+            </variation>
+            <variation>
+                <link>{core-name}/{id}.xml</link>
+                <example>
+                    <ul>
+                        <li>/articles/1203.xml - fetch article with ID 1203 in XML format</li>
+                        <li>/tags/4.xml - fetch tag with ID 4 in XML format</li>
+                    </ul>
+                </example>
+                <description>Fetches a specific item from the core, in XML format. Main gateway for reads/writes for
+                    that item.
+                    Consider it the URI of the item.
+                </description>
+            </variation>
+        </link-variations>
+        <parameters>
+            <get>
+                <parameter>
+                    <name>{field-name}</name>
+                    <name-replacement-values>
+                        The
+                        <b>{field-name}</b>
+                        can be any valid field name. To get a list of possible field names for a specific core, see:
+                        <a href="#fields-list">fields list</a>
+                    </name-replacement-values>
+                    <example>
+                        <ul>
+                            <li>/articles?publication=AptomaPub - fetch a list of articles belonging to the Aptoma
+                                publication. For this example, the publication parameter is of type string, so an exact
+                                match is performed. Use type string for anything that requires an exact match, like
+                                tags,
+                                usernames, categories, etc. By exact match, it means that a match will take place ONLY
+                                if
+                                the full string provided is identical to the full string in the field. In other words,
+                                if
+                                tag is of type string, and there is a tag called: Herman Hesse, if the query is
+                                tag=Herman,
+                                it will not match. However, tag="Herman Hesse" will match, as well as tag=Herman*.
+                                Note that wildcard searches should be used as rarely as possible, as they can return
+                                extra
+                                results that were not wanted - in this case, tags like Herman Mellvile, etc. Wildcard
+                                searches are also slower, performance wise.
+                            </li>
+                            <li>/articles?publication=AptomaPub&amp;tag=cow - fetch a list of articles from AptomaPub
+                                publication, tagged with cow. Both publication and tag are of type string.
+                            </li>
+                            <li>/articles?publication=AptomaPub&amp;tag=ca* - fetch a list of articles from AptomaPub
+                                publication, tagged with any tag that contains a "ca", like car, cat, cameleon, etc.
+                            </li>
+                            <li>/articles?publication=AptomaPub&amp;tag=ca*&amp;story=something good - fetch a list of
+                                articles from AptomaPub publication, tagged with any tag that contains a "ca", like car,
+                                cat, cameleon, etc., and that has a story containing: "something" OR "good". Story in
+                                this
+                                case is of type text.
+                            </li>
+                            <li>/articles?publication=AptomaPub&amp;tag="ca*"&amp;story=something good - same as above,
+                                except now we're searching for articles tagged with a tag named "ca*" - the asterisk is
+                                part
+                                of the name itself.
+                            </li>
+                            <li>/articles?publication=AptomaPub&amp;tag=ca*&amp;story="something good" - same as above,
+                                except now we're searching for a story containing the phrase "something good" - note the
+                                difference, in the past examples we were searching for some words that might appear in
+                                the
+                                story, but it didn't matter how many of them actually matched, one was enough. If we
+                                quote
+                                the expression, it means that the whole phrase has to match.
+                            </li>
+                            <li>/articles?publication=AptomaPub&amp;tag=cow chicken - fetch a list of
+                                articles from AptomaPub publication, tagged both "cow" AND "chicken". Notice the
+                                difference
+                                from the two examples above. Because the tag is of type string, different rules apply.
+                                For a string field, spaces between words mean AND. Commas between words mean OR.
+                            </li>
+                            <li>/articles?publication=AptomaPub&amp;tag=cow,chicken - same as above, except now we're
+                                searching for articles tagged with either "cow" OR "chicken". Again, notice the
+                                difference
+                                between a string field and a text field. For string fields, space between words means
+                                AND,
+                                whilst comma between words means OR.
+                                For text fields, space between words means OR, whilst comma is simply disregarded.
+                            </li>
+                            <li>/articles?publication=AptomaPub&amp;tag="Hesse,Herman" - same as above, except now we're
+                                searching for articles tagged with the tag "Hesse,Herman". Pay attention to the quotes -
+                                because the comma is inside the quotes now, it becomes part of the actual search. Quotes
+                                need to be used when searching for "O'Neill" for instance, etc.
+                            </li>
+                            <li>/articles?publication=AptomaPub&amp;tag=cow&amp;author=Mary&amp;or_fields=tag,author -
+                                fetch
+                                a list of articles from the AptomaPub publication, that are tagged with cow OR have an
+                                author Mary. Logical expression: (publication=AptomaPub) AND ((tag=cow) OR
+                                (author=Mary))
+                            </li>
+                            <li>/articles?publication=AptomaPub&amp;tag=cow chicken&amp;author=Mary,John,Ted&amp;source=Reuters&amp;or_fields=tag,author
+                                - fetch
+                                a list of articles from the AptomaPub publication, coming from the source Reuters, that
+                                are
+                                tagged with both "cow" AND "chicken" OR have an
+                                author Mary OR John OR Ted. Logical expression:
+                                (publication=AptomaPub) AND (source=Reuters) AND ((tag=cow AND tag=chicken) OR
+                                ((author=Mary
+                                OR author=John OR author=Ted)))
+                            </li>
+                            <li>/articles?publication=AptomaPub&amp;tag=cow chicken&amp;author="Hesse,Herman"&amp;source=Reuters&amp;or_fields=tag,author
+                                - fetch
+                                a list of articles from the AptomaPub publication, coming from the source Reuters, that
+                                are
+                                tagged with both "cow" AND "chicken" OR have an
+                                author Hesse,Herman. Logical expression:
+                                (publication=AptomaPub) AND (source=Reuters) AND ((tag=cow AND tag=chicken) OR
+                                ((author="Hesse,Herman")))
+                            </li>
+                            <li>/articles?publication=AptomaPub&amp;created=1976-03-06T23:59:59.999Z -> fetch articles
+                                from
+                                the AptomaPub publication, created on 1976-03-06T23:59:59.999Z. The created field is of
+                                type
+                                date. The date format needs to comply with the ISO 8601 Date syntax.
+                            </li>
+                            <li>/articles?publication=AptomaPub&amp;created=[* TO NOW] -> fetch articles from the
+                                AptomaPub
+                                publication, created anytime until the current timestamp.
+                                Other examples are:
+                                [1976-03-06T23:59:59.999Z TO *]
+                                [1995-12-31T23:59:59.999Z TO 2007-03-06T00:00:00Z]
+                                [NOW-1YEAR/DAY TO NOW/DAY+1DAY]
+                                [1976-03-06T23:59:59.999Z TO 1976-03-06T23:59:59.999Z+1YEAR]
+                                [1976-03-06T23:59:59.999Z/YEAR TO 1976-03-06T23:59:59.999Z]
+                            </li>
+                            <li>/articles?publication=AptomaPub&amp;story=Hamtser~0.6 - fetch articles from the
+                                AptomaPub publication, that contain a story with an approximation of the word hamtser
+                                (so hamtser, hamster, hamsterr, etc. would match). Adding a ~ means we want to search
+                                for an approximation of the term. If we also add some number between 0.1 and 1, we tell
+                                the engine how "approximate" should the approximation be. THe higher the number, the
+                                more approximate. So, a Hamtser~0.1 would match hamster, hamst, hamrest, etc, whilst a
+                                Hamtser~0.8 would only match hamster. In case of a search such as "verden gang", that we
+                                want to match "verdens gang", we'd use it like this: "verden~0.6 gang", or simply
+                                "verden~ gang". Note that ~ without some numeric coefficient is very loose in
+                                matching, so a lot of unwanted results might show up. THe ~ CANNOT be used in conjunction with q or q_fields parameters.
+                            </li>
+                        </ul>
+                    </example>
+                    <description>The field name to filter/search for. Any number of field names can be added to the
+                        query.
+                        There is a protective limit of 100 characters per parameter value. Different fields will
+                        generate
+                        different query types, thus, a date will be different than a text or a string.
+                    </description>
+                    <incompatibilities></incompatibilities>
+                </parameter>
+                <parameter>
+                    <name>or_fields</name>
+                    <example>
+                        <ul>
+                            <li>/companies?name=cow&amp;organizationId=124&amp;noOfEmployees=[* TO 100]&amp;or_fields=organizationId,noOfEmployees
+                                - fetch all companies with the name containing the word "cow", that have either
+                                organizationId=124 OR less than 100 employees. Logical expression: (name=cow) AND
+                                ((organizationId=124) OR (noOfEmployees=[* TO 100])). For more examples, check the ones
+                                above, from the {field-name} parameter.
+                                3)
+                            </li>
+                        </ul>
+                    </example>
+                    <description>Specify the fields that should be used in OR conditions. By default, any parameter will
+                        be
+                        part of an AND condition, so by specifying the or_fields, complex AND/OR combinations can be
+                        attained
+                    </description>
+                    <incompatibilities>does not work with text fields, unless they contain a wildcard query (story=Co
+                        will
+                        be ignored in the OR condition, and become and AND condition instead. However, story=Co* will be
+                        part of the OR condition)
+                    </incompatibilities>
+                </parameter>
+                <parameter>
+                    <name>q</name>
+                    <example>
+                        <ul>
+                            <li>/companies?q="something great" - fetch all companies that have any of the first 5 fields
+                                with most distinct tokens containing the phrase "something great". The q parameter is
+                                used
+                                to mimic a "google" like search, in which phrase searches are performed against multiple
+                                fields (through the q_fields parameter). Since the q_fields parameter is not present,
+                                the
+                                API will use statistics to determine the top 5 fields ranked on number of distinct
+                                tokens
+                                they contain, and query any of those.
+                                The q parameter is usually only useful when dealing with a "search" input linked
+                                directly
+                                from the site to the API, in other words, it's better to use the query examples from
+                                above
+                                (specifying the field and the desired value) for pure API usage, and leave the q
+                                parameter
+                                for direct human interaction. So, in case we want articles with title containing the
+                                phrase
+                                "something great", it's better to make a query like /articles?title="something great",
+                                rather than using /articles?q="something great", as the latter will search through other
+                                fields as well (title, story, etc.)
+                            </li>
+                            <li>/companies?q="something great"&amp;tag=cow - same as above, with the added condition
+                                that
+                                the returned companies should also be tagged with cow
+                            </li>
+                        </ul>
+                    </example>
+                    <description>Provides a google like search feel. Useful mostly for direct human interaction. Can
+                        also be
+                        used in conjunction with the "q_fields" parameter
+                    </description>
+                    <incompatibilities>only works with text fields</incompatibilities>
+                </parameter>
+                <parameter>
+                    <name>q_fields</name>
+                    <example>
+                        <ul>
+                            <li>/companies?q="something great"&amp;q_fields=name,description - fetch all companies that
+                                have
+                                the phrase "something great" in either the name or the description
+                            </li>
+                        </ul>
+                    </example>
+                    <description>Provides a CSV list of fields to be used for searching through, using the query
+                        provided in
+                        the "q" parameter
+                    </description>
+                    <incompatibilities>does not work WITHOUT the "q" parameter.</incompatibilities>
+                </parameter>
+                <parameter>
+                    <name>emphasize</name>
+                    <example>
+                        <ul>
+                            <li>/companies?q="something great"&amp;q_fields=name,description,address&amp;emphasize=name^5&amp;emphasize=address^3
+                                - fetch all companies that have
+                                the phrase "something great" in either the name, address or the description. Emphasize
+                                (boost, bring to the top) the results that contain the phrase in the name, seconded by
+                                the
+                                ones that contain the phrase in the address, followed lastly by the ones that contain
+                                the
+                                phrase in the description. Notice that the "q" parameter is present, thus the emphasize
+                                will
+                                only contain only the field name and a boosting value (the higher the boosting value,
+                                the
+                                more
+                                closer to the top those documents will be). In the next example, we will see how
+                                emphasize
+                                has a slightly different syntax, that helps greatly in filter queries
+                            </li>
+                            <li>/companies?name=Aptoma&amp;address=Oslo&amp;category=finance&amp;or_fields=name,address&amp;emphasize=name:Aptoma^10
+                                - fetch all the companies with either name Aptoma or address Oslo. Any company returned
+                                must
+                                be from the category finance (notice that the or_fields only contains the name and the
+                                address). When returning the results, put the companies named Aptoma to the top of the
+                                list.
+                                Notice that unlike the emphasize condition seen above, this time we're not having the q
+                                parameter, thus, we're being forced to specify the value of the field to be boosted as
+                                well,
+                                otherwise the condition will be ignored. Things get even more interesting as we can
+                                specify
+                                "something" to emphasize that's not even in the query itself. For instance, in the
+                                example
+                                above, replace emphasize=name:Aptoma^10 with emphasize=employees:[10 TO 50]^20 - this
+                                will
+                                return exactly the same results, but on top will be companies with between 10 and 50
+                                employees. Furthermore, if we were to keep both emphasize conditions, then we will get
+                                exactly the same results, with companies between 10 and 50 employees sitting at the top
+                                of
+                                the list, followed by companies with name Aptoma, followed by companies from Oslo
+                                (notice
+                                the emphasizing value for Aptoma is 10, which is lower than the one for 10 to 50
+                                employees
+                                which is 20). The default emphasize is 1.
+                            </li>
+                        </ul>
+                    </example>
+                    <description>Provides emphasizing (boosting) for certain fields or field values. Can be used
+                        multiple
+                        times
+                    </description>
+                    <incompatibilities>Care must be taken when used in conjunction with filter queries or the "q"
+                        paramter,
+                        as the syntax differs. If sorting is enabled, sorting will have precedence, thus rendering
+                        boosting
+                        useless.
+                    </incompatibilities>
+                </parameter>
+                <parameter>
+                    <name>emphasize_by_phrase</name>
+                    <example>
+                        <ul>
+                            <li>/companies?q="something great"&amp;q_fields=name,description,address&amp;emphasize_by_phrase=name^5
+                                - fetch all companies that have
+                                the phrase "something great" in either the name, address or the description. Emphasize
+                                (boost, bring to the top) the results that contain the EXACT phrase in the name. Notice
+                                the difference compared to a regular emphasize, this time the boosting taking place in
+                                case of an exact match (the entire searched phrase matches)
+                            </li>
+                        </ul>
+                    </example>
+                    <description>Provides emphasizing (boosting) for exact phrase matches. Interesting combinations can
+                        arrise when using together with query_slop
+                    </description>
+                    <incompatibilities>
+                    </incompatibilities>
+                </parameter>
+                <parameter>
+                    <name>query_slop</name>
+                    <example>
+                        <ul>
+                            <li>/companies?name="something great"&amp;query_slop=5 - fetch all companies that have
+                                the phrase "something great" in the name, taking into consideration that there might be
+                                at
+                                most 5 words interpolated between the 2 terms. This way, if the name is something like:
+                                "something is really great and cool", would match. Will only work with phrases.
+                            </li>
+                        </ul>
+                    </example>
+                    <description>Provides a query slop, meaning the number of words that can exist between the query
+                        term,
+                        for an item to match
+                    </description>
+                    <incompatibilities>only works with text fields (or together with the "q" parameter); only works with
+                        phrases
+                    </incompatibilities>
+                </parameter>
+                <parameter>
+                    <name>min_matches</name>
+                    <example>
+                        <ul>
+                            <li>/companies?name=something great cool mental&amp;min_matches=3 - fetch all companies that
+                                have the at least 3 of the "something","great","cool","mental" in the name. Does not
+                                work
+                                with phrases.
+                            </li>
+                        </ul>
+                    </example>
+                    <description>Provides a query slop, meaning the number of words that can exist between the query
+                        term,
+                        for an item to match
+                    </description>
+                    <incompatibilities>does not work with phrases</incompatibilities>
+                </parameter>
+                <parameter>
+                    <name>fields</name>
+                    <example>
+                        <ul>
+                            <li>/companies?name=something&amp;fields=name,orgId - fetch only the name and orgId fields
+                                for
+                                companies that have the word "something" in the name.
+                            </li>
+                        </ul>
+                    </example>
+                    <description>Allows the user to specify only the desired fields to return. The format is a comma
+                        separated list of fields.
+                    </description>
+                    <incompatibilities></incompatibilities>
+                </parameter>
+                <parameter>
+                    <name>scope</name>
+                    <example>
+                        <ul>
+                            <li>/articles?publication=AptomaPub&amp;scope=internal - returns a list of all articles that
+                                have not yet been published.
+                            </li>
+                        </ul>
+                    </example>
+                    <description>If the scope is set to internal, the API will use the saved articles core (articles
+                        that
+                        have been saved, but not published). Required https and an APIKEY
+                    </description>
+                    <incompatibilities>Only works with the /articles core</incompatibilities>
+                </parameter>
+                <parameter>
+                    <name>limit</name>
+                    <example>
+                        <ul>
+                            <li>/articles?publication=AptomaPub&amp;limit=5 - returns a list of 5 articles from the
+                                AptomaPub publication
+                            </li>
+                        </ul>
+                    </example>
+                    <description>Limits the number of results returned</description>
+                    <incompatibilities></incompatibilities>
+                </parameter>
+                <parameter>
+                    <name>offset</name>
+                    <example>
+                        <ul>
+                            <li>/articles?publication=AptomaPub&amp;limit=5&amp;offset=15 - returns a list of 5 articles
+                                from the AptomaPub publication, starting with offset 15
+                            </li>
+                        </ul>
+                    </example>
+                    <description>Specifies the offset to use - useful for browsing paginated results</description>
+                    <incompatibilities></incompatibilities>
+                </parameter>
+                <parameter>
+                    <name>order</name>
+                    <example>
+                        <ul>
+                            <li>/articles?publication=AptomaPub&amp;order=created asc - returns a list of articles from
+                                the AptomaPub publication, ordered ascending by the "created" field
+                            </li>
+                            <li>/companies?order=inStock desc,price asc - returns a list of companies ordered by inStock
+                                descending and price ascending
+                            </li>
+                            <li>/companies?order=sum(x_f, y_f) desc - returns a list of companies ordered descending by
+                                the
+                                sum of x_f and y_f fields
+                            </li>
+                        </ul>
+                    </example>
+                    <description>Specifies the ordering to use</description>
+                    <incompatibilities>Spaces are not allowed in the order query, except for the ones before asc/desc
+                    </incompatibilities>
+                </parameter>
+                <parameter>
+                    <name>callback</name>
+                    <example>
+                        <ul>
+                            <li>/articles.json?publication=AptomaPub&amp;limit=5&amp;callback=_jsonpstuff - returns a
+                                list
+                                of 5
+                                articles from the
+                                AptomaPub publication, in jsonp format, with the function name being _jsonpstuff
+                            </li>
+                        </ul>
+                    </example>
+                    <description>Returns the result in jsonp format</description>
+                    <incompatibilities>Does not work with xml format</incompatibilities>
+                </parameter>
+                <parameter>
+                    <name>facet.query</name>
+                    <example>
+                        <ul>
+                            <li>/companies?facet.query=employees:[* TO 20]&amp;facet.query=employees:[21 TO *] - creates
+                                2
+                                facets based on companies that have less or more than 21 employees. Think of facets as
+                                navigation tools that can be used to create filters. In this case, the facets will
+                                display
+                                something like "less than 21 [140]", "more than 21 [25]", meaning there are 140
+                                companies
+                                with less than 21 employees, etc. When clicking on one of those links, the resulting
+                                query
+                                to the api would be something like:
+                                /companies?employees=[* to 20]. This way, faceting can help in creating a chain of
+                                filters.
+                                It is important to note that faceting DOES NOT interfere with search results. Let's say
+                                that
+                                in this particular case we would still like to maintain the 2 faceting queries. The URL
+                                will
+                                thus be: /companies?employees=[* TO 20]&amp;facet.query=employees:[* TO 20]&amp;facet.query=employees:[21
+                                TO *]. But the attentive observer will notice that the facets would look like: "less
+                                than 21
+                                [140]", "more than 21 [0]". The reason why there's 0 companies with more than 21
+                                employees
+                                is that we have already applied a filter to only select the companies with less than 21
+                                employees. As said earlier, faceting does not interfere with the queries. So, if we
+                                really
+                                need to show the number of companies with more than 21 employees, we would rewrite the
+                                query
+                                as follows: /companies?employees={!tag=blabla}[* TO 20]&amp;facet.query=employees:[* TO
+                                20]&amp;facet.query={!ex=blabla}employees:[21
+                                TO *]. If we look closely at the query, we notice the addition of some {..}. What we do
+                                is
+                                we tag the filter we just applied with "blabla". We then ask the search engine to
+                                exclude
+                                the "blabla" filter when dealing with the facet for companies with more than 21
+                                employees.
+                                Notice that we only need to exclude the blabla filter for the more than 21 employees
+                                facet.
+                                This is because the less than 21 employees facet already works (as this is also the
+                                filter
+                                being applied). Note that by tagging and excluding, nothing changes in the search
+                                results,
+                                so the results will still only show companies with less than 21 employees. Also note
+                                that
+                                multiple exclusions can be performed, by using a comma separated list of tags - for
+                                example,
+                                say we tag one filter with blabla, and another with yup, then, we would make the facet
+                                like:
+                                facet.query={!ex=blabla,yup}employees:[* TO 20]
+                                Normally, though, once a filter is applied, the faceting for that particular
+                                field is no longer used, in order to let the user continue building the filter chain
+                                with
+                                other facets (a-z company names facets, location facets, etc.)
+                            </li>
+                        </ul>
+                    </example>
+                    <description>Creates a faceting query. The parameter can be set multiple times, for multiple queries
+                    </description>
+                    <incompatibilities></incompatibilities>
+                </parameter>
+                <parameter>
+                    <name>facet.field</name>
+                    <example>
+                        <ul>
+                            <li>/articles?facet.field=tag - generates facets based on all values of the tag field. When
+                                used, a possible form of the links generated would be: "cow [24]","house [56]",etc. This
+                                means there are 24 articles tagged with cow, 56 with house, etc.
+                            </li>
+                            <li>/articles?publication=AptomaPub&amp;facet.field=tag - generates facets based on all
+                                values
+                                of the tag field, displaying results only from the AptomaPub publication. When
+                                used, a possible form of the links generated would be: "cow [24]","house [56]",etc. This
+                                means there are 24 articles tagged with cow, 56 with house, etc. Note that the faceting
+                                will
+                                only take into consideration AptomaPub articles. If we wanted to take into consideration
+                                all
+                                articles from all publications, we would use tagging like this:
+                                /articles?publication={!tag=pub}AptomaPub&amp;facet.field={!ex=pub}tag. The list of only
+                                AptomaPub articles would be show, but we would have the facets count articles from
+                                across
+                                all of the publications.
+                            </li>
+                        </ul>
+                    </example>
+                    <description>Specifies a field for faceting. All the values of that field will be used. Can be used
+                        multiple times
+                    </description>
+                    <incompatibilities></incompatibilities>
+                </parameter>
+                <parameter>
+                    <name>facet.prefix</name>
+                    <example>
+                        <ul>
+                            <li>/articles?facet.prefix=Ap&amp;facet.field=title - display facets for the title, taking
+                                into
+                                consideration that the title should start with "Ap". If we wanted to build an
+                                autosuggesting
+                                mechanism, we would replace "Ap" with whatever the user has typed. We would also add the
+                                option: &amp;limit=0, so that we do not retrieve any articles, as we're only interested
+                                in
+                                the suggestions for the facet. IMPORTANT NOTE: as specified above, the facets never
+                                influence the search results so please note the difference between a filter (tag=cow)
+                                and a
+                                facet (facet.field=tag). A filter will restrict the results to whatever it's asked to
+                                restrict to. A facet will go through the list returned from the filters and build
+                                "facets",
+                                in this case, lists of tags and how many articles have been tagged with each tag. If the
+                                tag=cow filter is applied, then the facets will return 0 articles for all tags except
+                                "cow"
+                                (as the facets work on the returned result set). If we wanted to show the actual number
+                                of
+                                articles for each tag, we would use filter tagging, as shown in the examples above.
+                                An important aspect to mention is that this parameter can be used either globally, or
+                                per
+                                field. This means that if we say facet.prefix=Ap, then any facet we ask for, will need
+                                to
+                                start with "Ap". If we wanted to only have title facets start with "Ap", we would use a
+                                per
+                                field parameter. This is done by prefixing the parameter with f. + field_name +
+                                facet_option. In this specific case, we would use f.title.facet.prefix=Ap. So, for
+                                instance,
+                                we could have this query: /articles?f.title.facet.prefix=Ap&amp;facet.field=title&amp;facet.field=tag,
+                                which means that the title facets will only display titles starting with Ap, but the tag
+                                facet will display any tag (cow, Apprehensive, dog, etc.)
+                            </li>
+                        </ul>
+                    </example>
+                    <description>This is the tool to use for autosuggestions. Can be used per field or globally.
+                    </description>
+                    <incompatibilities></incompatibilities>
+                </parameter>
+                <parameter>
+                    <name>facet.sort</name>
+                    <example>
+                        <ul>
+                            <li>/articles?facet.field=tag&amp;facet.sort=index - facet by tag, sorting alphabetically.
+                                The
+                                default sort mode is "count", which sorts by number of items
+                            </li>
+                        </ul>
+                    </example>
+                    <description>Specifies the sorting mechanism for facets. Only has 2 values: "count" or "index". Can
+                        be
+                        used per field or globally.
+                    </description>
+                    <incompatibilities></incompatibilities>
+                </parameter>
+                <parameter>
+                    <name>facet.limit</name>
+                    <example>
+                        <ul>
+                            <li>/articles?facet.field=tag&amp;facet.limit=5 - facet by tag, returning the first 5
+                                facets. A
+                                negative value means return all facets. Default is 100.
+                            </li>
+                            <li>/articles?facet.field=tag&amp;f.tag.facet.limit=5&amp;facet.field=category - facet by
+                                tag,
+                                returning the first 5 facets; also facet by category, returning at most 100 facets
+                            </li>
+                        </ul>
+                    </example>
+                    <description>Specifies how many facet results should be returned. Can be used per field or globally.
+                    </description>
+                    <incompatibilities></incompatibilities>
+                </parameter>
+                <parameter>
+                    <name>facet.offset</name>
+                    <example>
+                        <ul>
+                            <li>/articles?facet.field=tag&amp;facet.offset=10 - facet by tag, returning facets starting
+                                with
+                                offset 10
+                            </li>
+                        </ul>
+                    </example>
+                    <description>Specifies the offset within the facet results. Can be used per field or globally.
+                    </description>
+                    <incompatibilities></incompatibilities>
+                </parameter>
+                <parameter>
+                    <name>facet.mincount</name>
+                    <example>
+                        <ul>
+                            <li>/articles?facet.field=tag&amp;facet.mincount=3 - facet by tag, returning facets that
+                                have at
+                                least 3 articles
+                            </li>
+                        </ul>
+                    </example>
+                    <description>Specifies the minimum count for a facet term to be returned. Default is 0. Can be used
+                        per
+                        field or
+                        globally.
+                    </description>
+                    <incompatibilities></incompatibilities>
+                </parameter>
+                <parameter>
+                    <name>facet.missing</name>
+                    <example>
+                        <ul>
+                            <li>/articles?facet.field=tag&amp;facet.missing=true - facet by tag, also returning a count
+                                for
+                                fields that don't have a value for that facet field
+                            </li>
+                        </ul>
+                    </example>
+                    <description>Specifies that a count for all matching results that don't have a value for that field
+                        should be computed. Default is false. Can be used per field or globally.
+                    </description>
+                    <incompatibilities></incompatibilities>
+                </parameter>
+                <parameter>
+                    <name>facet.range</name>
+                    <example>
+                        <ul>
+                            <li>/products?facet.range=price&amp;facet.range=stock - facet by price and stock. In order
+                                for
+                                the query to work, facet.start, facet.end and facet.gap parameters MUST be set
+                            </li>
+                        </ul>
+                    </example>
+                    <description>Specifies fields to apply range faceting to. Useful for date or int ranges. Can be used
+                        multiple times.
+                    </description>
+                    <incompatibilities></incompatibilities>
+                </parameter>
+                <parameter>
+                    <name>facet.range.start</name>
+                    <example>
+                        <ul>
+                            <li>/products?facet.range=price&amp;facet.range.start=5&amp;facet.end=25&amp;facet.gap=5 -
+                                facet
+                                by price, starting the range from 5, ending at 25, with a gap of 5 (meaning 5, 10, 15,
+                                20
+                                and 25).
+                            </li>
+                        </ul>
+                    </example>
+                    <description>Specifies the starting range for a facet range. Can be used per field or globally.
+                    </description>
+                    <incompatibilities>can only be used for facet.range</incompatibilities>
+                </parameter>
+                <parameter>
+                    <name>facet.range.end</name>
+                    <example>
+                        <ul>
+                            <li>/products?facet.range=price&amp;facet.range.start=5&amp;facet.end=25&amp;facet.gap=5 -
+                                facet
+                                by price, starting the range from 5, ending at 25, with a gap of 5 (meaning 5, 10, 15,
+                                20
+                                and 25).
+                            </li>
+                        </ul>
+                    </example>
+                    <description>Specifies the ending range for a facet range. Can be used per field or globally.
+                    </description>
+                    <incompatibilities>can only be used for facet.range</incompatibilities>
+                </parameter>
+                <parameter>
+                    <name>facet.range.gap</name>
+                    <example>
+                        <ul>
+                            <li>/products?facet.range=price&amp;f.price.facet.range.start=5&amp;f.price.facet.end=25&amp;f.price.facet.gap=5
+                                - facet
+                                by price, starting the range from 5, ending at 25, with a gap of 5 (meaning 5, 10, 15,
+                                20
+                                and 25).
+                            </li>
+                        </ul>
+                    </example>
+                    <description>Specifies the gap for a facet range. Can be used per field or globally.
+                    </description>
+                    <incompatibilities>can only be used for facet.range</incompatibilities>
+                </parameter>
+                <parameter>
+                    <name>or_fields_tag</name>
+                    <example>
+                        <ul>
+                            <li>/products?facet.range={!ex=bla}price&amp;name=AS&amp;employees=10&amp;or_fields=name,employees&amp;or_fields_tag=bla
+                                - search for companies with either the name containing "AS" or having 10 employees.
+                                Facet by price, ignoring the filters above (through the use of the "bla" tag applied to
+                                the
+                                OR selection). When making an OR selection (through the use of the of_fields parameter),
+                                a
+                                filter is created with all the fields involved, and that is why the whole filter needs
+                                to be
+                                tagged, as opposed to just tagging individual fields like we normally do.
+                            </li>
+                        </ul>
+                    </example>
+                    <description>Tags a group of OR condition fields
+                    </description>
+                    <incompatibilities>can only be used in conjunction with or_fields</incompatibilities>
+                </parameter>
+            </get>
+            <delete>
+                <parameter>
+                    <name>n/a</name>
+                    <example>
+                        <ul>
+                            <li>/products/123?apikey=123456AVRD - delete product 123</li>
+                            <li>/products?items=123,124,1567&amp;apikey=123456AVRD - delete products 123, 124 and 1567
+                            </li>
+                            <li>
+                                /products?apikey=123456AVRD with the addition of the following RAW body:
+                                <delete>
+                                    <id>123</id>
+                                    <id>456</id>
+                                </delete>
+                                - delete elements 123 and 456, using the BODY of the request to supply a simple xml with
+                                the items to delete.
+                            </li>
+                        </ul>
+                    </example>
+                    <description>Delete options. NOTE: Delete only removes data from DrLib. For security reasons, data
+                        in the original source (DrPublish for instance) is kept.
+                    </description>
+                    <incompatibilities>can only be used with the DELETE Http method. Doesn't work without https and
+                        apikey
+                    </incompatibilities>
+                </parameter>
+            </delete>
+        </parameters>
+    </route>
+    <route id="cores-list">
+        <link>/cores</link>
+        <example>
+            <ul>
+                <li>/cores - fetch a list of all available cores</li>
+            </ul>
+        </example>
+        <description>Fetches a list of available cores. Note that "pa" and "sa" are reserved names. The alias to use for
+            them is "articles"
         </description>
-        <uri>/articles/{id}.{format}?</uri>
-        <verb>GET</verb>
+        <link-variations>
+            <variation>
+                <link>/cores.json</link>
+                <example>
+                    <ul>
+                        <li>/cores.json - fetch a list of cores in json format</li>
+                    </ul>
+                </example>
+                <description>JSON format</description>
+            </variation>
+            <variation>
+                <link>/cores.xml</link>
+                <example>
+                    <ul>
+                        <li>/cores.xml - fetch a list of cores in XML format</li>
+                    </ul>
+                </example>
+                <description>XML format</description>
+            </variation>
+        </link-variations>
         <parameters>
-            <parameter>
-                <name>fields</name>
-                <mandatory>no</mandatory>
-                <description>Comma separated values list of fields to return for the requested resource(s)</description>
-                <type>string</type>
-                <allowedValues>List of valid resource property names</allowedValues>
-            </parameter>
-            <parameter>
-                <name>scope</name>
-                <mandatory>no</mandatory>
-                <description>If set to internal, will retrieve information from the saved cores (non-public resources)</description>
-                <type>string</type>
-                <allowedValues>internal</allowedValues>
-            </parameter>
-            <parameter>
-                <name>apikey</name>
-                <mandatory>no</mandatory>
-                <description>API Key for accessing non-public resources. Only needed if "scope" is set to "internal"</description>
-                <type>string</type>
-                <allowedValues>Valid API Key</allowedValues>
-            </parameter>
-            <parameter>
-                <name>callback</name>
-                <mandatory>no</mandatory>
-                <description>JSONP callback function</description>
-                <type>string</type>
-                <allowedValues>Any valid javascript function name</allowedValues>
-            </parameter>
+            <get>
+                <parameter>
+                    <name>callback</name>
+                    <example>
+                        <ul>
+                            <li>/cores.json?callback=_jsonpstuff - returns a list of cores, in jsonp format, with the
+                                function name being _jsonpstuff
+                            </li>
+                        </ul>
+                    </example>
+                    <description>Returns the result in jsonp format</description>
+                    <incompatibilities>Does not work with xml format</incompatibilities>
+                </parameter>
+            </get>
         </parameters>
-    </DrPublish:link>
-    <DrPublish:link>
-        <name>articles</name>
-        <description>Fetch articles by different criteria</description>
-        <uri>/articles.{format}?</uri>
-        <verb>GET</verb>
+    </route>
+    <route id="fields-list">
+        <link>/fields/core/{core-name}</link>
+        <link-replacement-values>
+            The
+            <b>{core-name}</b>
+            can be replaced with any valid core name.
+            The only exception is "articles" which is the reserved alias for published/saved articles.
+            Actual core names in the Search Server are pa/sa, but they are
+            <b>never</b>
+            used in the API.
+            To get a list of possible core names, see:
+            <a href="#cores-list">cores list</a>
+        </link-replacement-values>
+        <example>
+            <ul>
+                <li>/fields/core/articles - fetch a list of all available fields for articles</li>
+            </ul>
+        </example>
+        <description>Fetches a list of available fields for a specified core. Note that "pa" and "sa" are reserved core
+            names. The alias to use for
+            them is "articles"
+        </description>
+        <link-variations>
+            <variation>
+                <link>/fields/core/{core-name}.json</link>
+                <example>
+                    <ul>
+                        <li>/fields/core/tags.json - fetch a list of fields for the tags in json format</li>
+                    </ul>
+                </example>
+                <description>JSON format</description>
+            </variation>
+            <variation>
+                <link>/fields/core/{core-name}.xml</link>
+                <example>
+                    <ul>
+                        <li>/fields/core/tags.xml - fetch a list of fields for the tags core in XML format</li>
+                    </ul>
+                </example>
+                <description>XML format</description>
+            </variation>
+        </link-variations>
         <parameters>
-            <parameter>
-                <name>publication</name>
-                <mandatory>yes</mandatory>
-                <description>The publication that the article belongs to</description>
-                <type>string</type>
-                <allowedValues>The name of a valid publication</allowedValues>
-            </parameter>
-            <parameter>
-                <name>author</name>
-                <mandatory>no</mandatory>
-                <description>The author of the article(s)</description>
-                <type>string</type>
-                <allowedValues>Username of the creator of the article. Cannot be used in conjunction with the authors property!</allowedValues>
-            </parameter>
-            <parameter>
-                <name>authors</name>
-                <mandatory>no</mandatory>
-                <description>A list of authors of the article(s)</description>
-                <type>string</type>
-                <allowedValues>Comma separated values list of author usernames. "," means OR, "+" means AND. Cannot be used in conjunction with author property!</allowedValues>
-            </parameter>
-            <parameter>
-                <name>tag</name>
-                <mandatory>no</mandatory>
-                <description>A tag of the article(s)</description>
-                <type>string</type>
-                <allowedValues>A tag of the article. Cannot be used in conjunction with the tags property!</allowedValues>
-            </parameter>
-            <parameter>
-                <name>tags</name>
-                <mandatory>no</mandatory>
-                <description>A list of tags</description>
-                <type>string</type>
-                <allowedValues>Comma separated values list of tags. "," means OR, "+" means AND. Cannot be used in conjunction with tag property!</allowedValues>
-            </parameter>
-            <parameter>
-                <name>dossier</name>
-                <mandatory>no</mandatory>
-                <description>A dossier of the article(s)</description>
-                <type>string</type>
-                <allowedValues>A dossier of the article. Cannot be used in conjunction with the dossiers property!</allowedValues>
-            </parameter>
-            <parameter>
-                <name>dossiers</name>
-                <mandatory>no</mandatory>
-                <description>A list of dossiers</description>
-                <type>string</type>
-                <allowedValues>Comma separated values list of dossiers. "," means OR, "+" means AND. Cannot be used in conjunction with dossier property!</allowedValues>
-            </parameter>
-            <parameter>
-                <name>category</name>
-                <mandatory>no</mandatory>
-                <description>A category of the article(s)</description>
-                <type>string</type>
-                <allowedValues>A category of the article. Cannot be used in conjunction with the categories property!</allowedValues>
-            </parameter>
-            <parameter>
-                <name>categories</name>
-                <mandatory>no</mandatory>
-                <description>A list of categories</description>
-                <type>string</type>
-                <allowedValues>Comma separated values list of categories. "," means OR, "+" means AND. Cannot be used in conjunction with category property!</allowedValues>
-            </parameter>
-            <parameter>
-                <name>dynamicQuery</name>
-                <mandatory>no</mandatory>
-                <description>This can contain extra parameters passed to the search, such as fields generated on the fly in DrPublish, etc.</description>
-                <type>string</type>
-                <allowedValues>The format is as follows: field_name:field_value+AND+field_name_2:field_value_2+AND+(field_name_3:field_value_3+OR+field_name_4:field_value_4)</allowedValues>
-            </parameter>
-            <parameter>
-                <name>offset</name>
-                <mandatory>no</mandatory>
-                <description>Used in pagination. "Page number"</description>
-                <type>int</type>
-                <allowedValues>1..n</allowedValues>
-            </parameter>
-            <parameter>
-                <name>limit</name>
-                <mandatory>no</mandatory>
-                <description>Used in pagination. "Number of items per page"</description>
-                <type>int</type>
-                <allowedValues>1..n</allowedValues>
-            </parameter>
-            <parameter>
-                <name>fields</name>
-                <mandatory>no</mandatory>
-                <description>Comma separated values list of fields to return for the requested resource(s)</description>
-                <type>string</type>
-                <allowedValues>List of valid resource property names</allowedValues>
-            </parameter>
-            <parameter>
-                <name>scope</name>
-                <mandatory>no</mandatory>
-                <description>If set to internal, will retrieve information from the saved cores (non-public resources)</description>
-                <type>string</type>
-                <allowedValues>internal</allowedValues>
-            </parameter>
-            <parameter>
-                <name>apikey</name>
-                <mandatory>no</mandatory>
-                <description>API Key for accessing non-public resources. Only needed if "scope" is set to "internal"</description>
-                <type>string</type>
-                <allowedValues>Valid API Key</allowedValues>
-            </parameter>
-            <parameter>
-                <name>callback</name>
-                <mandatory>no</mandatory>
-                <description>JSONP callback function</description>
-                <type>string</type>
-                <allowedValues>Any valid javascript function name</allowedValues>
-            </parameter>
-            <parameter>
-                <name>order</name>
-                <mandatory>no</mandatory>
-                <description>Order by parameter</description>
-                <type>string</type>
-                <allowedValues>The name of a valid resource property, followed by direction (asc/desc)</allowedValues>
-            </parameter>
+            <get>
+                <parameter>
+                    <name>callback</name>
+                    <example>
+                        <ul>
+                            <li>/fields/core/tags.json?callback=_jsonpstuff - returns a list of fields for the tags
+                                core, in
+                                jsonp format, with the
+                                function name being _jsonpstuff
+                            </li>
+                        </ul>
+                    </example>
+                    <description>Returns the result in jsonp format</description>
+                    <incompatibilities>Does not work with xml format</incompatibilities>
+                </parameter>
+            </get>
         </parameters>
-    </DrPublish:link>
-    <DrPublish:link>
-        <name>dossiers</name>
-        <description>Fetch dossiers</description>
-        <uri>/tags.{format}?</uri>
-        <verb>GET</verb>
-        <parameters>
-            <parameter>
-                <name>publication</name>
-                <mandatory>yes</mandatory>
-                <description>The publication that the article belongs to</description>
-                <type>string</type>
-                <allowedValues>The name of a valid publication</allowedValues>
-            </parameter>
-            <parameter>
-                <name>offset</name>
-                <description>Used in pagination. "Page number"</description>
-                <type>int</type>
-                <allowedValues>1..n</allowedValues>
-            </parameter>
-            <parameter>
-                <name>limit</name>
-                <description>Used in pagination. "Number of items per page"</description>
-                <type>int</type>
-                <allowedValues>1..n</allowedValues>
-            </parameter>
-            <parameter>
-                <name>scope</name>
-                <mandatory>no</mandatory>
-                <description>If set to internal, will retrieve information from the saved cores (non-public resources)</description>
-                <type>string</type>
-                <allowedValues>internal</allowedValues>
-            </parameter>
-            <parameter>
-                <name>apikey</name>
-                <mandatory>no</mandatory>
-                <description>API Key for accessing non-public resources. Only needed if "scope" is set to "internal"</description>
-                <type>string</type>
-                <allowedValues>Valid API Key</allowedValues>
-            </parameter>
-            <parameter>
-                <name>callback</name>
-                <mandatory>no</mandatory>
-                <description>JSONP callback function</description>
-                <type>string</type>
-                <allowedValues>Any valid javascript function name</allowedValues>
-            </parameter>
-            <parameter>
-                <name>order</name>
-                <description>Order by parameter</description>
-                <type>string</type>
-                <allowedValues>One of two allowed values:index/count - index means order alphabetically, count means order by number of resources that share that property</allowedValues>
-            </parameter>
-        </parameters>
-    </DrPublish:link>
-    <DrPublish:link>
-        <name>categories</name>
-        <description>Fetch categories</description>
-        <uri>/categories.{format}?</uri>
-        <verb>GET</verb>
-        <parameters>
-            <parameter>
-                <name>publication</name>
-                <mandatory>yes</mandatory>
-                <description>The publication that the article belongs to</description>
-                <type>string</type>
-                <allowedValues>The name of a valid publication</allowedValues>
-            </parameter>
-            <parameter>
-                <name>offset</name>
-                <description>Used in pagination. "Page number"</description>
-                <type>int</type>
-                <allowedValues>1..n</allowedValues>
-            </parameter>
-            <parameter>
-                <name>limit</name>
-                <description>Used in pagination. "Number of items per page"</description>
-                <type>int</type>
-                <allowedValues>1..n</allowedValues>
-            </parameter>
-            <parameter>
-                <name>scope</name>
-                <mandatory>no</mandatory>
-                <description>If set to internal, will retrieve information from the saved cores (non-public resources)</description>
-                <type>string</type>
-                <allowedValues>internal</allowedValues>
-            </parameter>
-            <parameter>
-                <name>apikey</name>
-                <mandatory>no</mandatory>
-                <description>API Key for accessing non-public resources. Only needed if "scope" is set to "internal"</description>
-                <type>string</type>
-                <allowedValues>Valid API Key</allowedValues>
-            </parameter>
-            <parameter>
-                <name>callback</name>
-                <mandatory>no</mandatory>
-                <description>JSONP callback function</description>
-                <type>string</type>
-                <allowedValues>Any valid javascript function name</allowedValues>
-            </parameter>
-            <parameter>
-                <name>order</name>
-                <description>Order by parameter</description>
-                <type>string</type>
-                <allowedValues>One of two allowed values:index/count - index means order alphabetically, count means order by number of resources that share that property</allowedValues>
-            </parameter>
-        </parameters>
-    </DrPublish:link>
-    <DrPublish:link>
-        <name>rawsearch</name>
-        <description>Perform raw search</description>
-        <uri>/raw/{query}/?{format}?</uri>
-        <verb>GET</verb>
-        <parameters>
-            <parameter>
-                <name>callback</name>
-                <mandatory>no</mandatory>
-                <description>JSONP callback function</description>
-                <type>string</type>
-                <allowedValues>Any valid javascript function name</allowedValues>
-            </parameter>
-        </parameters>
-    </DrPublish:link>
-    <DrPublish:link>
-        <name>search</name>
-        <description>Full text search, similar to how google search works</description>
-        <uri>/search.{format}?</uri>
-        <verb>GET</verb>
-        <parameters>
-            <parameter>
-                <name>q</name>
-                <mandatory>yes</mandatory>
-                <description>The query itself. Format: ?q=bla+blabla+something</description>
-                <type>string</type>
-                <allowedValues>String with "+" separated terms to search for</allowedValues>
-            </parameter>
-            <parameter>
-                <name>fields</name>
-                <mandatory>no</mandatory>
-                <description>Comma separated values list of fields to return for the requested resource(s)</description>
-                <type>string</type>
-                <allowedValues>List of valid resource property names</allowedValues>
-            </parameter>
-            <parameter>
-                <name>scope</name>
-                <mandatory>no</mandatory>
-                <description>If set to internal, will retrieve information from the saved cores (non-public resources)</description>
-                <type>string</type>
-                <allowedValues>internal</allowedValues>
-            </parameter>
-            <parameter>
-                <name>apikey</name>
-                <mandatory>no</mandatory>
-                <description>API Key for accessing non-public resources. Only needed if "scope" is set to "internal"</description>
-                <type>string</type>
-                <allowedValues>Valid API Key</allowedValues>
-            </parameter>
-            <parameter>
-                <name>callback</name>
-                <mandatory>no</mandatory>
-                <description>JSONP callback function</description>
-                <type>string</type>
-                <allowedValues>Any valid javascript function name</allowedValues>
-            </parameter>
-            <parameter>
-                <name>offset</name>
-                <mandatory>no</mandatory>
-                <description>Used in pagination. "Page number"</description>
-                <type>int</type>
-                <allowedValues>1..n</allowedValues>
-            </parameter>
-            <parameter>
-                <name>limit</name>
-                <mandatory>no</mandatory>
-                <description>Used in pagination. "Number of items per page"</description>
-                <type>int</type>
-                <allowedValues>1..n</allowedValues>
-            </parameter>
-        </parameters>
-    </DrPublish:link>
-    <DrPublish:link>
-        <name>modifyarticle</name>
-        <description>Modify article</description>
-        <uri>/articles/{id}.{format}?</uri>
-        <verb>PUT</verb>
-        <requirements>
-            <secure>true</secure>
-            <authenticationTypes>
-                <authenticationType>apikey</authenticationType>
-            </authenticationTypes>
-            <structure>
-                <DrPublish:article required="true">
-                    <DrPublish:meta required="true">
-                        <id required="true" dataType="integer"/>
-                        <publication required="false" dataType="string"/>
-                        <authors required="false" multiple="true">
-                            <author required="false" dataType="string" description="the author username"/>
-                        </authors>
-                        <published required="false" dataType="date" format="yyyy.mm.dd H:s:i"/>
-                        <tags required="false" multiple="true">
-                            <tag required="false" dataType="string" description="the tag itself"/>
-                        </tags>
-                        <categories required="false" multiple="true">
-                            <category required="false" dataType="integer" description="the category ID"/>
-                        </categories>
-                    </DrPublish:meta>
-                    <DrPublish:contents required="false">
-                        <title required="false" dataType="string"/>
-                        <story required="false" dataType="string"/>
-                        <preamble required="false" dataType="string"/>
-                    </DrPublish:contents>
-                </DrPublish:article>
-            </structure>
-        </requirements>
-        <parameters>
-            <parameter>
-                <name>callback</name>
-                <mandatory>no</mandatory>
-                <description>JSONP callback function</description>
-                <type>string</type>
-                <allowedValues>Any valid javascript function name</allowedValues>
-            </parameter>
-            <parameter>
-                <name>apikey</name>
-                <mandatory>yes</mandatory>
-                <description>API Key for accessing non-public resources. Only needed if "scope" is set to "internal"</description>
-                <type>string</type>
-                <allowedValues>Valid API Key</allowedValues>
-            </parameter>
-            <parameter>
-                <name>etag</name>
-                <mandatory>yes</mandatory>
-                <description>The etag is found in the xml returned when fetching the article. It's used to prevent accidental overwrites, when 2 sources save/update the same resource at the same time.. Use the string 'null' if the etag is not required (article has just been published)</description>
-                <type>string</type>
-                <allowedValues>Valid etag or 'null'</allowedValues>
-            </parameter>
-        </parameters>
-    </DrPublish:link>
-    <DrPublish:link>
-        <name>createarticle</name>
-        <description>Create a new article</description>
-        <uri>/articles.{format}?</uri>
-        <verb>POST</verb>
-        <requirements>
-            <secure>true</secure>
-            <authenticationTypes>
-                <authenticationType>apikey</authenticationType>
-            </authenticationTypes>
-            <structure>
-                <DrPublish:article required="true">
-                    <DrPublish:meta required="true">
-                        <id required="true" dataType="integer"/>
-                        <publication required="false" dataType="string"/>
-                        <authors required="false" multiple="true">
-                            <author required="false" dataType="string" description="the author username"/>
-                        </authors>
-                        <published required="false" dataType="date" format="yyyy.mm.dd H:s:i"/>
-                        <tags required="false" multiple="true">
-                            <tag required="false" dataType="string" description="the tag itself"/>
-                        </tags>
-                        <categories required="false" multiple="true">
-                            <category required="false" dataType="integer" description="the category ID"/>
-                        </categories>
-                    </DrPublish:meta>
-                    <DrPublish:contents required="false">
-                        <title required="false" dataType="string"/>
-                        <story required="false" dataType="string"/>
-                        <preamble required="false" dataType="string"/>
-                    </DrPublish:contents>
-                </DrPublish:article>
-            </structure>
-        </requirements>
-        <parameters>
-            <parameter>
-                <name>callback</name>
-                <mandatory>no</mandatory>
-                <description>JSONP callback function</description>
-                <type>string</type>
-                <allowedValues>Any valid javascript function name</allowedValues>
-            </parameter>
-            <parameter>
-                <name>apikey</name>
-                <mandatory>yes</mandatory>
-                <description>API Key for accessing non-public resources. Only needed if "scope" is set to "internal"</description>
-                <type>string</type>
-                <allowedValues>Valid API Key</allowedValues>
-            </parameter>
-        </parameters>
-    </DrPublish:link>
-    <DrPublish:link>
-        <name>user</name>
-        <description>Fetch user by ID</description>
-        <uri>/users/{id}.{format}?</uri>
-        <verb>GET</verb>
-        <parameters>
-            <parameter>
-                <name>fields</name>
-                <mandatory>no</mandatory>
-                <description>Comma separated values list of fields to return for the requested resource(s)</description>
-                <type>string</type>
-                <allowedValues>List of valid resource property names</allowedValues>
-            </parameter>
-            <parameter>
-                <name>callback</name>
-                <mandatory>no</mandatory>
-                <description>JSONP callback function</description>
-                <type>string</type>
-                <allowedValues>Any valid javascript function name</allowedValues>
-            </parameter>
-        </parameters>
-    </DrPublish:link>
-    <DrPublish:link>
-        <name>users-with-article-count</name>
-        <description>Fetch users together with the number of written articles</description>
-        <uri>/users/articles.{format}?</uri>
-        <verb>GET</verb>
-        <parameters>
-            <parameter>
-                <name>publication</name>
-                <mandatory>yes</mandatory>
-                <description>The publication that the article belongs to</description>
-                <type>string</type>
-                <allowedValues>The name of a valid publication</allowedValues>
-            </parameter>
-            <parameter>
-                <name>offset</name>
-                <description>Used in pagination. "Page number"</description>
-                <type>int</type>
-                <allowedValues>1..n</allowedValues>
-            </parameter>
-            <parameter>
-                <name>limit</name>
-                <description>Used in pagination. "Number of items per page"</description>
-                <type>int</type>
-                <allowedValues>1..n</allowedValues>
-            </parameter>
-            <parameter>
-                <name>scope</name>
-                <mandatory>no</mandatory>
-                <description>If set to internal, will retrieve information from the saved cores (non-public resources)</description>
-                <type>string</type>
-                <allowedValues>internal</allowedValues>
-            </parameter>
-            <parameter>
-                <name>apikey</name>
-                <mandatory>no</mandatory>
-                <description>API Key for accessing non-public resources. Only needed if "scope" is set to "internal"</description>
-                <type>string</type>
-                <allowedValues>Valid API Key</allowedValues>
-            </parameter>
-            <parameter>
-                <name>callback</name>
-                <mandatory>no</mandatory>
-                <description>JSONP callback function</description>
-                <type>string</type>
-                <allowedValues>Any valid javascript function name</allowedValues>
-            </parameter>
-            <parameter>
-                <name>order</name>
-                <description>Order by parameter</description>
-                <type>string</type>
-                <allowedValues>One of two allowed values:index/count - index means order alphabetically, count means order by number of resources that share that property</allowedValues>
-            </parameter>
-        </parameters>
-    </DrPublish:link>
-    <DrPublish:link>
-        <name>users</name>
-        <description>Fetch users</description>
-        <uri>/users.{format}?</uri>
-        <verb>GET</verb>
-        <parameters>
-            <parameter>
-                <name>publication</name>
-                <mandatory>no</mandatory>
-                <description>Publication that the user has written in</description>
-                <type>string</type>
-                <allowedValues>The name a valid publication. Cannot be used in conjunction with the publications property!</allowedValues>
-            </parameter>
-            <parameter>
-                <name>publications</name>
-                <mandatory>no</mandatory>
-                <description>A list of publications that the user has written in</description>
-                <type>string</type>
-                <allowedValues>Comma separated values list of publications. "," means OR, "+" means AND. Cannot be used in conjunction with publication property!</allowedValues>
-            </parameter>
-            <parameter>
-                <name>username</name>
-                <mandatory>no</mandatory>
-                <description>A username to search for</description>
-                <type>string</type>
-                <allowedValues>Valid username</allowedValues>
-            </parameter>
-            <parameter>
-                <name>fullname</name>
-                <mandatory>no</mandatory>
-                <description>A full name to search for</description>
-                <type>string</type>
-                <allowedValues>Valid full name</allowedValues>
-            </parameter>
-            <parameter>
-                <name>jobTitle</name>
-                <mandatory>no</mandatory>
-                <description>A job title to search for</description>
-                <type>string</type>
-                <allowedValues>Valid job title</allowedValues>
-            </parameter>
-            <parameter>
-                <name>dynamicQuery</name>
-                <mandatory>no</mandatory>
-                <description>This can contain extra parameters passed to the search, such as fields generated on the fly in DrPublish, etc.</description>
-                <type>string</type>
-                <allowedValues>The format is as follows: field_name:field_value+AND+field_name_2:field_value_2+AND+(field_name_3:field_value_3+OR+field_name_4:field_value_4)</allowedValues>
-            </parameter>
-            <parameter>
-                <name>offset</name>
-                <description>Used in pagination. "Page number"</description>
-                <type>int</type>
-                <allowedValues>1..n</allowedValues>
-            </parameter>
-            <parameter>
-                <name>limit</name>
-                <description>Used in pagination. "Number of items per page"</description>
-                <type>int</type>
-                <allowedValues>1..n</allowedValues>
-            </parameter>
-            <parameter>
-                <name>fields</name>
-                <mandatory>no</mandatory>
-                <description>Comma separated values list of fields to return for the requested resource(s)</description>
-                <type>string</type>
-                <allowedValues>List of valid resource property names</allowedValues>
-            </parameter>
-            <parameter>
-                <name>callback</name>
-                <mandatory>no</mandatory>
-                <description>JSONP callback function</description>
-                <type>string</type>
-                <allowedValues>Any valid javascript function name</allowedValues>
-            </parameter>
-            <parameter>
-                <name>order</name>
-                <description>Order by parameter</description>
-                <type>string</type>
-                <allowedValues>One of two allowed values:index/count - index means order alphabetically, count means order by number of resources that share that property</allowedValues>
-            </parameter>
-        </parameters>
-    </DrPublish:link>
-    <DrPublish:link>
-        <name>user</name>
-        <description>Fetch tag by ID</description>
-        <uri>/tags/{id}.{format}?</uri>
-        <verb>GET</verb>
-        <parameters>
-            <parameter>
-                <name>fields</name>
-                <mandatory>no</mandatory>
-                <description>Comma separated values list of fields to return for the requested resource(s)</description>
-                <type>string</type>
-                <allowedValues>List of valid resource property names</allowedValues>
-            </parameter>
-            <parameter>
-                <name>callback</name>
-                <mandatory>no</mandatory>
-                <description>JSONP callback function</description>
-                <type>string</type>
-                <allowedValues>Any valid javascript function name</allowedValues>
-            </parameter>
-        </parameters>
-    </DrPublish:link>
-    <DrPublish:link>
-        <name>tags-with-article-count</name>
-        <description>Fetch tags together with the number of tagged articles</description>
-        <uri>/tags/articles.{format}?</uri>
-        <verb>GET</verb>
-        <parameters>
-            <parameter>
-                <name>publication</name>
-                <mandatory>yes</mandatory>
-                <description>The publication that the article belongs to</description>
-                <type>string</type>
-                <allowedValues>The name of a valid publication</allowedValues>
-            </parameter>
-            <parameter>
-                <name>offset</name>
-                <description>Used in pagination. "Page number"</description>
-                <type>int</type>
-                <allowedValues>1..n</allowedValues>
-            </parameter>
-            <parameter>
-                <name>limit</name>
-                <description>Used in pagination. "Number of items per page"</description>
-                <type>int</type>
-                <allowedValues>1..n</allowedValues>
-            </parameter>
-            <parameter>
-                <name>scope</name>
-                <mandatory>no</mandatory>
-                <description>If set to internal, will retrieve information from the saved cores (non-public resources)</description>
-                <type>string</type>
-                <allowedValues>internal</allowedValues>
-            </parameter>
-            <parameter>
-                <name>apikey</name>
-                <mandatory>no</mandatory>
-                <description>API Key for accessing non-public resources. Only needed if "scope" is set to "internal"</description>
-                <type>string</type>
-                <allowedValues>Valid API Key</allowedValues>
-            </parameter>
-            <parameter>
-                <name>callback</name>
-                <mandatory>no</mandatory>
-                <description>JSONP callback function</description>
-                <type>string</type>
-                <allowedValues>Any valid javascript function name</allowedValues>
-            </parameter>
-            <parameter>
-                <name>order</name>
-                <description>Order by parameter</description>
-                <type>string</type>
-                <allowedValues>One of two allowed values:index/count - index means order alphabetically, count means order by number of resources that share that property</allowedValues>
-            </parameter>
-        </parameters>
-    </DrPublish:link>
-    <DrPublish:link>
-        <name>tags</name>
-        <description>Fetch tags</description>
-        <uri>/tags.{format}?</uri>
-        <verb>GET</verb>
-        <parameters>
-            <parameter>
-                <name>publication</name>
-                <mandatory>no</mandatory>
-                <description>Publication that the tag is in</description>
-                <type>string</type>
-                <allowedValues>The name a valid publication</allowedValues>
-            </parameter>
-            <parameter>
-                <name>name</name>
-                <mandatory>no</mandatory>
-                <description>A tag name to search for</description>
-                <type>string</type>
-                <allowedValues>Valid tag name</allowedValues>
-            </parameter>
-            <parameter>
-                <name>tagTypeName</name>
-                <mandatory>no</mandatory>
-                <description>A tag type name to search for</description>
-                <type>string</type>
-                <allowedValues>Valid tag type name</allowedValues>
-            </parameter>
-            <parameter>
-                <name>dynamicQuery</name>
-                <mandatory>no</mandatory>
-                <description>This can contain extra parameters passed to the search, such as fields generated on the fly in DrPublish, etc.</description>
-                <type>string</type>
-                <allowedValues>The format is as follows: field_name:field_value+AND+field_name_2:field_value_2+AND+(field_name_3:field_value_3+OR+field_name_4:field_value_4)</allowedValues>
-            </parameter>
-            <parameter>
-                <name>offset</name>
-                <description>Used in pagination. "Page number"</description>
-                <type>int</type>
-                <allowedValues>1..n</allowedValues>
-            </parameter>
-            <parameter>
-                <name>limit</name>
-                <description>Used in pagination. "Number of items per page"</description>
-                <type>int</type>
-                <allowedValues>1..n</allowedValues>
-            </parameter>
-            <parameter>
-                <name>fields</name>
-                <mandatory>no</mandatory>
-                <description>Comma separated values list of fields to return for the requested resource(s)</description>
-                <type>string</type>
-                <allowedValues>List of valid resource property names</allowedValues>
-            </parameter>
-            <parameter>
-                <name>callback</name>
-                <mandatory>no</mandatory>
-                <description>JSONP callback function</description>
-                <type>string</type>
-                <allowedValues>Any valid javascript function name</allowedValues>
-            </parameter>
-            <parameter>
-                <name>order</name>
-                <description>Order by parameter</description>
-                <type>string</type>
-                <allowedValues>One of two allowed values:index/count - index means order alphabetically, count means order by number of resources that share that property</allowedValues>
-            </parameter>
-        </parameters>
-    </DrPublish:link>
-</DrPublish:links>
+    </route>
+</DrLib:documentation>

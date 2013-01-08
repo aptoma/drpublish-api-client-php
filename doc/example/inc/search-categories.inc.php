@@ -1,16 +1,16 @@
 <h2>Category search</h2>
-<? include('inc/search-meta.inc.php') ?>
+<?php include('inc/search-meta.inc.php') ?>
 <ul>
-<? foreach ($drPublishApiClientSearchList as $drPublishApiClientCategory) { ?>
+<?php foreach ($drPublishApiClientSearchList as $drPublishApiClientCategory) { ?>
     <li>
-        <strong><?= $drPublishApiClientCategory->getName() ?></strong>
-         [id=<?= $drPublishApiClientCategory->getId() ?>]
+        <strong><?php print($drPublishApiClientCategory->getName()) ?></strong>
+         [id=<?php print($drPublishApiClientCategory->getId()) ?>]
         <br />
-        Parent category: <?=$drPublishApiClientCategory->getParentName() ?>
+        Parent category: <?php print($drPublishApiClientCategory->getParentName()) ?>
         <span style="color: #666">
         </span>
     </li>
-<? } ?>
+<?php } ?>
 </ul>
-<? include('inc/search-paginator.inc.php') ?>
-<?= printSourceCode() ?>
+<?php include('inc/search-paginator.inc.php') ?>
+<?php print(printSourceCode()) ?>

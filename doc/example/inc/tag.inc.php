@@ -1,10 +1,10 @@
 <h2>Tag</h2>
-<strong><?= $drPublishApiClientTag->getName() ?></strong>
- [id=<?= $drPublishApiClientTag->getId() ?>]
+<strong><?php print($drPublishApiClientTag->getName()) ?></strong>
+ [id=<?php print($drPublishApiClientTag->getId()) ?>]
 <br />
 <span style="color: #666">
-Type: <?=$drPublishApiClientTag->getTagTypeName(); ?> (id=<?=$drPublishApiClientTag->getTagTypeId(); ?>)
+Type: <?php print($drPublishApiClientTag->getTagTypeName())?> (id=<?php print($drPublishApiClientTag->getTagTypeId()) ?>)
     <br/>
-Content:  <?= htmlentities($drPublishApiClientTag->getContent()); ?>
+Content:  <?php print(htmlentities($drPublishApiClientTag->getContent())) ?>
 </span>
-<?= printSourceCode() ?>
+<?php print(printSourceCode()) ?>

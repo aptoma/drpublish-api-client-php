@@ -1,12 +1,13 @@
-<? include('inc/search-meta.inc.php') ?>
+<?phpinclude('inc/search-meta.inc.php') ?>
 <h2>Author search</h2>
 <ul>
-<? foreach ($drPublishApiClientSearchList as $drPublishApiClientAuthor) { ?>
+<?php foreach ($drPublishApiClientSearchList as $drPublishApiClientAuthor) { ?>
     <li>
-        <strong><?= $drPublishApiClientAuthor->getFullName() ?></strong>
-         [id=<?= $drPublishApiClientAuthor->getId() ?>, username=<?= $drPublishApiClientAuthor->getUserName() ?>]
+        <strong><?php print($drPublishApiClientAuthor->getFullName()) ?></strong>
+         [id=<?php print($drPublishApiClientAuthor->getId()) ?>, username=<?php print($drPublishApiClientAuthor->getUserName()) ?>]
+         [id=<?php print($drPublishApiClientAuthor->getId()) ?>, username=<?php print($drPublishApiClientAuthor->getUserName()) ?>]
     </li>
-<? } ?>
+<?php } ?>
 </ul>
-<? include('inc/search-paginator.inc.php') ?>
-<?= printSourceCode() ?>
+<?php include('inc/search-paginator.inc.php') ?>
+<?php print(printSourceCode()) ?>

@@ -1,16 +1,16 @@
 <h2>Sources search</h2>
-<? include('inc/search-meta.inc.php') ?>
+<?php include('inc/search-meta.inc.php') ?>
 <br/>
 <ul>
-<? foreach ($drPublishApiClientSearchList as $drPublishApiClientSource) { ?>
+<?php foreach ($drPublishApiClientSearchList as $drPublishApiClientSource) { ?>
     <li>
-        <strong><?= $drPublishApiClientSource->getName() ?></strong>
-         [id=<?= $drPublishApiClientSource->getId() ?>]
+        <strong><?php print($drPublishApiClientSource->getName())?></strong>
+         [id=<?php print($drPublishApiClientSource->getId()) ?>]
         <br />
         <span style="color: #666">
         </span>
     </li>
-<? } ?>
+<?php } ?>
 </ul>
-<? include('inc/search-paginator.inc.php') ?>
-<?= printSourceCode() ?>
+<?php include('inc/search-paginator.inc.php') ?>
+<?php print(printSourceCode()) ?>

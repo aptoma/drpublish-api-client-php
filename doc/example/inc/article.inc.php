@@ -1,25 +1,25 @@
 <h3>Title [DrPublishApiClientArticleElement DrPublishApiWebClient::getTitle()]</h3>
 <div class="result">
-    <h4><?=$drPublishApiClientArticle->getTitle()?></h4>
+    <h4><?php print($drPublishApiClientArticle->getTitle()) ?></h4>
 </div>
 
 <h3>Preamble [DrPublishApiClientArticleElement DrPublishApiWebClient::getPreamble()]</h3>
 <div class="result">
-    <div class="content-container"><b> <?=$drPublishApiClientArticle->getPreamble()?>
+    <div class="content-container"><b> <?php print($drPublishApiClientArticle->getPreamble()) ?>
     </b></div>
 </div>
 
 <h3>LeadAsset [DrPublishApiClientArticleElement DrPublishApiWebClient::getLeadAsset()]</h3>
 <div class="result">
     <?php $leadAsset = $drPublishApiClientArticle->getLeadAsset() ?>
-    <div class="content-container"><?=$leadAsset?>
+    <div class="content-container"><?php print($leadAsset) ?>
     <div style="clear: both"></div>
     </div>
 </div>
 
 <h3>Body Text [DrPublishApiClientArticleElement DrPublishApiWebClient::getBodyText()]</h3>
 <div class="result">
-    <div class="content-container"><?=$drPublishApiClientArticle->getBodyText()?></div>
+    <div class="content-container"><?php print($drPublishApiClientArticle->getBodyText()) ?></div>
 </div>
 
 
@@ -27,71 +27,71 @@
 
 <h3>Published [DrPublishApiClientArticleElement DrPublishApiWebClient::getPublished()]</h3>
 <div class="result">
-    <?=$drPublishApiClientArticle->getPublished()?>
+    <?php print($drPublishApiClientArticle->getPublished()) ?>
 </div>
 
 <h3>Modified [DrPublishApiClientArticleElement DrPublishApiWebClient::getModified()]</h3>
 <div class="result">
-    <?=$drPublishApiClientArticle->getModified()?>
+    <?php print($drPublishApiClientArticle->getModified())?>
 </div>
 
 <h3>Tags [DrPublishApiClientList DrPublishApiWebClient::getTagNames()]</h3>
 <div class="result">
-    <?=$drPublishApiClientArticle->getTags() ?>
+    <?php print($drPublishApiClientArticle->getTags()) ?>
 </div>
 
 <h3>DPTags as dedicated DrPublishApiClientTag objects [DrPublishApiClientList
 DrPublishApiWebClient::getDPTags()]</h3>
 <div class="result">
  <pre>
-<?=printResult($drPublishApiClientArticle->getDPTags()) ?>
+<?php print(printResult($drPublishApiClientArticle->getDPTags())) ?>
 </pre>
 </div>
 
 <h3>Categories [DrPublishApiClientList DrPublishApiWebClient::getCategories()]</h3>
 <div class="result">
-    <?=$drPublishApiClientArticle->getCategories() ?>
+    <?php print($drPublishApiClientArticle->getCategories()) ?>
 </div>
 
 <h3>DPCategories as dedicated DrPublishApiClientCategory objects [DrPublishApiClient::getDPCategories()]</h3>
 <div class="result">
 <pre>
-<?=printResult($drPublishApiClientArticle->getDPCategories())   ?>
+<?php print(printResult($drPublishApiClientArticle->getDPCategories())) ?>
 </pre>
 </div>
 
 <h3>DPDossiers as dedicated DrPublishApiClientDossier objects [DrPublishApiClient::getDPDossiers()]</h3>
 <div class="result">
 <pre>
-<?=printResult($drPublishApiClientArticle->getDPDossiers())   ?>
+<?php print(printResult($drPublishApiClientArticle->getDPDossiers())) ?>
 </pre>
 </div>
 
 <h3>Main category [DrPublishApiClientArticleElement DrPublishApiWebClient::getMainCategoryName()]</h3>
 <div class="result">
-<?= $drPublishApiClientArticle->getMainDPCategory() ?>
+<?php print($drPublishApiClientArticle->getMainDPCategory()) ?>
 </div>
 
 <h3>Authors as simple list [DrPublishApiClientList DrPublishApiWebClient::getAuthorNames()]</h3>
 <div class="result">
-    <?= $drPublishApiClientArticle->getDPAuthors() ?>
+    <?php print($drPublishApiClientArticle->getDPAuthors()) ?>
     <pre>
-        <?=printResult($drPublishApiClientArticle->getDPAuthors()) ?>
+        <?php print(printResult($drPublishApiClientArticle->getDPAuthors())) ?>
     </pre>
 </div>
 
 <h3>Authors as advanced list [DrPublishApiClientList DrPublishApiWebClient::getDPAuthors(true)]. Extended author data are getting fetched by a separate API request</h3>
 <div class="result">
-    <? $dpAuthors = $drPublishApiClientArticle->getDPAuthors(true) ?>
-    <?=$dpAuthors?>
+    <?php $dpAuthors = $drPublishApiClientArticle->getDPAuthors(true) ?>
+    <?php print($dpAuthors) ?>
     <pre>
-        <?=printResult($dpAuthors)  ?>
+        <?php print(printResult($dpAuthors)) ?>
     </pre>
 </div>
 
 <h3>Source [DrPublishApiClientArticleElement DrPublishApiWebClient::getSourceName()]</h3>
 <div class="result">
-    <?=$drPublishApiClientArticle->getSource()?>
+    <?php print($drPublishApiClientArticle->getSource()) ?>
 </div>
 
 <h2>Enrichments</h2>
@@ -99,7 +99,7 @@ DrPublishApiWebClient::getDPTags()]</h3>
 <h3>DPImages</h3>
 <div class="result">
     <h4>All images including wrapping markups [DrPublishApiClientList DrPublishApiWebClient::getDPImages()]</h4>
-    <? $drPublishApiClientImages = $drPublishApiClientArticle->getDPImages(); ?>
+    <?php $drPublishApiClientImages = $drPublishApiClientArticle->getDPImages(); ?>
     <div class="content-container">
         <?php
         foreach ($drPublishApiClientImages as $drPublishApiClientImage) {
@@ -137,6 +137,6 @@ foreach ($drPublishApiClientImages as $drPublishApiClientImageElement) {
 
 <h3>Fact Boxes [DrPublishApiClientList DrPublishApiWebClient::getFactBoxes()]</h3>
 <div class="result">
-    <div class="content-container"><?=$drPublishApiClientArticle->getFactBoxes();?></div>
+    <div class="content-container"><?php print($drPublishApiClientArticle->getFactBoxes()) ?></div>
 </div>
-<?= printSourceCode() ?>
+<?php print(printSourceCode()) ?>

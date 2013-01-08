@@ -1,7 +1,7 @@
 <em class="error-message">
-    An exception has been raised: <?= $e->getMessage()  ?>
+    An exception has been raised: <?php print($e->getMessage()) ?>
     <br/>
-    Cause: <?= $e->getCause() ?>
+    Cause: <?php print($e->getCause()) ?>
     <br/>
-    Request URL: <a href="<?= $e->getRequestUrl() ?>" target="_blank"><?= $e->getRequestUrl() ?></a>
+    Request URL: <a href="<?php print($e->getRequestUrl()) ?>" target="_blank"><?php print($e->getRequestUrl()) ?></a>
 </em>

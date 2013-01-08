@@ -1,4 +1,4 @@
-<?
+<?php
 class DrPublishApiClientTextElement extends DrPublishApiClientArticleElement
 {
     function __toString()

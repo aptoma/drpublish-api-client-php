@@ -1,17 +1,17 @@
 <h2>Author</h2>
-Name: <strong><?=$drPublishApiClientAuthor->getFullName() ?></strong>
+Name: <strong><?php print($drPublishApiClientAuthor->getFullName()) ?></strong>
 <br/>
-Username: <?= $drPublishApiClientAuthor->getUserName() ?>
+Username: <?php print($drPublishApiClientAuthor->getUserName()) ?>
 <br/>
-Email: <?= $drPublishApiClientAuthor->getEmail() ?>
+Email: <?php print($drPublishApiClientAuthor->getEmail()) ?>
 <br/>
-Twitter username: <?= $drPublishApiClientAuthor->getTwitterUsername() ?>
+Twitter username: <?php print($drPublishApiClientAuthor->getTwitterUsername()) ?>
 <br/>
-Profile images: <? print_r($drPublishApiClientAuthor->getProfileImages()) ?>
+Profile images: <?php print_r($drPublishApiClientAuthor->getProfileImages()) ?>
 <br/>
 <hr/>
 All properties:
 <pre>
-<? print_r($drPublishApiClientAuthor)?>
+<?php print_r($drPublishApiClientAuthor)?>
 </pre>
-<?= printSourceCode() ?>
+<?php print(printSourceCode()) ?>

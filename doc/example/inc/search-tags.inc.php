@@ -1,18 +1,18 @@
 <h2>Tag search</h2>
-<? include('inc/search-meta.inc.php') ?>
+<?php include('inc/search-meta.inc.php') ?>
 <ul>
-<? foreach ($drPublishApiClientSearchList as $drPublishApiClientTag) { ?>
+<?php foreach ($drPublishApiClientSearchList as $drPublishApiClientTag) { ?>
     <li>
-        <strong><?= $drPublishApiClientTag->getName() ?></strong>
-         [id=<?= $drPublishApiClientTag->getId() ?>]
+        <strong><?php print($drPublishApiClientTag->getName()) ?></strong>
+         [id=<?php print($drPublishApiClientTag->getId()) ?>]
         <br />
         <span style="color: #666">
-        Type: <?=$drPublishApiClientTag->getTagTypeName(); ?> (id=<?=$drPublishApiClientTag->getTagTypeId(); ?>)
+        Type: <?php print($drPublishApiClientTag->getTagTypeName()) ?> (id=<?php print($drPublishApiClientTag->getTagTypeId()) ?>)
             <br/>
-        Content:  <?= htmlentities($drPublishApiClientTag->getContent()); ?>
+        Content:  <?php print(htmlentities($drPublishApiClientTag->getContent())) ?>
         </span>
     </li>
-<? } ?>
+<?php } ?>
 </ul>
-<? include('inc/search-paginator.inc.php') ?>
-<?= printSourceCode() ?>
+<?php include('inc/search-paginator.inc.php') ?>
+<?php print(printSourceCode()) ?>

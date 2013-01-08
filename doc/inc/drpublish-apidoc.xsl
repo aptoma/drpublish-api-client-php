@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="1.0"
-	xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:DrPublish="http://aptoma.no/xml/drpublish">
+	xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:DrLib="http://aptoma.no/xml/drlib">
 	<xsl:output method="html" version="1.0" encoding="UTF-8"	indent="yes" />
-	<xsl:template match="DrPublish:documentation">
+	<xsl:template match="DrLib:documentation">
         <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
         <head>
             <title>DrPublish API doc</title>

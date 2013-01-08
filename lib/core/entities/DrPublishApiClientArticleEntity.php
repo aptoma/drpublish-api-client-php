@@ -1,4 +1,4 @@
-<?
+<?php
 abstract class DrPublishApiClientArticleEntity
 {
     public function __construct($data)
