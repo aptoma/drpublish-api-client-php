@@ -207,7 +207,7 @@ class DrPublishApiClient
         if ($query[0] != '&') {
             $query = '&' . $query;
         }
-        $url = '/articles.json?publication=' . $this->publicationName . $query;
+        $url = '/articles.json?publication=' . urlencode($this->publicationName) . $query;
         $response = $this->curl($url);
         $result = json_decode($response->body);
         $drPublishApiClientSearchList = new DrPublishApiClientSearchList($result->search, $response->headers);
