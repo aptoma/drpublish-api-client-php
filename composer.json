@@ -11,6 +11,6 @@
     "require": {
     },
         "autoload": {
-        "files": ["lib/web/DrPublishApiWebClient.php"]
+        "classmap": ["lib/core/DrPublishApiClient.php", "lib/web/DrPublishApiWebClient.php"]
     }
 }
