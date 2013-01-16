@@ -4,11 +4,13 @@
     "minimum-stability": "dev",
     "authors": [
         {
-            "name": "Stefan Grunert",
-            "email": "stefan@aptoma.com"
+            "name": "Aptoma",
+            "email": "drpublish@aptoma.com"
         }
     ],
     "require": {
-
+    },
+        "autoload": {
+        "files": ["lib/web/DrPublishApiWebClient.php"]
     }
 }
