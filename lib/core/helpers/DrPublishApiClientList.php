@@ -1,6 +1,6 @@
 <?php
 
-class DrPublishApiClientList implements Iterator
+class DrPublishApiClientList implements Iterator, Countable
 {
 
     protected $items = array();
@@ -24,6 +24,11 @@ class DrPublishApiClientList implements Iterator
     public function key()
     {
         return $this->position;
+    }
+
+    public function count()
+    {
+        return $this->size();
     }
 
     public function size()
