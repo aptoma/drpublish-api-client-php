@@ -582,6 +582,7 @@ class DrPublishApiClient
         $newSrc = str_replace($imagePublishUrl, $imageServiceUrl, $newSrc);
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $newSrc . '?return-properties');
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
         curl_setopt($ch, CURLOPT_COOKIESESSION, false);
         curl_setopt($ch, CURLOPT_HEADER, 1);
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
