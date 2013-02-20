@@ -1,15 +1,15 @@
 <h2>Dossier search</h2>
-<? include('inc/search-meta.inc.php') ?>
+<?php include('inc/search-meta.inc.php') ?>
 <ul>
-<? foreach ($drPublishApiClientSearchList as $drPublishApiClientDossier) { ?>
+<?php foreach ($drPublishApiClientSearchList as $drPublishApiClientDossier) { ?>
     <li>
-        <strong><?= $drPublishApiClientDossier->getName() ?></strong>
-         [id=<?= $drPublishApiClientDossier->getId() ?>]
+        <strong><?php print($drPublishApiClientDossier->getName()) ?></strong>
+         [id=<?php print($drPublishApiClientDossier->getId()) ?>]
         <br />
         <span style="color: #666">
         </span>
     </li>
-<? } ?>
+<?php } ?>
 </ul>
-<? include('inc/search-paginator.inc.php') ?>
-<?= printSourceCode() ?>
+<?php include('inc/search-paginator.inc.php') ?>
+<?php print(printSourceCode()) ?>

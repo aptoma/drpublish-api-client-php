@@ -1,7 +1,7 @@
 <h2>Source</h2>
-    <strong><?= $drPublishApiClientSource->getName() ?></strong>
-     [id=<?= $drPublishApiClientSource->getId() ?>]
+    <strong><?php print($drPublishApiClientSource->getName()) ?></strong>
+     [id=<?php print($drPublishApiClientSource->getId()) ?>]
     <br />
-    Publication id:  <?=$drPublishApiClientSource->getPublicationId() ?>
+    Publication id:  <?php print($drPublishApiClientSource->getPublicationId()) ?>
     <span style="color: #666">
     </span>

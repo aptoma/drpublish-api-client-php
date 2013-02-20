@@ -1,15 +1,15 @@
 <h2>Dossier</h2>
-<strong><?= $drPublishApiClientDossier->getName() ?></strong>
- [id=<?= $drPublishApiClientDossier->getId() ?>]
+<strong><?php print($drPublishApiClientDossier->getName()) ?></strong>
+ [id=<?php print($drPublishApiClientDossier->getId()) ?>]
 <br />
- Parent dossier name: <?=$drPublishApiClientDossier->getParentName() ?>
+ Parent dossier name: <?php print($drPublishApiClientDossier->getParentName()) ?>
 <br />
- original id: <?=$drPublishApiClientDossier->getOriginalId()?>
+ original id: <?php print($drPublishApiClientDossier->getOriginalId()) ?>
 <br />
- start: <?=$drPublishApiClientDossier->getStart()?>
+ start: <?php print($drPublishApiClientDossier->getStart()) ?>
 <br />
-expire: <?=$drPublishApiClientDossier->getExpire()?>
+expire: <?php print($drPublishApiClientDossier->getExpire()) ?>
 <span style="color: #666">
 <br/>
 </span>
-<?= printSourceCode() ?>
+<?php print(printSourceCode()) ?>

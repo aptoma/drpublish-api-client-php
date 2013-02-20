@@ -1,1 +1,1 @@
-<h3>Action "<?=$action?>" not found</h3>
+<h3>Action "<?php print($action)?>" not found</h3>

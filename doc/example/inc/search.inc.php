@@ -1,22 +1,22 @@
-<? include('inc/search-meta.inc.php') ?>
-<? include('inc/search-paginator.inc.php') ?>
+<?php include('inc/search-meta.inc.php') ?>
+<?php include('inc/search-paginator.inc.php') ?>
 <h2>Search articles</h2>
 <ul>
 <?php
 foreach ($drPublishApiClientSearchList as $drPublishApiClientArticle) { ?>
     <li>
-        [<?=$drPublishApiClientArticle->getId()?>]
-        <a href="#" onclick="DrPublishApiClientExmample.showArticle('<?=$drPublishApiClientArticle->getId()?>');return false"><strong><?=$drPublishApiClientArticle->getTitle()?></strong></a>
+        [<?php print($drPublishApiClientArticle->getId()) ?>]
+        <a href="#" onclick="DrPublishApiClientExmample.showArticle('<?php print($drPublishApiClientArticle->getId()) ?>');return false"><strong><?php print($drPublishApiClientArticle->getTitle()) ?></strong></a>
         <br/>
         <span style="color: #555">
-            published: <?=$drPublishApiClientArticle->getPublished() ?> | written by: <?=$drPublishApiClientArticle->getDPAuthors() ?> |
-            categories: <?=$drPublishApiClientArticle->getDPCategories() ?> |
-            tags:  <?=$drPublishApiClientArticle->getDPTags() ?>
+            published: <?php print($drPublishApiClientArticle->getPublished()) ?> | written by: <?php print($drPublishApiClientArticle->getDPAuthors()) ?> |
+            categories: <?php print($drPublishApiClientArticle->getDPCategories()) ?> |
+            tags:  <?php print($drPublishApiClientArticle->getDPTags()) ?>
             <br/>
-            <?=$drPublishApiClientArticle->getPreamble()?>
+            <?php print($drPublishApiClientArticle->getPreamble())?>
         </span>
     </li>
 <?php } ?>
 </ul>
-<? include('inc/search-paginator.inc.php') ?>
-<?= printSourceCode() ?>
+<?php include('inc/search-paginator.inc.php') ?>
+<?php print(printSourceCode()) ?>

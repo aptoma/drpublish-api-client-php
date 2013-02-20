@@ -1,4 +1,4 @@
-<? $searchMeta = $drPublishApiClientSearchList->getSearch() ?>
+<?php $searchMeta = $drPublishApiClientSearchList->getSearch() ?>
 <div class="search-meta">
-    total: <?=$searchMeta->getTotal(); ?> | offset : <?=$searchMeta->getOffset(); ?> | limit : <?=$searchMeta->getLimit(); ?>
+    total: <?php print($searchMeta->getTotal()) ?> | offset : <?php print($searchMeta->getOffset()) ?> | limit : <?php print($searchMeta->getLimit()) ?>
 </div>

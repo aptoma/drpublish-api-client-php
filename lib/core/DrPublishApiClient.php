@@ -210,7 +210,17 @@ class DrPublishApiClient
         $url = '/articles.json?publication=' . urlencode($this->publicationName) . $query;
         $response = $this->curl($url);
         $result = json_decode($response->body);
-        $drPublishApiClientSearchList = new DrPublishApiClientSearchList($result->search, $response->headers);
+        //print_r($result);
+        if (!isset($result->search)) {
+            $search = new stdClass();
+            $search->offset = $result->offset;
+            $search->limit = $result->limit;
+            $search->total = $result->total;
+            $search->count = $result->count;
+        } else {
+            $search = $result->search;
+        }
+        $drPublishApiClientSearchList = new DrPublishApiClientSearchList($search, $response->headers);
         $articles = $result->items;
         foreach ($articles as $article) {
             $drPublishApiClientSearchList->add($this->createDrPublishApiClientArticle($article));

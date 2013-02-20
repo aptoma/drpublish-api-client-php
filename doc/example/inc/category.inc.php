@@ -1,10 +1,10 @@
 <h2>Category</h2>
-<strong><?= $drPublishApiClientCategory->getName() ?></strong>
- [id=<?= $drPublishApiClientCategory->getId() ?>]
+<strong><?php print($drPublishApiClientCategory->getName()) ?></strong>
+ [id=<?php print($drPublishApiClientCategory->getId()) ?>]
 <br />
-Parent category id: <?=$drPublishApiClientCategory->getParentId() ?>
+Parent category id: <?php print($drPublishApiClientCategory->getParentId()) ?>
 <br />
-Parent category name: <?=$drPublishApiClientCategory->getParentName() ?>
+Parent category name: <?php print($drPublishApiClientCategory->getParentName()) ?>
 <span style="color: #666">
 </span>
-<?= printSourceCode() ?>
+<?php print(printSourceCode()) ?>
