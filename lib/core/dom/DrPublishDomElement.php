@@ -45,6 +45,10 @@ class DrPublishDomElement
         return $this->domElement->setAttribute($name, $value);
     }
 
+    public function removeAttribute($name) {
+        return $this->domElement->removeAttribute($name);
+    }
+
     public function textValue()
     {
         return strip_tags($this->__toString());
