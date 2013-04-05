@@ -12,8 +12,14 @@ class DrPublishApiClientTag extends DrPublishApiClientArticleEntity
     public function __construct($data)
     {
         parent::__construct($data);
-        $this->tagTypeId = $data->tagType->id;
-        $this->tagTypeName = $data->tagType->name;
+
+        if (!empty($data->tagType->id)) {
+            $this->tagTypeId = $data->tagType->id;
+        }
+
+        if (!empty($data->tagType->name)) {
+            $this->tagTypeName = $data->tagType->name;
+        }
     }
 
     public function getTagTypeName()
