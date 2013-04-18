@@ -207,7 +207,7 @@ class DrPublishApiClient
         if ($query[0] != '&') {
             $query = '&' . $query;
         }
-        $url = '/articles.json?publication=' . $this->publicationName . $query;
+        $url = '/articles.json?publication=' . urlencode($this->publicationName) . $query;
         $response = $this->curl($url);
         $result = json_decode($response->body);
         //print_r($result);
@@ -526,6 +526,7 @@ class DrPublishApiClient
 
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
         curl_setopt($ch, CURLOPT_COOKIESESSION, false);
         curl_setopt($ch, CURLOPT_HEADER, 1);
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
@@ -581,6 +582,7 @@ class DrPublishApiClient
         $newSrc = str_replace($imagePublishUrl, $imageServiceUrl, $newSrc);
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $newSrc . '?return-properties');
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
         curl_setopt($ch, CURLOPT_COOKIESESSION, false);
         curl_setopt($ch, CURLOPT_HEADER, 1);
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
