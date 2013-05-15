@@ -37,4 +37,22 @@ class DrPublishApiClientImage extends DrPublishDomElement
     {
         return $this->getAttribute('src');
     }
+
+    public function resize($type)
+    {
+        $currentSrc = $this->getAttribute('src');
+        try {
+            $properties = DrPublishApiClient::resizeImage($currentSrc, $type, DrPublishApiClientArticle::getImageServiceUrl(),  DrPublishApiClientArticle::getImagePublishUrl());
+        } catch (DrPublishApiClientException $e) {
+            throw $e;
+        }
+        $this->setAttribute('src', $properties['src']);
+        if (array_key_exists('width', $properties)) {
+            $this->setAttribute('width', $properties['width']);
+        }
+        if (array_key_exists('height', $properties)) {
+            $this->setAttribute('height', $properties['height']);
+        }
+        return $this;
+    }
 }
