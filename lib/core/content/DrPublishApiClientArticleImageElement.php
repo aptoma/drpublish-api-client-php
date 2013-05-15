@@ -79,7 +79,7 @@ class DrPublishApiClientArticleImageElement extends DrPublishDomElement
     public function getImage()
     {
         if ($this->dpClientImage === null) {
-            $imageElement = $this->domElement->getElementsByTagName('img')->item(0);
+            $imageElement = clone $this->domElement->getElementsByTagName('img')->item(0);
             if (empty($imageElement)) {
                 return null;
             }
