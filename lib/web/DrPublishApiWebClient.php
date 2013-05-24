@@ -10,9 +10,9 @@ unset($dpwebdn);
 class DrPublishApiWebClient extends DrPublishApiClient
 {
 
-    public function __construct($url, $publicationName)
+    public function __construct($url, $publicationName, $config = null)
     {
-        parent::__construct($url, $publicationName);
+        parent::__construct($url, $publicationName, $config);
         $this->setMedium('web');
     }
 
