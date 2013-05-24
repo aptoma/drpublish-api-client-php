@@ -39,11 +39,16 @@ class DrPublishApiClient
     protected static $configs = null;
     private $curlInfo;
 
-    public function __construct($url, $publicationName)
+    public function __construct($url, $publicationName, $config = null)
     {
         $this->url = $url;
         $this->publicationName = $publicationName;
-        $this->readConfigs();
+
+        if ($config !== null) {
+            self::$configs = $config;
+        } else {
+            $this->readConfigs();
+        }
     }
 
     protected function readConfigs()
