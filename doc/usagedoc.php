@@ -19,7 +19,7 @@
 <h2 id="instantiating">Instantiating the DrPublishApiWebClient</h2>
 <code>
 require('/path/to/drpublish/api/web/client/lib/' . 'DrPublishWebApiClient.php');
-$drPublishApiUrl = 'http://stefan.aptoma.no:9000';
+$drPublishApiUrl = 'http://rai-dev.aptoma.no:9000';
 $publicationName = 'Solarius';
 $drPublishApiWebClient = new DrPublishApiWebClient($drPublishApiUrl, $publicationName);
 </code>
@@ -177,7 +177,7 @@ print $drPublishDomElement->getAttribute('href');
 <div class="code-comment">
  You can replace any XHTML element in the content using the either DrPublishDomElementList::replaceBy() or DrPublishDomElement::replaceBy().
     <br/>
-    Example: Finding all "iframe" elements int the story (body) and replace them with "<b>Foo!</b>"
+    Example: Finding all "iframe" elements int the story (body) and replace them with "<span style="font-weight: bold">Foo!</span>"
 </div>
 
 <code>
@@ -275,7 +275,7 @@ print $drPublishApiClientArticleImageElement->getHeight();
 $drPublishApiClientList = $drPublishApiClient->getLeadAsset()->getDPImages();
 </code>
 
-<h4 id="article-images">Resizing images on the fly</h4>
+<h4 id="article-images-resize">Resizing images on the fly</h4>
 <div class="code-comment">
 The DrPublishApiClient provides functionality for generating resized images in any format on the fly. Doing this will send a request to the DrPublish image converter service which will check if an image with the requested size already exists. If not, the service will create it and store it on disk.<br/>
     DrPublishApiClient automatically change the appropriate parameters of the image object to match the generated one.
@@ -289,7 +289,7 @@ foreach ($drPublishApiClientList as $drPublishApiClientArticleImageElement) {
 
 <div class="code-comment">
     Example resizing the first image of the article:
-</code>
+</div>
 <code>
 &lt;?php
 $leadImage = $drPublishApiClientArticle->getLeadDPImage();
@@ -360,7 +360,7 @@ function doYourStuff(DrPublishApiClientArticleSlideShowElement $drPublishApiClie
     <code>
 $configs = array(
     'ENABLE_IMAGE_DATA_CACHING' => true,
-    'CACHE_DIR' => '/path/to/your/cache/<directory></directory>'
+    'CACHE_DIR' => '/path/to/your/cache/directory'
 );
 </code>
 
@@ -368,26 +368,23 @@ $configs = array(
 
 <h3 id="article-preview">Article preview, including unpublished changes</h3>
 
-<code>
-$apiKey = 'DREF12FU78PAUYYI9902E474';
-$apiUrl = 'http://stefan.aptoma.no:9000';
-$internalScopeApiUrl = 'https://stefan.aptoma.no:9443';
-$drPublishApiWebClient = new DrPublishApiClient($apiUrl, 'Solarius');
-$drPublishApiWebClient->articlePreview(12345, $apiKey, $internalScopeUrl);
-</code>
+
 
 <h3 id="internal-articles">Accessing unpublished articles for internal use</h3>
 <div class="code-comment">
- Internal data can be accessed via HTTPS and the use of an API key. This key can be generated for any user in the DrPublish account admin area.<br/>
+ Internal data can be accessed via HTTPS and the use of an API key. This key can be generated for any user in  DrLib /admin.<br/>
  The default address of the internal scope is: <strong>https://your-host:9443</strong>, but the address/port may differ from this dependent on your server setup. Please ask your system administrator.
+ A valid DrLib API key (credential: GET) is required to run internal scope requests.
 </div>
+
 <code>
-$apiKey = 'DREF12FU78PAUYYI9902E474';
-$internalScopeUrl = 'https://stefan.aptoma.no:9443';
-$internalScopeClient = $drPublishApiWebClient->internalScopeClient($apiKey, $internalScopeUrl);
-$drPublishApiClientSearchList = $internalScopeClient->searchArticles($query);
-$drPubishApiClientArticle = $internalScopeClient->getArticle(23422);
+$internalScopepiKey = 'DREF12FU78PAUYYI9902E474';
+$apiUrl = 'http://rai-dev.aptoma.no:9000';
+$sslApiUrl = 'https://rai-dev.aptoma.no:9443';
+$drPublishApiWebClient = new DrPublishApiClient($apiUrl, 'Solarius');
+$drPublishApiWebClient->articlePreview(12345, $internalScopeApiKey, $sslApiUrl);
 </code>
+
 <div class="code-comment">
  $internalScopeClient in the example above is a secured instance of DrPublishApiClient, thus it includes all its functionality but the data will be accessed in an encrypted way.
 </div>
@@ -432,7 +429,7 @@ foreach($drPublishApiClientSearchList as $drPublishApiClientCategory) {
 
 <h2 id="tags">Tags</h2>
 <div class="code-comment">
-    Same procedure as for <a href=#categories">categories</a>, apart from the the objects are of type DrPublishApiClientTag
+    Same procedure as for <a href="#categories">categories</a>, apart from the the objects are of type DrPublishApiClientTag
 </div>
 <code>
 $drPublishApiClientSearchList = $drPublishApiClient->searchTag('name=Sports');
@@ -450,7 +447,7 @@ foreach($drPublishApiClientSearchList as $drPublishApiClientTag) {
 
 <h2 id="dossiers">Dossiers</h2>
 <div class="code-comment">
-    Same procedure as for <a href=#categories">categories</a>, apart from the the objects are of type DrPublishApiClientDossier
+    Same procedure as for <a href="#categories">categories</a>, apart from the the objects are of type DrPublishApiClientDossier
 </div>
 <code>
 $drPublishApiClientSearchList = $drPublishApiClient->searchDossier('parentId=9876');
@@ -470,7 +467,7 @@ foreach($drPublishApiClientSearchList as $drPublishApiClientTag) {
 <h2 id="sources">Sources</h2>
 <div class="code-comment">
     Same procedure as for <a href=#categories">categories</a>, apart from the the objects are of type DrPublishApiClientSource
-    <br/>See <a href="apidoc.php#sources" target="_blank">API doc</a> for available search options
+    <br/>See <a href="apidoc.php#sources">API doc</a> for available search options
 </div>
 <code>
 $drPublishApiClientSearchList = $drPublishApiClient->searchSource('name=NTB');
@@ -548,10 +545,6 @@ try {
                     $('<li>' + $(this).html() + '</li>').find('span').css('width', (4 + level) + 'em').end()
                  );
              }
-         });
-
-         $('.example-code').each(function () {
-                 elem = $(this);
          });
      });
 </script>

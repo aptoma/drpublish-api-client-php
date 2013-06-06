@@ -33,22 +33,17 @@ class DrPublishApiClient
     protected $debug = false;
     protected $publicationName;
     protected $medium = 'web';
-    private $protectedRequest = false;
-    protected $apiKey;
+    private $internalScopeRequest = false;
+    protected $internalScopeApiKey;
     private $internalScopeClient = null;
     protected static $configs = null;
     private $curlInfo;
 
-    public function __construct($url, $publicationName, $config = null)
+    public function __construct($url, $publicationName)
     {
         $this->url = $url;
         $this->publicationName = $publicationName;
-
-        if ($config !== null) {
-            self::$configs = $config;
-        } else {
-            $this->readConfigs();
-        }
+        $this->readConfigs();
     }
 
     protected function readConfigs()
@@ -85,7 +80,7 @@ class DrPublishApiClient
         $this->setConfig('CACHE_DIR', $path);
     }
 
-    public function internalScopeClient($apiKey = null, $protectedApiUrl = null)
+    public function internalScopeClient($internalScopeApiKey = null, $protectedApiUrl = null)
     {
         if ($this->internalScopeClient !== null) {
             return $this->internalScopeClient;
@@ -93,36 +88,36 @@ class DrPublishApiClient
         if ($protectedApiUrl === null) {
             $protectedApiUrl = $this->url;
         }
-        if ($apiKey === null) {
-            if (empty($this->apiKey)) {
+        if ($internalScopeApiKey === null) {
+            if (empty($this->internalScopeApiKey)) {
                 throw new DrPublishApiClientException('Can not instantiate internal scope client without API key', DrPublishApiClientException::UNAUTHORIZED_ACCESS_ERROR);
             } else {
-                $apiKey = $this->apiKey;
+                $internalScopeApiKey = $this->internalScopeApiKey;
             }
         }
         $className = get_class($this);
         $internalScopeClient = new $className($protectedApiUrl, $this->publicationName);
         $internalScopeClient->setMedium($this->medium);
         $internalScopeClient->setDebugMode($this->debug);
-        $internalScopeClient->setApiKey($apiKey);
+        $internalScopeClient->setInternalScopeApiKey($internalScopeApiKey);
         $internalScopeClient->setProtectedMode(true);
         $this->internalScopeClient = $internalScopeClient;
         return $internalScopeClient;
     }
 
-    public function setApiKey($key)
+    public function setInternalScopeApiKey($internalScopeApiKey)
     {
-        $this->apiKey = $key;
+        $this->internalScopeApiKey = $internalScopeApiKey;
     }
 
     protected function getApiKey()
     {
-        return $this->apiKey;
+        return $this->internalScopeApiKey;
     }
 
     public function setProtectedMode($bool)
     {
-        $this->protectedRequest = $bool;
+        $this->internalScopeRequest = $bool;
     }
 
     public function setApiUrl($url)
@@ -197,6 +192,13 @@ class DrPublishApiClient
         throw $e;
     }
 
+    /**
+     * @param $query string DrLib API query
+     * @param int $limit
+     * @param int $offset
+     * @param array $options parameter array (key => value pair), appended to the $query parameter
+     * @return DrPublishApiClientSearchList
+     */
     public function searchArticles($query, $limit = 5, $offset = 0, $options = array())
     {
         $query .= "&offset={$offset}";
@@ -215,7 +217,6 @@ class DrPublishApiClient
         $url = '/articles.json?publication=' . urlencode($this->publicationName) . $query;
         $response = $this->curl($url);
         $result = json_decode($response->body);
-        //print_r($result);
         if (!isset($result->search)) {
             $search = new stdClass();
             $search->offset = $result->offset;
@@ -233,14 +234,24 @@ class DrPublishApiClient
         return $drPublishApiClientSearchList;
     }
 
-    public function getArticlePreview($id, $apiKey, $internalScopeApiUrl)
+    /**
+     * @param $id int Article id
+     * @param $internalScopeApiKey string DrLib API key with credential "GET"
+     * @param $sslDrLibUrl string DrLib https address. May be dropped when the client already is instantiated with the SSL URL
+     * @return DrPublishApiClientArticle
+     * @throws DrPublishApiClientException
+     */
+    public function getArticlePreview($id, $internalScopeApiKey, $sslDrLibUrl = null)
     {
+        if ($sslDrLibUrl === null) {
+            $sslDrLibUrl = $this->url;
+        }
         $publicScopeApiUrl = $this->url;
         $params = '/articles/' . $id . '.json';
         try {
             $this->setProtectedMode(true);
-            $this->setApiKey($apiKey);
-            $this->url = $internalScopeApiUrl;
+            $this->setInternalScopeApiKey($internalScopeApiKey);
+            $this->url = $sslDrLibUrl;
             $response = $this->curl($params);
             $this->setProtectedMode(false);
             $this->url = $publicScopeApiUrl;
@@ -261,9 +272,19 @@ class DrPublishApiClient
         return $this->createDrPublishApiClientArticle($result);
     }
 
-    public function getArticle($id)
+    /**
+     * @param $id int Article id
+     * @param null $apiKey string Required when accessing non-public articles (accesslevel > 0).
+     * Valid DrLib API key with credential corresponding to the "accesslevel" of the article
+     * @return DrPublishApiClientArticle
+     * @throws DrPublishApiClientException
+     */
+    public function getArticle($id, $apiKey = null)
     {
         $url = '/articles/' . $id . '.json';
+        if ($apiKey != null) {
+            $url .= '?apikey=' . $apiKey;
+        }
         $response = $this->curl($url);
         $resultJson = $response->body;
         $result = json_decode($resultJson);
@@ -494,41 +515,38 @@ class DrPublishApiClient
         return $cacheDir . '/' . $id . '.dat';
     }
 
-    protected function curl($params)
+    protected function curl($query)
     {
-        $params = str_replace(' ', '+', $params);
-        if ($this->protectedRequest) {
-            $url = $this->url . $params;
-            $url .= strpos($params, '?') === false ? '?' : '&';
-            $url .= 'scope=internal&apikey=' . $this->apiKey;
+        $query = str_replace(' ', '+', $query);
+        if ($this->internalScopeRequest) {
+            $url = $this->url . $query;
+            $url .= strpos($query, '?') === false ? '?' : '&';
+            $url .= 'scope=internal&apikey=' . $this->internalScopeApiKey;
         } else {
-            $url = $this->url . $params;
+            $url = $this->url . $query;
         }
-
-        $q_pos = mb_strpos($url, '?');
-        if ($q_pos > 0) {
-            $pre_url = mb_substr($url, 0, $q_pos);
-            $split = mb_substr($url, $q_pos+1);
+        $qPos = mb_strpos($url, '?');
+        if ($qPos > 0) {
+            $preUrl = mb_substr($url, 0, $qPos);
+            $split = mb_substr($url, $qPos + 1);
             $split = explode('&', $split);
-            $params = array();
+            $query = array();
             foreach ($split as $sp) {
                 $s = explode('=', $sp);
                 if (isset($s[1])) {
-                    $params[urldecode($s[0])] = urldecode(trim($s[1]));
+                    $query[urldecode($s[0])] = urldecode(trim($s[1]));
                 } else {
-                    $params[urldecode($s[0])] = true;
+                    $query[urldecode($s[0])] = true;
                 }
             }
-            $params = http_build_query($params);
-            $url = $pre_url.'?'.$params;
+            $query = http_build_query($query);
+            $url = $preUrl . '?' . $query;
         }
-
         $this->requestUri = $url;
         if ($this->debug) {
             $url .= strpos($url, '?') === false ? '?' : '&';
             $url .= 'debug';
         }
-
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
@@ -541,8 +559,6 @@ class DrPublishApiClient
         $res = curl_exec($ch);
         $info = curl_getinfo($ch);
         $this->curlInfo = $info;
-
-        //$e = curl_error($ch);
         $header = substr($res, 0, $info['header_size']);
         $this->searchQueryUrl = $header;
         $split = preg_split('#([\w|-]*): #', $header, -1, PREG_SPLIT_DELIM_CAPTURE);

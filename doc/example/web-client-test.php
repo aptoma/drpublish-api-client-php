@@ -19,6 +19,7 @@ if ($isInternal) {
 } else {
 	$dpUrl = $_GET['dp-url'];
 }
+$isSSL = strpos($dpUrl, 'https') === 0;
 
 $procStart = microtime(true);
 $dpWebClient = new DrPublishApiWebClient($dpUrl, $publication);
@@ -34,7 +35,7 @@ switch ($action) {
             if ($isArticlePreview) {
                 $drPublishApiClientArticle = $dpWebClient->getArticlePreview($articleId, $apiKey, $dpUrlInternal);
             } else {
-                $drPublishApiClientArticle = $dpWebClient->getArticle($articleId);
+                $drPublishApiClientArticle = $dpWebClient->getArticle($articleId, $isSSL? $apiKey : null);
             }
             $mainView = 'article';
         } catch (DrPublishApiClientException $e) {
