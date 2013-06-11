@@ -39,8 +39,11 @@ class DrPublishApiClient
     protected static $configs = null;
     private $curlInfo;
 
-    public function __construct($url, $publicationName)
+    public function __construct($url, $publicationName, $config = null)
     {
+        if (func_num_args() >= 3) {
+            trigger_error('Fix your code: A custom config can no longer be provided in the constructor.', E_USER_DEPRECATED);
+        }
         $this->url = $url;
         $this->publicationName = $publicationName;
         $this->readConfigs();
@@ -105,12 +108,24 @@ class DrPublishApiClient
         return $internalScopeClient;
     }
 
+    public function setApiKey($internalScopeApiKey)
+    {
+        trigger_error('Fix your code: call setInternalScopeApiKey() instead.', E_USER_DEPRECATED);
+        $this->setInternalScopeApiKey($internalScopeApiKey);
+    }
+
     public function setInternalScopeApiKey($internalScopeApiKey)
     {
         $this->internalScopeApiKey = $internalScopeApiKey;
     }
 
     protected function getApiKey()
+    {
+        trigger_error('Fix your code: call getInternalScopeApiKey() instead.', E_USER_DEPRECATED);
+        return $this->getInternalScopeApiKey();
+    }
+
+    public function getInternalScopeApiKey()
     {
         return $this->internalScopeApiKey;
     }
