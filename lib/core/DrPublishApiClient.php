@@ -1,7 +1,6 @@
 <?php
 $dpcDirname = dirname(__FILE__);
 
-
 require($dpcDirname . '/helpers/DrPublishApiClientList.php');
 require($dpcDirname . '/helpers/DrPublishApiClientSearchList.php');
 require($dpcDirname . '/helpers/DrPublishDomElementList.php');
@@ -24,7 +23,9 @@ unset($dpcDirname);
 define('QUERY_TYPE_XPATH', 1);
 define('QUERY_TYPE_JQUERY', 2);
 
-
+/**
+ * Dr Publish PHP API client
+ */
 class DrPublishApiClient
 {
     protected $url;
@@ -36,51 +37,89 @@ class DrPublishApiClient
     private $internalScopeRequest = false;
     protected $internalScopeApiKey;
     private $internalScopeClient = null;
-    protected static $configs = null;
+    private static $configs = null;
     private $curlInfo;
 
     public function __construct($url, $publicationName, $config = null)
     {
-        if (func_num_args() >= 3) {
-            trigger_error('Fix your code: A custom config can no longer be provided in the constructor.', E_USER_DEPRECATED);
-        }
         $this->url = $url;
         $this->publicationName = $publicationName;
-        $this->readConfigs();
+
+        // Setup config, either set by injection or by file
+        if ($config !== null) {
+            self::$configs = $config;
+        } else {
+            self::$configs = $this->loadConfigFromFile();
+        }
     }
 
-    protected function readConfigs()
+    private function loadConfigFromFile()
     {
-        if (self::$configs !== null) {
-            return;
-        }
-        $configs = array();
+        $config = array();
         $dir = dirname(__FILE__);
+
         require($dir . '/../config.default.php');
+
         if (file_exists($dir . '/../config.php')) {
             $tmpConfigs = $configs;
             require($dir . '/../config.php');
             $configs = array_merge($tmpConfigs, $configs);
-
         }
-        self::$configs = $configs;
+
+        return $configs;
     }
 
-    public static function getConfig($name)
+    protected function readConfigs()
+    {
+        trigger_error(__METHOD__ . ' is deprecated, to updated config use setConfig($name, $value)', E_USER_DEPRECATED);
+        if (self::$config !== null) {
+            return $this;
+        }
+
+        self::$configs = $this->loadConfigFromFile();
+
+        return $this;
+    }
+
+    public static function getConfigOption($name)
     {
         if (isset(self::$configs[$name])) {
             return self::$configs[$name];
         }
     }
 
-    public function setConfig($name, $value)
+    public function setConfigOption($name, $value)
     {
         self::$configs[$name] = $value;
     }
 
+    public static function getConfig()
+    {
+        // Fallback for old solution
+        if (func_num_args() > 0) {
+            trigger_error(__METHOD__ . ' has changed behavior and does not support arguments, method getConfigOption($name) is probably what you are looking for', E_USER_DEPRECATED);
+            return self::getConfigOption(func_get_arg(0));
+        }
+
+        return self::$configs;
+    }
+
+    public function setConfig($config)
+    {
+        if (func_num_args() > 1) {
+            trigger_error(__METHOD__ . ' has changed behavior and does not support more than an array argument ($config), method getConfigOption($name, $value) is probably what you are looking for', E_USER_DEPRECATED);
+            $this->setConfigOption(func_get_arg(0), func_get_arg(1));
+
+            return $this;
+        }
+        self::$configs = $config;
+
+        return $this;
+    }
+
     public function setCacheDir($path)
     {
-        $this->setConfig('CACHE_DIR', $path);
+        $this->setConfigOption('CACHE_DIR', $path);
     }
 
     public function internalScopeClient($internalScopeApiKey = null, $protectedApiUrl = null)
@@ -400,6 +439,7 @@ class DrPublishApiClient
     public function searchDossiers($query, $limit = 5, $offset = 0)
     {
         $url = '/dossiers.json?' . $query . '&offset=' . $offset . '&limit=' . $limit;
+
         $response = $this->curl($url);
         $responseObject = json_decode($response->body);
         $drPublishApiClientSearchList = new DrPublishApiClientSearchList($responseObject->search, $response->headers);
@@ -512,7 +552,7 @@ class DrPublishApiClient
 
     private static function cacheDirGen($identifier, $write = false)
     {
-        $baseDir = self::getConfig('CACHE_DIR');
+        $baseDir = self::getConfigOption('CACHE_DIR');
         $id = md5($identifier);
         $dirString = $id[0] . $id[1] . '/' . $id[2] . $id[3] . '/' . $id[4] . $id[5];
         $cacheDir = $baseDir . '/' . $dirString;
@@ -601,7 +641,7 @@ class DrPublishApiClient
 
     public static function resizeImage($currentSrc, $type, $imageServiceUrl, $imagePublishUrl)
     {
-        $cachingEnabled = self::getConfig('ENABLE_IMAGE_DATA_CACHING');
+        $cachingEnabled = self::getConfigOption('ENABLE_IMAGE_DATA_CACHING');
         if ($cachingEnabled) {
             $cacheIdentifier = $currentSrc . $type;
             $cacheData = self::readCache($cacheIdentifier);
