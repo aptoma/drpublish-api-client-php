@@ -119,7 +119,7 @@ class DrPublishApiClient
 
     public function setCacheDir($path)
     {
-        $this->setConfig('CACHE_DIR', $path);
+        $this->setConfigOption('CACHE_DIR', $path);
     }
 
     public function internalScopeClient($internalScopeApiKey = null, $protectedApiUrl = null)
@@ -552,7 +552,7 @@ class DrPublishApiClient
 
     private static function cacheDirGen($identifier, $write = false)
     {
-        $baseDir = self::getConfig('CACHE_DIR');
+        $baseDir = self::getConfigOption('CACHE_DIR');
         $id = md5($identifier);
         $dirString = $id[0] . $id[1] . '/' . $id[2] . $id[3] . '/' . $id[4] . $id[5];
         $cacheDir = $baseDir . '/' . $dirString;
@@ -641,7 +641,7 @@ class DrPublishApiClient
 
     public static function resizeImage($currentSrc, $type, $imageServiceUrl, $imagePublishUrl)
     {
-        $cachingEnabled = self::getConfig('ENABLE_IMAGE_DATA_CACHING');
+        $cachingEnabled = self::getConfigOption('ENABLE_IMAGE_DATA_CACHING');
         if ($cachingEnabled) {
             $cacheIdentifier = $currentSrc . $type;
             $cacheData = self::readCache($cacheIdentifier);
