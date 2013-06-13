@@ -1,7 +1,6 @@
 <?php
 $dpcDirname = dirname(__FILE__);
 
-
 require($dpcDirname . '/helpers/DrPublishApiClientList.php');
 require($dpcDirname . '/helpers/DrPublishApiClientSearchList.php');
 require($dpcDirname . '/helpers/DrPublishDomElementList.php');
@@ -24,7 +23,9 @@ unset($dpcDirname);
 define('QUERY_TYPE_XPATH', 1);
 define('QUERY_TYPE_JQUERY', 2);
 
-
+/**
+ * Dr Publish PHP API client
+ */
 class DrPublishApiClient
 {
     protected $url;
@@ -41,29 +42,43 @@ class DrPublishApiClient
 
     public function __construct($url, $publicationName, $config = null)
     {
-        if (func_num_args() >= 3) {
-            trigger_error('Fix your code: A custom config can no longer be provided in the constructor.', E_USER_DEPRECATED);
-        }
         $this->url = $url;
         $this->publicationName = $publicationName;
-        $this->readConfigs();
+
+        // Setup config, either set by injection or by file
+        if ($config !== null) {
+            self::$configs = $config;
+        } else {
+            self::$configs = $this->loadConfigFromFile();
+        }
     }
 
-    protected function readConfigs()
+    private function loadConfigFromFile()
     {
-        if (self::$configs !== null) {
-            return;
-        }
-        $configs = array();
+        $config = array();
         $dir = dirname(__FILE__);
+
         require($dir . '/../config.default.php');
+
         if (file_exists($dir . '/../config.php')) {
             $tmpConfigs = $configs;
             require($dir . '/../config.php');
             $configs = array_merge($tmpConfigs, $configs);
-
         }
-        self::$configs = $configs;
+
+        return $configs;
+    }
+
+    protected function readConfigs()
+    {
+        trigger_error(__METHOD__ . ' is deprecated, to updated config use setConfig($name, $value)', E_USER_DEPRECATED);
+        if (self::$config !== null) {
+            return $this;
+        }
+
+        self::$configs = $this->loadConfigFromFile();
+
+        return $this;
     }
 
     public static function getConfig($name)
@@ -400,6 +415,7 @@ class DrPublishApiClient
     public function searchDossiers($query, $limit = 5, $offset = 0)
     {
         $url = '/dossiers.json?' . $query . '&offset=' . $offset . '&limit=' . $limit;
+
         $response = $this->curl($url);
         $responseObject = json_decode($response->body);
         $drPublishApiClientSearchList = new DrPublishApiClientSearchList($responseObject->search, $response->headers);
