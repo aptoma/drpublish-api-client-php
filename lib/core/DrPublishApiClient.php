@@ -37,7 +37,7 @@ class DrPublishApiClient
     private $internalScopeRequest = false;
     protected $internalScopeApiKey;
     private $internalScopeClient = null;
-    protected static $configs = null;
+    private static $configs = null;
     private $curlInfo;
 
     public function __construct($url, $publicationName, $config = null)
@@ -81,16 +81,40 @@ class DrPublishApiClient
         return $this;
     }
 
-    public static function getConfig($name)
+    public static function getConfigOption($name)
     {
         if (isset(self::$configs[$name])) {
             return self::$configs[$name];
         }
     }
 
-    public function setConfig($name, $value)
+    public function setConfigOption($name, $value)
     {
         self::$configs[$name] = $value;
+    }
+
+    public static function getConfig()
+    {
+        // Fallback for old solution
+        if (func_num_args() > 0) {
+            trigger_error(__METHOD__ . ' has changed behavior and does not support arguments, method getConfigOption($name) is probably what you are looking for', E_USER_DEPRECATED);
+            return self::getConfigOption(func_get_arg(0));
+        }
+
+        return self::$configs;
+    }
+
+    public function setConfig($config)
+    {
+        if (func_num_args() > 1) {
+            trigger_error(__METHOD__ . ' has changed behavior and does not support more than an array argument ($config), method getConfigOption($name, $value) is probably what you are looking for', E_USER_DEPRECATED);
+            $this->setConfigOption(func_get_arg(0), func_get_arg(1));
+
+            return $this;
+        }
+        self::$configs = $config;
+
+        return $this;
     }
 
     public function setCacheDir($path)
