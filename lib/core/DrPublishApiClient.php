@@ -313,6 +313,9 @@ class DrPublishApiClient
             if ($e->getCode() === DrPublishApiClientException::NO_DATA_ERROR) {
                 $this->url = $publicScopeApiUrl;
                 $this->setProtectedMode(false);
+                if ($internalScopeApiKey != null) {
+                    $params .= '?apikey=' . $internalScopeApiKey;
+                }
                 $response = $this->curl($params);
             } else {
                 throw($e);
