@@ -37,7 +37,7 @@ class DrPublishApiClient
     private $internalScopeRequest = false;
     protected $internalScopeApiKey;
     private $internalScopeClient = null;
-    private static $configs = null;
+    private $config = array();
     private $curlInfo;
 
     public function __construct($url, $publicationName, $config = null)
@@ -47,15 +47,15 @@ class DrPublishApiClient
 
         // Setup config, either set by injection or by file
         if ($config !== null) {
-            self::$configs = $config;
+            $this->config = $config;
         } else {
-            self::$configs = $this->loadConfigFromFile();
+            $this->config = $this->loadConfigFromFile();
         }
     }
 
     private function loadConfigFromFile()
     {
-        $config = array();
+        $configs = array();
         $dir = dirname(__FILE__);
 
         require($dir . '/../config.default.php');
@@ -71,48 +71,46 @@ class DrPublishApiClient
 
     protected function readConfigs()
     {
-        trigger_error(__METHOD__ . ' is deprecated, to updated config use setConfig($name, $value)', E_USER_DEPRECATED);
-        if (self::$config !== null) {
-            return $this;
-        }
-
-        self::$configs = $this->loadConfigFromFile();
+        trigger_error(__METHOD__ . ' is deprecated, to update config use setConfigOption($name, $value)', E_USER_DEPRECATED);
+        $this->config = $this->loadConfigFromFile();
 
         return $this;
     }
 
-    public static function getConfigOption($name)
+    public function getConfigOption($name)
     {
-        if (isset(self::$configs[$name])) {
-            return self::$configs[$name];
+        if (isset($this->config[$name])) {
+            return $this->config[$name];
         }
+
+        return null;
     }
 
     public function setConfigOption($name, $value)
     {
-        self::$configs[$name] = $value;
+        $this->config[$name] = $value;
     }
 
-    public static function getConfig()
+    public function getConfig()
     {
         // Fallback for old solution
         if (func_num_args() > 0) {
             trigger_error(__METHOD__ . ' has changed behavior and does not support arguments, method getConfigOption($name) is probably what you are looking for', E_USER_DEPRECATED);
-            return self::getConfigOption(func_get_arg(0));
+            return $this->getConfigOption(func_get_arg(0));
         }
 
-        return self::$configs;
+        return $this->config;
     }
 
     public function setConfig($config)
     {
         if (func_num_args() > 1) {
-            trigger_error(__METHOD__ . ' has changed behavior and does not support more than an array argument ($config), method getConfigOption($name, $value) is probably what you are looking for', E_USER_DEPRECATED);
+            trigger_error(__METHOD__ . ' has changed behavior and does not support more than an array argument ($config), method setConfigOption($name, $value) is probably what you are looking for', E_USER_DEPRECATED);
             $this->setConfigOption(func_get_arg(0), func_get_arg(1));
 
             return $this;
         }
-        self::$configs = $config;
+        $this->config = $config;
 
         return $this;
     }
@@ -138,7 +136,7 @@ class DrPublishApiClient
             }
         }
         $className = get_class($this);
-        $internalScopeClient = new $className($protectedApiUrl, $this->publicationName);
+        $internalScopeClient = new $className($protectedApiUrl, $this->publicationName, $this->config);
         $internalScopeClient->setMedium($this->medium);
         $internalScopeClient->setDebugMode($this->debug);
         $internalScopeClient->setInternalScopeApiKey($internalScopeApiKey);
@@ -555,7 +553,7 @@ class DrPublishApiClient
 
     private static function cacheDirGen($identifier, $write = false)
     {
-        $baseDir = self::getConfigOption('CACHE_DIR');
+        $baseDir = $this->getConfigOption('CACHE_DIR');
         $id = md5($identifier);
         $dirString = $id[0] . $id[1] . '/' . $id[2] . $id[3] . '/' . $id[4] . $id[5];
         $cacheDir = $baseDir . '/' . $dirString;
@@ -644,7 +642,7 @@ class DrPublishApiClient
 
     public static function resizeImage($currentSrc, $type, $imageServiceUrl, $imagePublishUrl)
     {
-        $cachingEnabled = self::getConfigOption('ENABLE_IMAGE_DATA_CACHING');
+        $cachingEnabled = $this->getConfigOption('ENABLE_IMAGE_DATA_CACHING');
         if ($cachingEnabled) {
             $cacheIdentifier = $currentSrc . $type;
             $cacheData = self::readCache($cacheIdentifier);
