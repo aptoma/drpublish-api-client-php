@@ -560,6 +560,11 @@ class DrPublishApiClient
         $dirString = $id[0] . $id[1] . '/' . $id[2] . $id[3] . '/' . $id[4] . $id[5];
         $cacheDir = $baseDir . '/' . $dirString;
         if ($write === true) {
+            if (!is_dir($baseDir)) {
+                umask(0000);
+                mkdir($baseDir, 0777, true);
+            }
+            
             if (!is_writable($baseDir)) {
                 trigger_error("Data cache directory '{$baseDir}' is not writable. DrPublishApiClient can't cache your data!", E_USER_WARNING);
                 return false;
