@@ -15,9 +15,11 @@ class DrPublishApiClientArticle
         $this->dpClient = $dpClient;
         $this->setMedium($dpClient->getMedium());
         $this->buildArticleXmlContentElements();
-        self::$imagePublishUrl =  $this->data->service->imagePublishUrl;
-        self::$imageServiceUrl =  $this->data->service->imageServiceUrl;
-
+        
+        if (!empty($this->data->service)) {
+            self::$imagePublishUrl = $this->data->service->imagePublishUrl;
+            self::$imageServiceUrl = $this->data->service->imageServiceUrl;
+        }
     }
 
     public function __set($name, $value)
