@@ -76,6 +76,25 @@ class DrPublishDomElement
         }
     }
 
+    public function append($newContent) {
+        if ($newContent instanceof DrPublishDomElement) {
+            $domElement = $newContent->domElement;
+        } else if ($newContent instanceof DomElement) {
+            $domElement = $newContent;
+        } else if (is_string($newContent)) {
+            $domElement = $this->ownerDocument->createDocumentFragment();
+            $domElement->appendXML($newContent);
+        }
+        if ($domElement->ownerDocument != $this->ownerDocument) {
+            $this->ownerDocument->importNode($domElement, true);
+        }
+        if (is_object($this->domElement)) {
+            $this->domElement->appendChild($domElement);
+        } else {
+            throw new DrPublishApiClientException('You tried to append content on a non-existing element');
+        }
+    }
+
     public function remove()
     {
         if (is_object($this->domElement->parentNode)) {

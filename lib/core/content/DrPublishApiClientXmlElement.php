@@ -33,6 +33,10 @@ class DrPublishApiClientXmlElement extends DrPublishApiClientArticleElement
         $this->xpath = new DOMXPath($this->dom);
     }
 
+    public function append($newContent) {
+        $this->dom->documentElement->appendChild($newContent->domElement);
+    }
+
     function __toString()
     {
         if ($this->medium == 'web') {
