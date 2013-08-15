@@ -233,6 +233,19 @@ class DrPublishApiClientArticle
         return $list;
     }
 
+    public function getMainDPTag()
+    {
+
+        if (!empty($this->data->meta->tags)) {
+            foreach ($this->data->meta->tags as $tag) {
+                if ($tag->position === 1) {
+                    return $this->createDrPublishApiClientTag($tag);
+                }
+            }
+        }
+        return null;
+    }
+
     protected function createDrPublishApiClientArticleImageElement(DrPublishDomElement $image)
     {
        return new DrPublishApiClientArticleImageElement($image);
