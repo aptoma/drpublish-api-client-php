@@ -350,7 +350,7 @@ class DrPublishApiClient
             $e->setRequestUrl($this->requestUri);
             throw $e;
         }
-        if (!isset($result->meta->publication->name) || $result->meta->publication->name != $this->publicationName) {
+        if (!isset($result->meta->publication->name) || false === strpos($this->publicationName, $result->meta->publication->name)) {
             $e = new DrPublishApiClientException("Article article-id='{$id}' is not connected to publication '{$this->publicationName}'", DrPublishApiClientException:: PUBLICATION_ACCESS_ERROR);
             $e->setRequestUrl($this->requestUri);
             throw $e;
