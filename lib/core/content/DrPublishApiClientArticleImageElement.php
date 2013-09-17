@@ -37,7 +37,7 @@ class DrPublishApiClientArticleImageElement extends DrPublishDomElement
 
     public function getSrc()
     {
-        return $this->getImage()->getSrc();
+        return $this->getImage() ? $this->getImage()->getSrc() : null;
     }
 
     public function getUrl()
@@ -47,12 +47,12 @@ class DrPublishApiClientArticleImageElement extends DrPublishDomElement
 
     public function getWidth()
     {
-        return $this->getImage()->getWidth();
+        return $this->getImage() ? $this->getImage()->getWidth() : null;
     }
 
     public function getHeight()
     {
-        return $this->getImage()->getHeight();
+        return $this->getImage() ? $this->getImage()->getHeight() : null;
     }
 
     /**
@@ -79,11 +79,13 @@ class DrPublishApiClientArticleImageElement extends DrPublishDomElement
     public function getImage()
     {
         if ($this->dpClientImage === null) {
-            $imageElement = clone $this->domElement->getElementsByTagName('img')->item(0);
-            if (empty($imageElement)) {
-                return null;
+            $domItem = $this->domElement->getElementsByTagName('img')->item(0);
+            if($domItem && is_object($domItem)) {
+                $imageElement = clone $domItem;
+                if (!empty($imageElement)) {
+                    $this->dpClientImage = new DrPublishApiClientImage($imageElement);
+                }
             }
-            $this->dpClientImage = new DrPublishApiClientImage($imageElement);
         }
         return $this->dpClientImage;
     }
