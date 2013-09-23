@@ -278,8 +278,28 @@ $drPublishApiClientList = $drPublishApiClient->getLeadAsset()->getDPImages();
 <h4 id="article-images-resize">Resizing images on the fly</h4>
 <div class="code-comment">
 The DrPublishApiClient provides functionality for generating resized images in any format on the fly. Doing this will send a request to the DrPublish image converter service which will check if an image with the requested size already exists. If not, the service will create it and store it on disk.<br/>
-    DrPublishApiClient automatically change the appropriate parameters of the image object to match the generated one.
+    DrPublishApiClient automatically change the appropriate parameters of the image object to match the generated one.<br/>
+    <b>Formats</b><br/>
+    Format descriptors can be used to force image resizing to fit into given boundaries. These are:
+    <ul>
+        <li>
+            <b>box-&lt;int width&gt;x&lt;int height&gt;</b> Image fits into a rectangular of the specified dimension, by keeping it's proportions and without cropping.<br/>
+            Example: article/2012/05/14/10115641/1/<b>box-200x200</b>/foo.jpg
+        </li>
+        <li>
+            <b>autocrop-&lt;int &gt;x&lt;int height&gt;</b> Image will be cropped from the middle to fit into a rectangular of the specified dimensions<br/>
+            Example: article/2012/05/14/10115641/1/<b>autocrop-200x200</b>/foo.jpg
+        </li>
+        <li>
+            <b>height-&lt;int height&gt;</b> Image will be resized to specified height<br/>
+            Example: article/2012/05/14/10115641/1/<b>height-200</b>/foo.jpg
+        </li>        <li>
+            <b>height-&lt;int height&gt;</b> Image will be resized to specified width<br/>
+            Example: article/2012/05/14/10115641/1/<b>width-200</b>/foo.jpg
+        </li>
+    </ul>
 </div>
+
 <code>
 $drPublishApiClientList = $drPublishApiClient->getDPImages();
 foreach ($drPublishApiClientList as $drPublishApiClientArticleImageElement) {
