@@ -62,8 +62,7 @@ class DrPublishDomElement
             $domElement = $newContent;
         } else if (is_string($newContent)) {
             $domElement = $this->ownerDocument->createDocumentFragment();
-            $cdataContent = $this->ownerDocument->createCDATASection($newContent);
-            $domElement->appendChild($cdataContent);
+            $domElement->appendXML($newContent);
         }
         if ($domElement->ownerDocument != $this->ownerDocument) {
             $this->ownerDocument->importNode($domElement, true);
@@ -160,7 +159,7 @@ class DrPublishDomElement
 
     public function html()
     {
-        $xml = $this->ownerDocument->saveHTML($this->domElement);
+        $xml = $this->ownerDocument->saveXML($this->domElement, LIBXML_NOEMPTYTAG);
         return preg_replace('!></(meta|link|base|basefont|param|img|br|hr|area|input)>!', ' />', $xml);
     }
 
