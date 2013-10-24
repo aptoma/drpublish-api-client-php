@@ -235,12 +235,15 @@ class DrPublishApiClientArticle
 
     public function getMainDPTag()
     {
-
         if (!empty($this->data->meta->tags)) {
             foreach ($this->data->meta->tags as $tag) {
-                if ($tag->position === 1) {
+                if (is_object($tag) && isset($tag->position) && $tag->position === 1) {
                     return $this->createDrPublishApiClientTag($tag);
                 }
+            }
+            $firstTag = current($this->data->meta->tags);
+            if (is_object($firstTag)) {
+                return $this->createDrPublishApiClientTag($firstTag);
             }
         }
         return null;
