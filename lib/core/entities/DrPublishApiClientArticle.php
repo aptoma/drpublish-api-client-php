@@ -15,7 +15,7 @@ class DrPublishApiClientArticle
         $this->dpClient = $dpClient;
         $this->setMedium($dpClient->getMedium());
         $this->buildArticleXmlContentElements();
-        
+
         if (!empty($this->data->service)) {
             self::$imagePublishUrl = $this->data->service->imagePublishUrl;
             self::$imageServiceUrl = $this->data->service->imageServiceUrl;
@@ -235,12 +235,9 @@ class DrPublishApiClientArticle
 
     public function getMainDPTag()
     {
-
         if (!empty($this->data->meta->tags)) {
             foreach ($this->data->meta->tags as $tag) {
-                if ($tag->position === 1) {
-                    return $this->createDrPublishApiClientTag($tag);
-                }
+                return $this->createDrPublishApiClientTag($tag);
             }
         }
         return null;
