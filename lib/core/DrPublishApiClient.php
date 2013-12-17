@@ -557,7 +557,7 @@ class DrPublishApiClient
     {
         $baseDir = self::getConfigOption('CACHE_DIR');
         $id = md5($identifier);
-        $dirString = $id[0] . $id[1] . '/' . $id[2] . $id[3] . '/' . $id[4] . $id[5];
+        $dirString = $id[0] . '/' . $id[1] . '/' . $id[2];
         $cacheDir = $baseDir . '/' . $dirString;
         if ($write === true) {
             if (!is_dir($baseDir)) {
