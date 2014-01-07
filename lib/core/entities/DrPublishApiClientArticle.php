@@ -17,8 +17,8 @@ class DrPublishApiClientArticle
         $this->buildArticleXmlContentElements();
         
         if (!empty($this->data->service)) {
-            self::$imagePublishUrl = $this->data->service->imagePublishUrl;
-            self::$imageServiceUrl = $this->data->service->imageServiceUrl;
+            self::$imagePublishUrl = isset($this->data->service->imagePublishUrl) ? $this->data->service->imagePublishUrl : '';
+            self::$imageServiceUrl = isset($this->data->service->imageServiceUrl) ? $this->data->service->imageServiceUrl : '';
         }
     }
 
@@ -76,7 +76,7 @@ class DrPublishApiClientArticle
                         }
                         $options = new stdClass();
                         $options->medium = $this->medium;
-                        $options->dataType = $templateElement->dataType;
+                        $options->dataType = isset($templateElement->dataType) ? $templateElement->dataType : '';
                         if ($templateElement->dataType == 'xml') {
                             return new DrPublishApiClientXmlElement($content->{$varName}, $options);
                         } else {
@@ -143,7 +143,6 @@ class DrPublishApiClientArticle
     {
         DrPublishDomElement::$queryMode = QUERY_TYPE_XPATH;
         $q = 'div[@class and contains(concat(" ",normalize-space(@class)," ")," dp-article-image ") and descendant::img]';
-       // $drPublishDomElementList =  $this->find("div.dp-article-image");
         $drPublishDomElementList =  $this->find($q);
         DrPublishDomElement::$queryMode = QUERY_TYPE_JQUERY;
         $imageList = new DrPublishDomElementList();
@@ -206,7 +205,7 @@ class DrPublishApiClientArticle
     public function getMainDPCategory()
     {
         if (!empty($this->data->meta->categories)) foreach ($this->data->meta->categories as $category) {
-            if ($category->isMain) {
+            if (isset($category->isMain) && $category->isMain) {
                 return $this->createDrPublishApiClientCategory($category);
             }
         }
@@ -219,8 +218,8 @@ class DrPublishApiClientArticle
             return null;
         }
         $data = new stdClass();
-        $data->name = $this->data->meta->source;
-        $data->id = $this->data->meta->dpSourceId;
+        $data->name = isset($this->data->meta->source) ? $this->data->meta->source : '';
+        $data->id = isset($this->data->meta->dpSourceId) ? $this->data->meta->dpSourceId : 0;
         return new DrPublishApiClientSource($data);
     }
 
@@ -278,10 +277,10 @@ class DrPublishApiClientArticle
     {
        $data = new stdClass();
        $tagType = new stdClass();
-       $tagType->id = $tag->tagTypeId;
-       $tagType->name = $tag->tagTypeName;
-       $data->id = $tag->id;
-       $data->name = $tag->name;
+       $tagType->id = isset($tag->tagTypeId) ? $tag->tagTypeId : 0;
+       $tagType->name = isset($tag->tagTypeName) ? $tag->tagTypeName : '';
+       $data->id =  isset($tag->id)? $tag->id : 0;
+       $data->name = isset($tag->name)? $tag->name : '';
        $data->tagType =  $tagType;
        return new DrPublishApiClientTag($data);
     }
