@@ -15,7 +15,7 @@ class DrPublishApiClientArticle
         $this->dpClient = $dpClient;
         $this->setMedium($dpClient->getMedium());
         $this->buildArticleXmlContentElements();
-        
+
         if (!empty($this->data->service)) {
             self::$imagePublishUrl = isset($this->data->service->imagePublishUrl) ? $this->data->service->imagePublishUrl : '';
             self::$imageServiceUrl = isset($this->data->service->imageServiceUrl) ? $this->data->service->imageServiceUrl : '';
@@ -170,7 +170,7 @@ class DrPublishApiClientArticle
                            trigger_error('DrPublishApiClient error: no data responded for author id= "' . $author->id . '"' , E_USER_WARNING);
                            $dpClientAuthor = null;
                        } else {
-                           throw($e);
+                           throw new DrPublishApiClientException($e);
                        }
                    }
                } else {

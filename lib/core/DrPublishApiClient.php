@@ -318,7 +318,7 @@ class DrPublishApiClient
                 }
                 $response = $this->curl($params);
             } else {
-                throw($e);
+                throw new DrPublishApiClientException($e);
             }
         }
         $resultJson = $response->body;
@@ -564,7 +564,7 @@ class DrPublishApiClient
                 umask(0000);
                 mkdir($baseDir, 0777, true);
             }
-            
+
             if (!is_writable($baseDir)) {
                 trigger_error("Data cache directory '{$baseDir}' is not writable. DrPublishApiClient can't cache your data!", E_USER_WARNING);
                 return false;
