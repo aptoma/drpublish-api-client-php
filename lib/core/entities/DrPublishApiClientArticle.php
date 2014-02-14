@@ -9,6 +9,9 @@ class DrPublishApiClientArticle
     protected static $imageServiceUrl;
     protected static $imagePublishUrl;
 
+    public static $defaultImageServiceUrl = '';
+    public static $defaultImagePublishUrl = '';
+
     public function __construct($data, DrPublishApiClient $dpClient)
     {
         $this->data = $data;
@@ -16,9 +19,12 @@ class DrPublishApiClientArticle
         $this->setMedium($dpClient->getMedium());
         $this->buildArticleXmlContentElements();
 
+        self::$imagePublishUrl = self::$defaultImagePublishUrl;
+        self::$imageServiceUrl = self::$defaultImageServiceUrl;
+
         if (!empty($this->data->service)) {
-            self::$imagePublishUrl = isset($this->data->service->imagePublishUrl) ? $this->data->service->imagePublishUrl : '';
-            self::$imageServiceUrl = isset($this->data->service->imageServiceUrl) ? $this->data->service->imageServiceUrl : '';
+            self::$imagePublishUrl = isset($this->data->service->imagePublishUrl) ? $this->data->service->imagePublishUrl : self::$defaultImagePublishUrl;
+            self::$imageServiceUrl = isset($this->data->service->imageServiceUrl) ? $this->data->service->imageServiceUrl : self::$defaultImageServiceUrl;
         }
     }
 
