@@ -283,9 +283,18 @@ The DrPublishApiClient provides functionality for generating resized images in a
     Format descriptors can be used to force image resizing to fit into given boundaries. These are:
     <ul>
         <li>
-            <b>box-&lt;int width&gt;x&lt;int height&gt;</b> Image fits into a rectangular of the specified dimension, by keeping it's proportions and without cropping.<br/>
+            <b>box-&lt;int width&gt;x&lt;int height&gt;</b> Image fits into a rectangular of the specified dimension, by keeping
+            it's proportions and without cropping.<br/>
             Example: article/2012/05/14/10115641/1/<b>box-200x200</b>/foo.jpg
         </li>
+        <li>
+            <b>crop-&lt;int x1&gt;,&lt;int y1&gt;,&lt;int x2&gt;,&lt;int y2&gt;,&lt;int width&gt;(x&lt;int height&gt;)</b>
+            Crop and resize the image to the given area and width or box areal<br/>
+            Example: article/2012/05/14/10115641/1/<b>crop-344,650,1174,1300,1000x1000</b>/foo.jpg (cropped and scaled to fit into a box of 1000x1000px)
+            <br/>
+            Example: article/2012/05/14/10115641/1/<b>crop-344,650,1174,1300,500</b>/foo.jpg (cropped and scaled to 500px width)
+        </li>
+
         <li>
             <b>autocrop-&lt;int &gt;x&lt;int height&gt;</b> Image will be cropped from the middle to fit into a rectangular of the specified dimensions<br/>
             Example: article/2012/05/14/10115641/1/<b>autocrop-200x200</b>/foo.jpg

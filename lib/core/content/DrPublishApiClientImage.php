@@ -55,4 +55,5 @@ class DrPublishApiClientImage extends DrPublishDomElement
         }
         return $this;
     }
+
 }

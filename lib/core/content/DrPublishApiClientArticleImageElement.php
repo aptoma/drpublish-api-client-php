@@ -67,7 +67,23 @@ class DrPublishApiClientArticleImageElement extends DrPublishDomElement
         if (empty($image)) {
             return null;
         }
+        return $image->resize($type);
+    }
 
+    public function getSquareCropResizedImage($width)
+    {
+        $image = $this->getImage();
+        if (empty($image)) {
+            return null;
+        }
+        $squareCropParamString = $this->getAttribute('data-square-crop');
+        if (!empty($squareCropParamString)) {
+            $squareCropParams = mb_split(',', $squareCropParamString);
+            $squareCropParams[4] = $width;
+            $type = 'crop-' . join(',', $squareCropParams);
+        } else {
+            $type = 'autocrop-' . $width . 'x' . $width;
+        }
         return $image->resize($type);
     }
 

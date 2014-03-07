@@ -1,3 +1,4 @@
+
 <h3>Title [DrPublishApiClientArticleElement DrPublishApiWebClient::getTitle()]</h3>
 <div class="result">
     <h4><?php print($drPublishApiClientArticle->getTitle()) ?></h4>
@@ -134,6 +135,21 @@ foreach ($drPublishApiClientImages as $drPublishApiClientImageElement) {
         </div>
     </pre>
 </div>
+
+
+<h4>Thumbnails [DrPublishApiWebClientArticleElement
+    DrPublishApiWebClientImageElement:getSquareCropResizedImage(size)]</h4>
+
+<?php
+$drPublishApiClientImages = $drPublishApiClientArticle->getDPImages();
+foreach ($drPublishApiClientImages as $drPublishApiClientImageElement) {
+    $drPublishApiClientImage = $drPublishApiClientImageElement->getSquareCropResizedImage(200);
+    print ($drPublishApiClientImage);
+
+}
+
+?>
+
 
 <h3>Fact Boxes [DrPublishApiClientList DrPublishApiWebClient::getFactBoxes()]</h3>
 <div class="result">

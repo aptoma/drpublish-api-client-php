@@ -7,8 +7,8 @@ if (file_exists(dirname(__FILE__) . '/config.php')) {
     $publication = $configs['publication'];
     $apikey = $configs['apikey'];
 } else {
-    $dpUrl = 'http://stefan.aptoma.no:9000';
-    $dpUrlInternal = 'https://stefan.aptoma.no:9443';
+    $dpUrl = 'http://rai-dev.aptoma.no:9000';
+    $dpUrlInternal = 'https://rai-dev.aptoma.no:9443';
     $publication = 'Solarius';
     $apikey = '';
 }
