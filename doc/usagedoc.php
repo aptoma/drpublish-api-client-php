@@ -332,6 +332,17 @@ $leadImage->getResizedImage(850);
 &lt;/div&gt;
 </code>
 
+<h4 id="article-images-square-crop-resize">Square-crop-resize images on the fly</h4>
+If the square-crop feature in DrPublish enabled, cropped and panned images can be generated using the
+<b>DrPublishArticleImageElement::getSquareCropResizedImage(&lt;edge length>)</b> method
+
+<code>
+    $drPublishApiClientImages = $drPublishApiClientArticle->getDPImages();
+    foreach ($drPublishApiClientImages as $drPublishApiClientImageElement) {
+    $drPublishApiClientImage = $drPublishApiClientImageElement->getSquareCropResizedImage(200);
+        print ($drPublishApiClientImage);
+    }
+</code>
 
 
 <h4 id="article-images-slideshows">Slide shows (image galleries)</h4>
