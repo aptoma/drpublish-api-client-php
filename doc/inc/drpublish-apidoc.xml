@@ -129,6 +129,7 @@
                                 extra
                                 results that were not wanted - in this case, tags like Herman Mellvile, etc. Wildcard
                                 searches are also slower, performance wise.
+                                Wildcard searches can't be used with text fields!
                             </li>
                             <li>/articles?publication=AptomaPub&amp;tag=cow - fetch a list of articles from AptomaPub
                                 publication, tagged with cow. Both publication and tag are of type string.
@@ -257,7 +258,7 @@
                     <incompatibilities>does not work with text fields, unless they contain a wildcard query (story=Co
                         will
                         be ignored in the OR condition, and become and AND condition instead. However, story=Co* will be
-                        part of the OR condition)
+                        part of the OR condition). Wildcard searches for text fields should be avoided! For the moment, it is disabled and won't produce any results.
                     </incompatibilities>
                 </parameter>
                 <parameter>
