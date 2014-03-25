@@ -138,7 +138,7 @@ foreach ($drPublishApiClientImages as $drPublishApiClientImageElement) {
 
 
 <h4>Thumbnails [DrPublishApiWebClientArticleElement
-    DrPublishApiWebClientImageElement:getSquareCropResizedImage(size)]</h4>
+    DrPublishApiWebClientImageElement:getSquareCropResizedImage(&lt;edge length>)]</h4>
 
 <?php
 $drPublishApiClientImages = $drPublishApiClientArticle->getDPImages();
