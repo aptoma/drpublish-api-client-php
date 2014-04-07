@@ -218,12 +218,11 @@ class DrPublishApiClient
     {
         $statusCode = $info['http_code'];
         if (!empty($body)) {
+            // TODO: this is for fixing a DrLib json encoding error. Can be removed when the cause of the error is fixed
+            $body = str_replace(',}', '}', $body);
             $response = json_decode($body);
             if (!empty($response)) {
-                $message = urldecode($response->error->rawMessage);
-                if (empty($message)) {
-                    $message = $response->error->description;
-                }
+                $message = urldecode(isset($response->error->description) ? $response->error->description : 'Unknown error' );
             } else {
                 $message = 'Empty response';
             }
