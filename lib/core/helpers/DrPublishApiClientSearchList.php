@@ -73,7 +73,7 @@ class DrPublishApiClientSearch
     public function getProperty($name)
     {
         if (isset($this->data->{$name})) {
-            $this->data->{$name};
+            return $this->data->{$name};
         }
         return null;
     }
