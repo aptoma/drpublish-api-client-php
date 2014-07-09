@@ -676,7 +676,7 @@ class DrPublishApiClient
         $info = curl_getinfo($ch);
         $body = substr($res, $info['header_size']);
         $props = json_decode($body, true);
-        if (isset($props['error'])) {
+        if (is_null($props) || isset($props['error'])) {
             throw new DrPublishApiClientException('Error generating Image: ' . $props['error'], DrPublishApiClientException::IMAGE_CONVERTING_ERROR);
         }
         $props['src'] = str_replace($imageServiceUrl, $imagePublishUrl, $newSrc);
