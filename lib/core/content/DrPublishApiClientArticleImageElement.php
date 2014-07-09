@@ -30,6 +30,11 @@ class DrPublishApiClientArticleImageElement extends DrPublishDomElement
         return $this->find("*.dp-article-image-source")->innerContent();
     }
 
+    public function getLabel()
+    {
+        return $this->find("*.dp-article-image-byline-label")->innerContent();
+    }
+
     public function getPhotographer()
     {
         return $this->find("*.dp-article-image-author")->innerContent();
