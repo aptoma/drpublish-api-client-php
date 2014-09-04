@@ -677,7 +677,7 @@ class DrPublishApiClient
         $body = substr($res, $info['header_size']);
         $props = json_decode($body, true);
         if (is_null($props) || isset($props['error'])) {
-            throw new DrPublishApiClientException('Error generating Image: ' . $props['error'], DrPublishApiClientException::IMAGE_CONVERTING_ERROR);
+            throw new DrPublishApiClientException('Error generating Image: "' . $currentSrc . '". ' . (isset($props['error']) ? 'Message from image service: ' . $props['error'] : 'No response from image service'), DrPublishApiClientException::IMAGE_CONVERTING_ERROR);
         }
         $props['src'] = str_replace($imageServiceUrl, $imagePublishUrl, $newSrc);
         if ($cachingEnabled) {
