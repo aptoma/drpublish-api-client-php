@@ -7,11 +7,6 @@ class DrPublishApiClientArticleImageElement extends DrPublishDomElement
 
     public function __construct(DrPublishDomElement $drPublishDomElement)
     {
-        if (!class_exists('DrPublishApiClientImage', false)) {
-            $dir = dirname(__FILE__);
-            require($dir . '/DrPublishApiClientImage.php');
-            require($dir . '/DrPublishApiClientPhotographer.php');
-        }
         parent::__construct($drPublishDomElement->domElement);
     }
 

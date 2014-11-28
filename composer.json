@@ -11,6 +11,16 @@
     "require": {
     },
         "autoload": {
-        "classmap": ["lib/core/DrPublishApiClient.php", "lib/web/DrPublishApiWebClient.php"]
+        "classmap": [
+            "lib/core/DrPublishApiClient.php", 
+            "lib/web/DrPublishApiWebClient.php", 
+            "lib/core/helpers", 
+            "lib/core/dom", 
+            "lib/core/entities", 
+            "lib/core/content",
+            "lib/web/entities", 
+            "lib/web/content"
+        ]
+            
     }
 }

@@ -137,7 +137,6 @@ class DrPublishApiClientArticle
     {
         $drPublishDomElementList =  $this->find("div.dp-slideshow");
         $slideShowList = new DrPublishDomElementList();
-        require_once(dirname(__FILE__) . '/../content/DrPublishApiClientArticleSlideShowElement.php');
         foreach($drPublishDomElementList as $drPublishDomElement) {
             $drPublishApiClientArticleElement = $this->createDrPublishApiClientArticleSlideShowElement($drPublishDomElement);
             $slideShowList->add($drPublishApiClientArticleElement);

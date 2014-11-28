@@ -1,25 +1,4 @@
 <?php
-$dpcDirname = dirname(__FILE__);
-
-require($dpcDirname . '/helpers/DrPublishApiClientList.php');
-require($dpcDirname . '/helpers/DrPublishApiClientSearchList.php');
-require($dpcDirname . '/helpers/DrPublishDomElementList.php');
-require($dpcDirname . '/helpers/DrPublishApiClientException.php');
-require($dpcDirname . '/helpers/DrPublishApiClientHttpException.php');
-require($dpcDirname . '/dom/DrPublishDomElement.php');
-require($dpcDirname . '/dom/DrPublishDomText.php');
-require($dpcDirname . '/entities/DrPublishApiClientArticleEntity.php');
-require($dpcDirname . '/entities/DrPublishApiClientArticle.php');
-require($dpcDirname . '/entities/DrPublishApiClientAuthor.php');
-require($dpcDirname . '/entities/DrPublishApiClientCategory.php');
-require($dpcDirname . '/entities/DrPublishApiClientTag.php');
-require($dpcDirname . '/entities/DrPublishApiClientDossier.php');
-require($dpcDirname . '/entities/DrPublishApiClientSource.php');
-require($dpcDirname . '/content/DrPublishApiClientArticleElement.php');
-require($dpcDirname . '/content/DrPublishApiClientXmlElement.php');
-require($dpcDirname . '/content/DrPublishApiClientTextElement.php');
-require($dpcDirname . '/content/DrPublishApiClientArticleImageElement.php');
-unset($dpcDirname);
 define('QUERY_TYPE_XPATH', 1);
 define('QUERY_TYPE_JQUERY', 2);
 

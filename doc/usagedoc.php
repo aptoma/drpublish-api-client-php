@@ -18,7 +18,8 @@
 
 <h2 id="instantiating">Instantiating the DrPublishApiWebClient</h2>
 <code>
-require('/path/to/drpublish/api/web/client/lib/' . 'DrPublishWebApiClient.php');
+require 'vendor/autoload.php';
+
 $drPublishApiUrl = 'http://rai-dev.aptoma.no:9000';
 $publicationName = 'Solarius';
 $drPublishApiWebClient = new DrPublishApiWebClient($drPublishApiUrl, $publicationName);

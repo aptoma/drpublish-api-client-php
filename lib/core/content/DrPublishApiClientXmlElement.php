@@ -89,7 +89,6 @@ class DrPublishApiClientXmlElement extends DrPublishApiClientArticleElement
     {
         $drPublishDomElementList = $this->find("div.dp-slideshow");
         $slideShowList = new DrPublishDomElementList();
-        require_once(dirname(__FILE__) . '/../content/DrPublishApiClientArticleSlideShowElement.php');
         foreach ($drPublishDomElementList as $drPublishDomElement) {
             $drPublishApiClientArticleElement = new DrPublishApiClientArticleSlideShowElement($drPublishDomElement);
             $slideShowList->add($drPublishApiClientArticleElement);
