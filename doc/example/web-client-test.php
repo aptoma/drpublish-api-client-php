@@ -4,8 +4,7 @@
  * Tutorial and test for using the Web client
  *
  */
-require(dirname(__FILE__) . '/../../lib/web/DrPublishApiWebClient.php');
-require('inc/functions.php');
+require('vendor/autoload.php');
 ini_set('display_errors', 1);
 $action = isset($_GET['action']) ? $_GET['action'] : '';
 $publication = isset($_GET['publication']) ? $_GET['publication'] : '';
@@ -14,6 +13,7 @@ $isArticlePreview = isset($_GET['internal']) && ($_GET['internal'] == '2');
 $apiKey = isset($_GET['dp-apikey']) ? $_GET['dp-apikey'] : null;
 $dpUrl = '';
 $dpUrlInternal = $_GET['dp-url-internal'];
+
 if ($isInternal) {
 	$dpUrl = $_GET['dp-url-internal'];
 } else {

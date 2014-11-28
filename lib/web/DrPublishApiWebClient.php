@@ -1,12 +1,5 @@
 <?php
 
-$dpwebdn = dirname(__FILE__);
-require($dpwebdn . '/../core/DrPublishApiClient.php');
-require($dpwebdn . '/entities/DrPublishApiWebClientArticle.php');
-require($dpwebdn . '/entities/DrPublishApiWebClientAuthor.php');
-require($dpwebdn . '/content/DrPublishApiWebClientImageElement.php');
-unset($dpwebdn);
-
 class DrPublishApiWebClient extends DrPublishApiClient
 {
 
