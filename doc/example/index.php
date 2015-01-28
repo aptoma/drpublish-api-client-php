@@ -7,9 +7,10 @@ if (file_exists(dirname(__FILE__) . '/config.php')) {
     $publication = $configs['publication'];
     $apikey = $configs['apikey'];
 } else {
-    $dpUrl = 'http://rai-dev.aptoma.no:9000';
-    $dpUrlInternal = 'https://rai-dev.aptoma.no:9443';
+    $dpUrl = 'http://drlib-dev.aptoma.no';
+    $dpUrlInternal = 'https://drlib-dev.aptoma.no:443';
     $publication = 'Solarius';
+    $apikey = '';
     $apikey = '';
 }
 ?>
@@ -17,7 +18,7 @@ if (file_exists(dirname(__FILE__) . '/config.php')) {
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-    <title>DrPublisch API client example implementation</title>
+    <title>DrPublish API client example implementation</title>
     <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
     <script type="text/javascript" src="inc/jquery.min.js"></script>
     <script type="text/javascript" src="inc/DrPublishApiClientExample.js"></script>
@@ -53,7 +54,7 @@ if (file_exists(dirname(__FILE__) . '/config.php')) {
         </form>
         <form action="search" id="search-raw-query" style="display:none">
         <textarea name="raw-query" id="raw-query"></textarea>
-        <input type="submit" value="Search" onclick="DrPublishApiClientExmample.submitForm(this); return false;"  />
+        <input type="submit" value="Search" onclick="DrPublishApiClientExample.submitForm(this); return false;"  />
         </form>
         <?php printApiDocLink('articles') ?>
     </fieldset>
@@ -71,7 +72,7 @@ if (file_exists(dirname(__FILE__) . '/config.php')) {
             <input type="radio" name="internal" value="1" />internal
             <input type="radio" name="internal" value="2" />both (for article preview)
             <br/>
-            <input type="submit" id="search-article-submit" onclick="DrPublishApiClientExmample.submitForm(this); return false;" value="Show article"/>
+            <input type="submit" id="search-article-submit" onclick="DrPublishApiClientExample.submitForm(this); return false;" value="Show article"/>
             <?php printApiDocLink('article') ?>
         </form>
     </fieldset>
@@ -91,7 +92,7 @@ if (file_exists(dirname(__FILE__) . '/config.php')) {
         <form action="author">
             Author id: <input type="text" value="1" name="author-id" style="width: 80px"/>
             <br/><br/>
-            <input type="submit" onclick="DrPublishApiClientExmample.submitForm(this); return false;" value="Show author"/>
+            <input type="submit" onclick="DrPublishApiClientExample.submitForm(this); return false;" value="Show author"/>
             <?php printApiDocLink('user') ?>
         </form>
     </fieldset>
@@ -111,7 +112,7 @@ if (file_exists(dirname(__FILE__) . '/config.php')) {
         <form action="tag">
             Tag id: <input type="text" name="tag-id" style="width: 80px"/>
             <br/><br/>
-            <input type="submit" onclick="DrPublishApiClientExmample.submitForm(this); return false;" value="Show tag"/>
+            <input type="submit" onclick="DrPublishApiClientExample.submitForm(this); return false;" value="Show tag"/>
             <?php printApiDocLink('tag') ?>
         </form>
     </fieldset>
@@ -131,7 +132,7 @@ if (file_exists(dirname(__FILE__) . '/config.php')) {
         <form action="category">
             Category id: <input type="text" name="category-id" style="width: 80px"/>
             <br/><br/>
-            <input type="submit" onclick="DrPublishApiClientExmample.submitForm(this); return false;" value="Show category"/>
+            <input type="submit" onclick="DrPublishApiClientExample.submitForm(this); return false;" value="Show category"/>
             <?php printApiDocLink('category') ?>
         </form>
     </fieldset>
@@ -151,7 +152,7 @@ if (file_exists(dirname(__FILE__) . '/config.php')) {
         <form action="dossier">
             Dossier id: <input type="text" name="dossier-id" style="width: 80px"/>
             <br/><br/>
-            <input type="submit" onclick="DrPublishApiClientExmample.submitForm(this); return false;" value="Show dossier"/>
+            <input type="submit" onclick="DrPublishApiClientExample.submitForm(this); return false;" value="Show dossier"/>
             <?php printApiDocLink('dossier') ?>
         </form>
     </fieldset>
@@ -171,7 +172,7 @@ if (file_exists(dirname(__FILE__) . '/config.php')) {
         <form action="source">
             <input type="text" name="source-id" style="width: 80px"/>
             <br/><br/>
-            <input type="submit" onclick="DrPublishApiClientExmample.submitForm(this); return false;" val="Show source"/>
+            <input type="submit" onclick="DrPublishApiClientExample.submitForm(this); return false;" val="Show source"/>
             <?php printApiDocLink('source') ?>
         </form>
     </fieldset>
@@ -251,6 +252,6 @@ function printSubmit($providesInternalSearch = false)
 <?php if ($providesInternalSearch) { ?>
         <input type="radio" name="internal" value="0" checked="checked" />published <input type="radio" name="internal" value="1" />internal &nbsp;
 <?php } ?>
-<input type="submit" onclick="DrPublishApiClientExmample.submitForm(this); return false;" value="Search"/>
+<input type="submit" onclick="DrPublishApiClientExample.submitForm(this); return false;" value="Search"/>
 </div>
 <?php }

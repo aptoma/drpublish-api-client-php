@@ -9,18 +9,18 @@
     <link type="text/css" rel="stylesheet" media="all" href="inc/toc.css" />
 </head>
 <body>
-<div id="wrapper">
 
 
 <h1>How to use the Web Client</h1>
-    <h3 class="no-sec">Table of contents</h3>
+    <h2 class="no-sec">Table of contents</h2>
     	<ul class="toc"> </ul>
+<div id="wrapper">
 
 <h2 id="instantiating">Instantiating the DrPublishApiWebClient</h2>
 <code>
 require 'vendor/autoload.php';
 
-$drPublishApiUrl = 'http://rai-dev.aptoma.no:9000';
+$drPublishApiUrl = 'rai-dev.aptoma.no';
 $publicationName = 'Solarius';
 $drPublishApiWebClient = new DrPublishApiWebClient($drPublishApiUrl, $publicationName);
 </code>
@@ -420,8 +420,8 @@ $configs = array(
 
 <code>
 $internalScopepiKey = 'DREF12FU78PAUYYI9902E474';
-$apiUrl = 'http://rai-dev.aptoma.no:9000';
-$sslApiUrl = 'https://rai-dev.aptoma.no:9443';
+$apiUrl = 'http://drlib-dev.aptoma.n';
+$sslApiUrl = 'https://drlib-dev.aptoma.n:443';
 $drPublishApiWebClient = new DrPublishApiClient($apiUrl, 'Solarius');
 $drPublishApiWebClient->articlePreview(12345, $internalScopeApiKey, $sslApiUrl);
 </code>

@@ -6,7 +6,7 @@
 foreach ($drPublishApiClientSearchList as $drPublishApiClientArticle) { ?>
     <li>
         [<?php print($drPublishApiClientArticle->getId()) ?>]
-        <a href="#" onclick="DrPublishApiClientExmample.showArticle('<?php print($drPublishApiClientArticle->getId()) ?>');return false"><strong><?php print($drPublishApiClientArticle->getTitle()) ?></strong></a>
+        <a href="#" onclick="DrPublishApiClientExample.showArticle('<?php print($drPublishApiClientArticle->getId()) ?>');return false"><strong><?php print($drPublishApiClientArticle->getTitle()) ?></strong></a>
         <br/>
         <span style="color: #555">
             published: <?php print($drPublishApiClientArticle->getPublished()) ?> | written by: <?php print($drPublishApiClientArticle->getDPAuthors()) ?> |

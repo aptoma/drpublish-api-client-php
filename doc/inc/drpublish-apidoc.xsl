@@ -13,7 +13,8 @@
 
          <h1>DrPublish API request documentation</h1>
             <h2 class="no-sec">Table of contents</h2>
-            	<ul class="toc1"> </ul>
+            	<ul class="toc"> </ul>
+
             <div id="content">
             <h2 id="general">General</h2>
                 <h3 id="general-parameters">Parameters</h3>
@@ -119,7 +120,7 @@
             <script type="text/javascript">
             <xsl:text disable-output-escaping="yes"><![CDATA[
                     $(document).ready(function () {
-                            var h = [0, 0, 0, 0, 0], i, s, level, toc = $('.toc2');
+                        var h = [0, 0, 0, 0, 0], i, s, level, toc = $('.toc');
                             $('h2,h3,h4,h5').each(function () {
                                     if (!$(this).hasClass('no-sec')) {
                                             s = [];

@@ -1,39 +1,34 @@
-@font-face {
-	font-family:Verdana;
-}
+@import url(http://fonts.googleapis.com/css?family=Open+Sans:400,700);
 body {
+	font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
 	background-color: #FFFFFF;
 	background-image: none;
-	font-size: .9em;
+	font-size: 1em;
 	line-height: 1.45;
-	margin: 0 auto;
-	padding: 0 30px 4em 30px;
-	width: 70em;
 	position: relative;
 	color: #000;
+	margin:0;
+	padding: 0 60px 60px 60px;
 }
 a:link, a:visited {
-	color: #336666;
+	color: #1d4e6f;
 	text-decoration: none;
 }
 a:visited {
-	color: #009999;
+	color: #1d4e6f;
 }
 
 a[href]:hover {
-	background: none repeat scroll 0 0 #FFFFAA;
+	background: none repeat scroll 0 rgba(29, 78, 111, 0.15);
 }
 img {
 	max-width: 33em;
 }
 
 h1, h2, h3, h4, h5, h6, p, a, ul, ol, dt, dd, table, caption, th, td {
-	color: inherit;
-	font-family: Verdana;
 	font-weight: normal;
-	margin: 0;
-	padding: 0;
 }
+
 h2, h3, h4, h5, h6 {
 	position: relative;
     font-weight: bold;
@@ -43,14 +38,12 @@ h2 a:visited, h3 a:visited, h4 a:visited, h5 a:visited, h6 a:visited {
 	color: inherit;
 }
 h1 {
-    background-color: #BCC;
+    background-color: rgba(29, 78, 111, 0.73);
     color: #FFF;
 	font-size: 1.9em;
-	line-height: 1.1em;
 	padding-top: .5em;
-	display: inline-block;
     padding: 5px 30px;
-    margin: 0 3px 3px 3px;
+	margin: 0 -60px;
 }
 h2 {
 	border-bottom: 2px solid #CCCCCC;
@@ -58,11 +51,13 @@ h2 {
 	font-size: 1.4em;
 	margin: 2em 0 0.5em;
 	padding: 0 0 0.1em;
+	color:#1d4e6f;
 
 }
 h3 {
 	font-size: 1.3em;
 	margin-bottom: 0.3em;
+	color:#1d4e6f;
 }
 h4, h5, h6 {
 /*	color: #006666;*/
@@ -88,10 +83,10 @@ p {
     margin-left: 15px;
 }
 q {
-	color: #336666;
+	color: #1d4e6f;
 }
 pre {
-	background: #EEFFFF;
+	background: rgba(29, 78, 111, 0.30);
 	padding: 0.25em 0.6em;
 	white-space: pre-wrap;
 
@@ -113,7 +108,7 @@ table {
 	margin-bottom: 1em;
 }
 table th, table td {
-	border-color: #AACCCC;
+	border-color: #1d4e6f;
 	border-style: solid;
 	border-width: 0 0 1px;
 	padding: 4px;
@@ -123,11 +118,11 @@ table th li, table td li {
 	margin: 0 0 0 1.5em;
 }
 table caption, table th {
-	color: #66CCCC;
+	color: #dce0e3;
 	text-align: left;
 }
 table th {
-	color: #009999;
+	color:#dce0e3;
 }
 table td {
 	padding: 0.25em 1.25em 0.25em 0;
@@ -159,10 +154,7 @@ p.copyright {
 	width: 80%;
 }
 .secnum {
-	border-radius: 3px;
-	-moz-border-radius: 3px;
-	-webkit-border-radius: 3px;
-	background-color: #77BBBB;
+	background-color: rgba(34, 96, 135, 0.40);
 	color: #FFFFFF;
 	font-family: helvetica,sans-serif;
 	font-size: 11px;
@@ -192,7 +184,8 @@ ul.toc ul ul ul {
 	margin: 0;
 }
 ul.toc li {
-	padding: 0;
+	padding: 3px;
+
 }
 ul.toc li li {
 	margin: 0;
@@ -212,14 +205,14 @@ ul.toc {
 	margin-left: 5em;
 }
 .toc li {
-	color: #77BBBB;
+	color: rgba(29, 78, 111, 0.66);
 }
 ul.toc {
 	list-style: none outside none;
 }
 ul.toc .secnum {
 	background-color: transparent;
-	color: #77BBBB;
+	color: rgba(29, 78, 111, 0.67);
 	font-family: inherit;
 	font-size: 1em;
 	font-weight: normal;
@@ -245,7 +238,7 @@ table.keyboard-shortcuts td span {
 	margin: 0;
 	padding: 0;
 	list-style: none;
-	border-top: 6px solid #77BBBB;
+	border-top: 6px solid rgba(29, 78, 111, 0.67);
 	width: 33em;
 }
 .nav li {
@@ -260,7 +253,7 @@ table.keyboard-shortcuts td span {
 	color: #333;
 }
 .nav a:hover, .nav a.active {
-	background: #77BBBB;
+	background: rgba(29, 78, 111, 0.66);
 	color: #fff;
 	border-radius: 0 0 10px 10px;
 	-moz-border-radius: 0 0 10px 10px;
@@ -294,7 +287,7 @@ dl.notop {
 		display: none;
 	}
 	a:visited {
-		color: #336666;
+		color: #1d4e6f;
 	}
 }
 
@@ -306,3 +299,4 @@ dl.notop {
 #content {
     margin: 0 3em 0 6em;
 }
+

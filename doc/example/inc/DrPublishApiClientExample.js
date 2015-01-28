@@ -1,9 +1,9 @@
-var DrPublishApiClientExmample = {
+var DrPublishApiClientExample = {
 
     init:function () {
         $('textarea').keypress(function (e) {
             if (e.keyCode == 13) {
-                DrPublishApiClientExmample.submitForm(e.target);
+                DrPublishApiClientExample.submitForm(e.target);
                 return false;
             }
         });
@@ -26,8 +26,8 @@ var DrPublishApiClientExmample = {
                     if (form.attr('action').match(/search/)) {
                         var core = $(element).find('select.field-name').attr('data-core');
                         //if ( activatedElement.find('option').length == 1) {
-                        DrPublishApiClientExmample.submitForm(form.get(0));
-                        DrPublishApiClientExmample.fetchFields(core);
+                        DrPublishApiClientExample.submitForm(form.get(0));
+                        DrPublishApiClientExample.fetchFields(core);
                         //}
                     }
                 });
@@ -36,7 +36,7 @@ var DrPublishApiClientExmample = {
         );
         this.fetchFields('');
         $('#dp-url').change(function () {
-            DrPublishApiClientExmample.fetchFields()
+            DrPublishApiClientExample.fetchFields()
         });
         $('#form-pool div').first().trigger('click');
 
@@ -54,7 +54,7 @@ var DrPublishApiClientExmample = {
                     var requestParameters = form.serialize();
                 }
                 var params = 'action=' + action + '&' + requestParameters;
-                DrPublishApiClientExmample.sendGetRequest(params);
+                DrPublishApiClientExample.sendGetRequest(params);
             });
             return false;
         })
@@ -181,6 +181,6 @@ var Selectex = {
 
 
 $(document).ready(function () {
-    DrPublishApiClientExmample.init();
+    DrPublishApiClientExample.init();
     Selectex.init();
 });
