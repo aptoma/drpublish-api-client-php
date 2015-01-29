@@ -4,16 +4,17 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>DrPublishWebClient doc</title>
-    <script type="text/javascript" src="inc/jquery.js"></script>
-    <link type="text/css" rel="stylesheet" media="all" href="inc/docstyles.css" />
-    <link type="text/css" rel="stylesheet" media="all" href="inc/toc.css" />
+    <script type="text/javascript" src="inc/jquery-2.1.0.min.js"></script>
+    <script src="inc/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="inc/bootstrap.min.css"/>
+    <link rel="stylesheet" href="inc/docstyles.css" type="text/css" media="all" charset="utf-8" />
 </head>
 <body>
-
-
-<h1>How to use the Web Client</h1>
+<h1>/ <a href="index.php">API client doc</a>  / how to use the Web Client</h1>
     <h2 class="no-sec">Table of contents</h2>
     	<ul class="toc"> </ul>
+
+
 <div id="wrapper">
 
 <h2 id="instantiating">Instantiating the DrPublishApiWebClient</h2>

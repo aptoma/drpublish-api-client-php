@@ -1,3 +1,4 @@
+<?php include('inc/functions.php') ?>
 <h2>Tag</h2>
 <strong><?php print($drPublishApiClientTag->getName()) ?></strong>
  [id=<?php print($drPublishApiClientTag->getId()) ?>]

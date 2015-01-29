@@ -1,3 +1,4 @@
+<?php include('inc/functions.php') ?>
 <h2>Dossier</h2>
 <strong><?php print($drPublishApiClientDossier->getName()) ?></strong>
  [id=<?php print($drPublishApiClientDossier->getId()) ?>]

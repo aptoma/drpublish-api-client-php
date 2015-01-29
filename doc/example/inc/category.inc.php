@@ -1,3 +1,4 @@
+<?php include('inc/functions.php') ?>
 <h2>Category</h2>
 <strong><?php print($drPublishApiClientCategory->getName()) ?></strong>
  [id=<?php print($drPublishApiClientCategory->getId()) ?>]

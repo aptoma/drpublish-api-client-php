@@ -3,12 +3,16 @@ body {
 	font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
 	background-color: #FFFFFF;
 	background-image: none;
-	font-size: 1em;
 	line-height: 1.45;
 	position: relative;
 	color: #000;
-	margin:0;
-	padding: 0 60px 60px 60px;
+	margin:100px 0 0 0;
+	padding: 0 60px 60px 100px;
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	z-index: 1;
 }
 a:link, a:visited {
 	color: #1d4e6f;
@@ -25,8 +29,10 @@ img {
 	max-width: 33em;
 }
 
-h1, h2, h3, h4, h5, h6, p, a, ul, ol, dt, dd, table, caption, th, td {
+h1, h2, h3, h4, h5, h6, p,  ul, ol, dt, dd, table, caption, th, td {
 	font-weight: normal;
+	display: block;
+	line-height: inherit;
 }
 
 h2, h3, h4, h5, h6 {
@@ -38,13 +44,31 @@ h2 a:visited, h3 a:visited, h4 a:visited, h5 a:visited, h6 a:visited {
 	color: inherit;
 }
 h1 {
-    background-color: rgba(29, 78, 111, 0.73);
+    background-color: rgba(29, 78, 111, 0.95);
+	background-image: url("drp-logo-inv.svg");
+	background-position: 6px center;
+	background-repeat: no-repeat;
+	background-size: 180px auto;
     color: #FFF;
 	font-size: 1.9em;
-	padding-top: .5em;
-    padding: 5px 30px;
-	margin: 0 -60px;
+    padding: 9px 30px 9px 250px;
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	margin: 0;
+	z-index: 2;
+
 }
+
+body > h1 > a {
+	color: #FFF !important;
+}
+
+body > h1 > a:hover {
+	text-decoration: underline;
+}
+
 h2 {
 	border-bottom: 2px solid #CCCCCC;
 	/* display: inline-block;*/
@@ -281,7 +305,6 @@ dl.notop {
 	margin-left: 0;
 }
 
-
 @media print {
 	ul.nav {
 		display: none;
@@ -300,3 +323,7 @@ dl.notop {
     margin: 0 3em 0 6em;
 }
 
+div#index {
+	margin: 30px;
+	font-size: 1.5em;
+}

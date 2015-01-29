@@ -1,5 +1,6 @@
 <?php include('inc/search-meta.inc.php') ?>
 <?php include('inc/search-paginator.inc.php') ?>
+<?php include('inc/functions.php') ?>
 <h2>Search articles</h2>
 <ul>
 <?php

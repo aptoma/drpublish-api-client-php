@@ -1,5 +1,6 @@
 <?php include('inc/search-meta.inc.php') ?>
-<h2>Author search</h2>
+<?php include('inc/functions.php') ?>
+    <h2>Author search</h2>
 <ul>
 <?php foreach ($drPublishApiClientSearchList as $drPublishApiClientAuthor) { ?>
     <li>

@@ -6,12 +6,14 @@
         <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
         <head>
             <title>DrPublish API doc</title>
-            <script type="text/javascript" src="inc/jquery.js"></script>
-            <link rel="stylesheet" href="inc/toc.css" type="text/css" media="all" charset="utf-8" />
+            <script type="text/javascript" src="inc/jquery-2.1.0.min.js"></script>
+            <script src="inc/bootstrap.min.js"></script>
+            <link rel="stylesheet" href="inc/bootstrap.min.css"/>
+            <link rel="stylesheet" href="inc/docstyles.css" type="text/css" media="all" charset="utf-8" />
         </head>
         <body>
 
-         <h1>DrPublish API request documentation</h1>
+         <h1>/ <a href="index.php">API client doc</a>  / API querying* <span style="font-size: .6em; margin-left: 36px;"> *for use with DrLib 1 as the API engine</span></h1>
             <h2 class="no-sec">Table of contents</h2>
             	<ul class="toc"> </ul>
 

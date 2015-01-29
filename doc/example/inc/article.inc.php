@@ -1,4 +1,4 @@
-
+<?php include('inc/functions.php') ?>
 <h3>Title [DrPublishApiClientArticleElement DrPublishApiWebClient::getTitle()]</h3>
 <div class="result">
     <h4><?php print($drPublishApiClientArticle->getTitle()) ?></h4>

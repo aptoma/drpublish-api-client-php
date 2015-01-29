@@ -1,3 +1,4 @@
+<?php include('inc/functions.php') ?>
 <h2>Author</h2>
 Name: <strong><?php print($drPublishApiClientAuthor->getFullName()) ?></strong>
 <br/>

@@ -1,6 +1,7 @@
 var DrPublishApiClientExample = {
 
     init:function () {
+        console.debug('init client js');
         $('textarea').keypress(function (e) {
             if (e.keyCode == 13) {
                 DrPublishApiClientExample.submitForm(e.target);
@@ -132,9 +133,9 @@ var Selectex = {
     },
     extend:function (selectexplus) {
         var selectex = selectexplus.closest('.selectex');
-        var row = selectexplus.closest('.row');
+        var row = selectexplus.closest('.selrow');
         var newRow = row.clone(true);
-        var len = selectex.find('.row').length;
+        var len = selectex.find('.selrow').length;
         newRow.find('select, input').each(
             function (index, element) {
                 var felement = $(element);
@@ -155,9 +156,9 @@ var Selectex = {
 
     remove:function (selectexminus) {
         var selectex = selectexminus.closest('.selectex');
-        var row = selectexminus.closest('.row');
+        var row = selectexminus.closest('.selrow');
         row.remove();
-        var rows = selectex.find('.row');
+        var rows = selectex.find('.selrow');
         rows.each(function (rownr, row) {
             $(row).find('select, input').each(
                 function (index, element) {

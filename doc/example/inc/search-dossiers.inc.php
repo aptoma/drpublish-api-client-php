@@ -1,5 +1,6 @@
 <h2>Dossier search</h2>
 <?php include('inc/search-meta.inc.php') ?>
+<?php include('inc/functions.php') ?>
 <ul>
 <?php foreach ($drPublishApiClientSearchList as $drPublishApiClientDossier) { ?>
     <li>

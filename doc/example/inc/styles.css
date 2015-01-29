@@ -1,63 +1,41 @@
-body {
-    font-family: verdana, sans-serif;
-    font-size: 14px;
-    background: #FFF;
-    padding: 0 0 0 50px;
-    width: 1100px;
-    color: #255;
-    overflow-y: scroll;
-}
-
-h1 {
-    margin-left: -30px;
-}
-
-h2 {
-    color: #366;
-    margin-top: 10px;;
-}
-
-h3 {
-    margin-top: 10px;
-    font-size: 14px;
-    font-weight: normal;
-    color: #666;
-}
-
 #main {
-    width: 1000px;
 }
 
+#outer {
+    max-width: 1400px;
+}
+
+a {
+    display: inline;
+}
+
+a:hover {
+    text-decoration: underline;
+}
 #global-properties {
     margin: 8px 0 5px 0;
     vertical-align: top;
-    border: solid #336666 2px;
-    padding: 3px;
-    border-radius: 3px;
-    background: #CDD;
-    display: inline-block;
-    width: 1015px;
+    border: solid transparent 2px;
+    padding: 9px;
+    background: rgba(29, 78, 111, 0.12);
+    line-height: 2.5em;
 }
 
 pre {
-    font-size: 12px;
-    max-height: 150px;
+    max-height: 350px;
     overflow-y: auto;
     overflow-x: hidden;
-    padding: 5px;
-    background: #def;
+    background: rgba(29, 78, 111, 0.05);
+    font-size: 1em;
+
 }
 
 .result {
-    padding: 5px;
     margin: 5px 0 15px 0;
 
 }
 
 .content-container {
-    width: 710px;
-
-    padding: 5px;
     clear: both;
 }
 
@@ -76,24 +54,21 @@ label {
 
 fieldset {
     vertical-align: top;
-    margin: 3px;
-    border: solid #336666 2px;
-    padding: 3px;
-    border-radius: 3px;
-    background: #CDD;
+    border: none;
+    background: rgba(29, 78, 111, 0.12);
     display: block;
     float: left;
+    margin: 0;
 }
 
 fieldset legend {
-    font-size: 14px;
-    color: #337777;
+    color: #1d4e6f;
     font-weight: bold;
     cursor: pointer;
 }
 
 fieldset legend:hover {
-    color: #ff4500;
+    color: rgba(29, 78, 111, 0.80);
 }
 
 textarea {
@@ -106,17 +81,15 @@ textarea {
     width: 550px;
     float: left;
     margin-right: 10px;
-
 }
 
 #active-form fieldset {
-    background-color: #DEE;
+    background-color: rgba(29, 78, 111, 0.12);
     padding: 8px 8px 40px 8px;
     display: none;
     width: 530px;
     min-height: 100px;
     position: relative;
-    margin: 0;
 }
 
 #active-form fieldset:first-of-type {
@@ -138,19 +111,19 @@ textarea {
 #form-pool div {
     float: left;
     padding: 2px 6px;
-    background: #CDD;
+    background: rgba(29, 78, 111, 0.12);
     margin: 3px;
     cursor: pointer;
-    border: solid #366 2px;
-    border-radius: 3px;
+    border: solid transparent 2px;
 }
 
 #form-pool div:hover {
-    background: #DEE;
+    background: rgba(29, 78, 111, 0.12);
 }
 
 #form-pool div.active {
-    background: #CEE;
+    background: rgba(29, 78, 111, 1);
+    color: #FFF;
 }
 
 #active-form fieldset {
@@ -158,14 +131,12 @@ textarea {
 }
 
 #api-response-wrap {
-    margin-top: 10px;
-    margin-bottom: 30px;
-    width: 1000px;
-    border: solid #336666 2px;
-    border-radius: 3px;
+    border: solid transparent 2px;
+    margin-top: 16px;
     padding: 10px;
     min-height: 100px;
-    background: #EFF;
+    background: rgba(29, 78, 111, 0.08);
+
 }
 
 .selectex {
@@ -182,7 +153,7 @@ textarea {
     margin-right: 200px;
 }
 
-.selectex .row {
+.selectex .selrow {
     clear: both;
 }
 
@@ -190,21 +161,19 @@ textarea {
     width: 130px;
 }
 
-.selectex .row.first .condition-type {
+.selectex .selrow.first .condition-type {
     visibility: hidden;
 }
 
 .selectex .plus, .selectex .minus {
     width: 16px;
     height: 16px;
-    font-size: 16px;
     line-height: 16px;
     font-family: "courier new", monospace;
     font-weight: bold;
     padding: 2px;
-    background: #ACC;
-    border-radius: 3px;
-    border: solid #366 2px;
+    background: rgba(29, 78, 111, 0.15);
+    border: solid rgba(29, 78, 111, 0.05) 2px;
     display: inline-block;
     text-align: center;
     cursor: pointer;
@@ -224,35 +193,28 @@ textarea {
 }
 
 .request-info {
-    margin: -10px -10px 0 -10px;
-    background: #CDD;
-    padding: 6px;
-    color: #666;
-    border-bottom: solid #777 2px;
-    font-size: 12px;
+    background: rgba(29, 78, 111, 0.12);
+    padding: 12px 20px 12px 12px;
+    margin: -12px -12px 12px -12px;
+    color: #444;
+    border-bottom: solid transparent 2px;
+    line-height: 2em;
 }
 
 .request-info a {
-    color: #366;
+    color: #1d4e6f;
 
 }
-
 .request-info a:hover {
-    color: #333;
+    color: rgba(29, 78, 111, 0.90);
 }
 
 .request-info input {
-    width: 800px;
-    font-size: 12px;
-    height: 15px;
-    border: solid #366 1px;
-    border-radius: 3px;
-    background: #eff;
-    padding-left: 8px;
+    width: 100%;
 }
 
 .search-meta {
-    color: #666;
+    color: #444;
     text-align: right;
 }
 
@@ -271,35 +233,34 @@ textarea {
 
 input[type='submit'] {
     padding: 5px 10px;
-    font-size: 16px;
     float: right;
 }
 
 .source-code {
+    font-size: 1.1em;
     position: relative;
     height: auto;
     max-height: none;
-    background: #CDD;
+    background: rgba(29, 78, 111, 0.12);
     color: #444;
-    padding-top: 25px;
-    margin: 20px -10px -10px -10px;
-    border-top: solid #666 2px;
+    padding: 30px 12px 12px 12px;
+    margin: 20px -12px -12px -12px;
+    border-top: solid #444 2px;
 }
 
 .source-code:before {
     position: absolute;
     top: 0;
     left: 0;
-    color: #CDD;
-    background: #666;
+    color: #FFF;
+    background: #1d4e6f;
     content: 'Source code of the PHP template file above';
     padding: 0 5px;
 
 }
 
 .active-search {
-    font-size: 16px;
-    color: #333 !important;
+    color: #1d4e6f !important;
 }
 
 #raw-query {

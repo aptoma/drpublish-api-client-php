@@ -20,15 +20,16 @@ if (file_exists(dirname(__FILE__) . '/config.php')) {
 <head>
     <title>DrPublish API client example implementation</title>
     <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
-    <script type="text/javascript" src="inc/jquery.min.js"></script>
+    <script type="text/javascript" src="../inc/jquery-2.1.0.min.js"></script>
     <script type="text/javascript" src="inc/DrPublishApiClientExample.js"></script>
-    <script type="text/javascript">
-    </script>
-    <link type="text/css" rel="stylesheet" media="all" href="../inc/toc.css"/>
+    <script src="../inc/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="../inc/bootstrap.min.css" />
+    <link type="text/css" rel="stylesheet" media="all" href="../inc/docstyles.css"/>
     <link type="text/css" rel="stylesheet" media="all" href="inc/styles.css"/>
 </head>
 <body>
-<h1>DrPublishApiClient example implementation</h1>
+<h1>/ <a href="../index.php">API client doc</a> / example implementation</h1>
+<div id="outer">
 
 <div id="global-properties">
     Public API URL
@@ -185,6 +186,7 @@ if (file_exists(dirname(__FILE__) . '/config.php')) {
     <div id="api-response">
     </div>
 </div>
+</div>
 </body>
 </html>
 
@@ -197,7 +199,7 @@ function printSelectex($name, $defaultField = "-- fulltext --", $defaultFieldDat
         <div>Filter field</div>
         <div>Search query</div>
     </div>
-    <div class="row first">
+    <div class="selrow first">
         <select class="field-name" name="filterFields[1][key]" size="1" data-core='<?php print($name)?>'>
             <option class="default-field"><?php print($defaultField) ?></option>
         </select>

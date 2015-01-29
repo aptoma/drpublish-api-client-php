@@ -1,5 +1,6 @@
-<h2>Tag search</h2>
 <?php include('inc/search-meta.inc.php') ?>
+<?php include('inc/functions.php') ?>
+<h2>Tag search</h2>
 <ul>
 <?php foreach ($drPublishApiClientSearchList as $drPublishApiClientTag) { ?>
     <li>

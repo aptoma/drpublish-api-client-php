@@ -1,5 +1,6 @@
 <h2>Sources search</h2>
 <?php include('inc/search-meta.inc.php') ?>
+<?php include('inc/functions.php') ?>
 <br/>
 <ul>
 <?php foreach ($drPublishApiClientSearchList as $drPublishApiClientSource) { ?>
