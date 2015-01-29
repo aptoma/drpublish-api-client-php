@@ -14,6 +14,7 @@ body {
 	right: 0;
 	z-index: 1;
 }
+
 a:link, a:visited {
 	color: #1d4e6f;
 	text-decoration: none;
@@ -56,8 +57,7 @@ h1 {
 	top: 0;
 	left: 0;
 	right: 0;
-	margin: 0;
-	z-index: 2;
+	margin: 0;  z-index: 2;
 
 }
 
