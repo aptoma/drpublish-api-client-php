@@ -13,6 +13,7 @@ if (file_exists(dirname(__FILE__) . '/config.php')) {
     $apikey = '';
     $apikey = '';
 }
+$headless = isset($_GET['headless']);
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
@@ -27,10 +28,11 @@ if (file_exists(dirname(__FILE__) . '/config.php')) {
     <link type="text/css" rel="stylesheet" media="all" href="../inc/docstyles.css"/>
     <link type="text/css" rel="stylesheet" media="all" href="inc/styles.css"/>
 </head>
-<body>
+<body class="<?=$headless? 'headless' : ''?>">
+<? if(!$headless) { ?>
 <h1>/ <a href="../index.php">API client doc</a> / example implementation</h1>
+<? } ?>
 <div id="outer">
-
 <div id="global-properties">
     Public API URL
     <input type="text" id="dp-url" name="dp-url" value="<?php print($dpUrl) ?>" style="width: 300px"/>

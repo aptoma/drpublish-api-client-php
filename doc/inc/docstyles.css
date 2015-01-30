@@ -15,6 +15,11 @@ body {
 	z-index: 1;
 }
 
+body.headless {
+	margin: 0;
+	padding: 0;
+}
+
 a:link, a:visited {
 	color: #1d4e6f;
 	text-decoration: none;
@@ -77,6 +82,10 @@ h2 {
 	padding: 0 0 0.1em;
 	color:#1d4e6f;
 
+}
+
+h2:first-of-type {
+	margin: 1em 0 0.5em;
 }
 h3 {
 	font-size: 1.3em;
@@ -327,3 +336,86 @@ div#index {
 	margin: 30px;
 	font-size: 1.5em;
 }
+
+code {
+
+    display: block;
+    position: relative;
+    margin: 10px 0 10px 0;
+    font-size: 14px;
+    background: #666;
+    color: #7cfc00;
+    padding: 0px 5px 5px 10px;
+    white-space: pre-wrap;
+	max-width: 1000px;
+}
+
+code:after {
+    font-family: verdana, sans-serif;
+    font-size: 11px;
+    line-height: 11px;
+    position: absolute;
+    display: block;
+    top: 0;
+    left: 0;
+    background: #777;
+    text-indent: 0;
+    color: #444;
+    padding: 1px 4px 3px 3px;
+    content : 'code';
+    border-radius: 0 0 3px 0;
+}
+
+.code-comment {
+    color: #123;
+    margin-left: 5px;
+	max-width: 1000px;
+}
+
+.output {
+    white-space: pre-line;
+    text-indent: 60px;
+    position: relative;
+    font-family: courier, monospace;
+    color: #361f3d;
+    background: #ddeeff;
+    padding: 3px;
+    margin: 3px;
+    width: auto;
+	max-width: 1000px;
+}
+
+.output:after {
+    font-family: verdana, sans-serif;
+    font-size: 11px;
+    line-height: 11px;
+    position: absolute;
+    display: block;
+    top: 0;
+    left: 0;
+    background: #ABC;
+    text-indent: 0;
+    color:  #ddeeff;
+    padding: 1px 6px 3px 3px;
+    content : 'output';
+    border-radius: 0 0 3px 0;
+}
+
+.code-comment ul {
+    margin: 2px 0 2px 0;
+}
+
+.indent {
+    margin-left: 30px;
+    margin-right: 30px;
+}
+
+.indent1 {
+    margin-left: 30px;
+
+}
+
+.indent2 {
+    margin-left: 60px;
+}
+

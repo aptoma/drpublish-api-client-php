@@ -10,7 +10,6 @@
     <body>
         <div id="survey">
             <h1>/ PHP APIClient documentation</h1>
-
             <div id="index">
                 <a href="https://github.com/aptoma/no.aptoma.drpublish.api.client.php" target="_blank">Download the API client from GitHub</a>
                 <br/>

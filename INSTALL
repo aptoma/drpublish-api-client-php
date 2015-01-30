@@ -1,6 +1,6 @@
 Installing the client
 
-* Add the content from the "lib" directory to your project
+* run `composer install`
 
 * Using the generic, extensible client
 - include core/DrPublishApiClient.php
