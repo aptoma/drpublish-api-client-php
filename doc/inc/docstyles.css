@@ -350,22 +350,6 @@ code {
 	max-width: 1000px;
 }
 
-code:after {
-    font-family: verdana, sans-serif;
-    font-size: 11px;
-    line-height: 11px;
-    position: absolute;
-    display: block;
-    top: 0;
-    left: 0;
-    background: #777;
-    text-indent: 0;
-    color: #444;
-    padding: 1px 4px 3px 3px;
-    content : 'code';
-    border-radius: 0 0 3px 0;
-}
-
 .code-comment {
     color: #123;
     margin-left: 5px;
