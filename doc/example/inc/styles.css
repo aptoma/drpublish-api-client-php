@@ -9,6 +9,10 @@ a {
     display: inline;
 }
 
+input[type=text] {
+    padding-left: 6px;
+}
+
 a:hover {
     text-decoration: underline;
 }
@@ -88,6 +92,7 @@ textarea {
     width: 530px;
     min-height: 100px;
     position: relative;
+    min-height: 170px;
 }
 
 #active-form fieldset:first-of-type {
@@ -102,8 +107,10 @@ textarea {
 
 #form-pool {
     margin-top: 10px;
-    width: 450px;
+    width: 550px;
     float: left;
+    transform: scale(1.2);
+    transform-origin: 0 0;
 }
 
 #form-pool div {
