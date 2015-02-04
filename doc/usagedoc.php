@@ -9,10 +9,12 @@ $headless = isset($_GET['headless']);
     <title>DrPublishWebClient doc</title>
     <script type="text/javascript" src="inc/jquery-2.1.0.min.js"></script>
     <script src="inc/bootstrap.min.js"></script>
+    <script type="text/javascript" src="inc/prism.js"></script>
     <link rel="stylesheet" href="inc/bootstrap.min.css"/>
+    <link rel="stylesheet" href="inc/prism.css"/>
     <link rel="stylesheet" href="inc/docstyles.css" type="text/css" media="all" charset="utf-8" />
 </head>
-<body class="<?=$headless ? 'headless':''?>">
+<body class="<?=$headless ? 'headless':''?> language-php">
 <? if (!$headless) { ?>
 <h1>/ <a href="index.php">API client doc</a>  / how to use the Web Client</h1>
 <? } ?>
