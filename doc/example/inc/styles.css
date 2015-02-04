@@ -107,9 +107,9 @@ textarea {
 
 #form-pool {
     margin-top: 10px;
-    width: 550px;
+    width: 500px;
     float: left;
-    transform: scale(1.2);
+
     transform-origin: 0 0;
 }
 
