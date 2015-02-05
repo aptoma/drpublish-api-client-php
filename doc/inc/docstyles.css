@@ -13,6 +13,7 @@ body {
 	left: 0;
 	right: 0;
 	z-index: 1;
+	font-size: 1em;
 }
 
 body.headless {
@@ -77,7 +78,7 @@ body > h1 > a:hover {
 h2 {
 	border-bottom: 2px solid #CCCCCC;
 	/* display: inline-block;*/
-	font-size: 1.4em;
+	font-size: 1.2em;
 	margin: 2em 0 0.5em;
 	padding: 0 0 0.1em;
 	color:#1d4e6f;
@@ -88,7 +89,7 @@ h2:first-of-type {
 	margin: 1em 0 0.5em;
 }
 h3 {
-	font-size: 1.3em;
+	font-size: 1.2em;
 	margin-bottom: 0.3em;
 	color:#1d4e6f;
 }
@@ -122,7 +123,6 @@ pre {
 	background: rgba(29, 78, 111, 0.30);
 	padding: 0.25em 0.6em;
 	white-space: pre-wrap;
-
 	font-size: 0.9em;
 }
 pre a {
@@ -200,7 +200,6 @@ p.copyright {
 	top: 0.7em;
 }
 ul.toc {
-	font-weight: bold;
 	margin: 1em 0;
 	padding: 0;
 }
@@ -338,16 +337,30 @@ div#index {
 }
 
 code {
-
     display: block;
     position: relative;
     margin: 10px 0 10px 0;
     font-size: 14px;
-    background: #666;
-    color: #7cfc00;
-    padding: 0px 5px 5px 10px;
+    background: #EEE !important;
+    padding: 20px 8px 5px 8px !important;
     white-space: pre-wrap;
 	max-width: 1000px;
+}
+
+code:after {
+    font-family: verdana, sans-serif;
+    font-size: 11px;
+    line-height: 11px;
+    position: absolute ;
+    display: block;
+    top: 0;
+    left: 0;
+    background: #CCC;
+    text-indent: 0;
+    color:  #EEE;
+    padding: 1px 6px 3px 3px;
+    content : 'code';
+    border-radius: 0 0 3px 0;
 }
 
 .code-comment {
