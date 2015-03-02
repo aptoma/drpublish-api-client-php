@@ -1,7 +1,6 @@
 var DrPublishApiClientExample = {
 
     init:function () {
-        console.debug('init client js');
         $('textarea').keypress(function (e) {
             if (e.keyCode == 13) {
                 DrPublishApiClientExample.submitForm(e.target);
