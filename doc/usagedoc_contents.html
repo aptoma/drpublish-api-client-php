@@ -1,0 +1,518 @@
+<h2 id="install">Getting and installing the DrPublish API client</h2>
+<p>
+    Download the API client from <a href="https://github.com/aptoma/no.aptoma.drpublish.api.client.php" target="_blank">GitHub</a>
+    and follow the installation instructions, as described in the INSTALL document.
+    <br/>
+</p>
+
+<h3 id="instantiating">Instantiating the DrPublishApiWebClient</h3>
+
+<pre><code class="language-php">
+require 'vendor/autoload.php';
+
+$drPublishApiUrl = 'drlib-dev.aptoma.no';
+$publicationName = 'Solarius';
+$drPublishApiWebClient = new DrPublishApiWebClient($drPublishApiUrl, $publicationName);
+</code></pre>
+
+<h2 id="api-request">Sending article search request to the API</h2>
+<p>
+    Any valid API query as defined in the <a href="apidoc.php">DrPublish API query documentation</a>.
+</p>
+<pre><code class="language-php">
+// Searching all articles with category "nonsense" in descending order:
+$query = 'title="Lorem ipsum"&category="nonsense"&order=published desc';
+</code></pre>
+
+<p>
+    <code>DrPublishApiWebClient::searchArticles($query)</code> returns an object of type
+    <code>DrPublishApiClientSearchList</code>, which is a traversable list of article items.
+    In addition this object contains all relevant search meta data.
+</p>
+
+<pre><code class="language-php">
+$drPublishApiClientSearchList = $drPublishApiWebClient->searchArticles($query);
+</code></pre>
+
+<h2 id="articles">Articles</h2>
+<h3 id="article-retrieving">Retrieving article data</h3>
+
+<pre><code class="language-php">
+// The two ways for accessing articles are
+// 1. Search
+$drPublishApiClientSearchList = $drPublishApiWebClient->searchArticles($query);
+
+// 2. Request by id
+$drPublishApiClientSearchList = $drPublishApiWebClient->article(123);
+</code></pre>
+
+<h3 id="response-parsing">Parsing the response</h3>
+<h4 id="simple-output">Simple output</h4>
+<p>Used for outputting any article element from the API response "as is". No parsing, no overhead.</p>
+
+<pre><code class="language-php">
+$drPublishApiClientSearchList = $drPublishApiWebClient->searchArticles($query);
+
+foreach ($drPublishApiClientSearchList as $drPublishApiWebClientArticle) {
+
+    /*
+     * Each article element and article metadata can be fetched by using its
+     * appropriate `get` method. The return type depends on the nature of the
+     * requested element and can be:
+     * - a string (Simple meta data, as published date or article id)
+     * - a simple object (advanced meta data)
+     * - a DrPublishApiClientTextElement (plain article content elements)
+     * - a DrPublishApiClientXmlElement (XML/XHTML article content elements)
+     */
+
+    $published = $drPublishApiWebClientArticle->getPublished();
+    $categories = $drPublishApiWebClientArticle->getCategories();
+    $title = $drPublishApiWebClientArticle->getTitle();
+    $preamble = $drPublishApiWebClientArticle->getPreamble();
+
+    print $published;
+    // Output: Fri, 10 Feb 2012 15:35:00 +0100
+
+    $someElement = $drPublishWebClientArticle->find('div.foo')->item(0);
+    print $someElement->content();
+    print $someElement->innerContent();
+    print $someElement->html();
+    print $someElement->innerHtml();
+
+    /**
+    * While the toString method and the content() method return the complete
+    * content including the found element itself, the innerContent() method
+    * returns only the content of the element.
+    *
+    * The html() and innerHtml() methods return a HTML interpretation of the
+    * value returned by content()/innerContent(), which means avoid non-empty
+    * tags compliant to W3C standards.
+    */
+
+    // Output:
+    // &lt;div class="foo"&gt;This is &lt;strong&gt;really&lt;/strong&gt; important &lt;iframe src="http://somewhere" /&gt; &lt;/div&gt;
+    // This is &lt;strong&gt;really&lt;/strong&gt; important &lt;iframe src="http://somewhere" /&gt;
+    // &lt;div class="foo"&gt;This is &lt;strong&gt;really&lt;/strong&gt; important &lt;iframe src="http://somewhere" &gt;&lt;/iframe&gt; &lt;/div&gt;
+    // This is &lt;strong&gt;really&lt;/strong&gt; important &lt;iframe src="http://somewhere" &gt;&lt;/iframe&gt;
+
+    // Any returned article element has a toString method (or is a string by itself) and can be outputted directly
+    print $preamble;
+
+    // Output:
+    // &lt;strong&gt;Lobaldore&lt;/strong&gt; Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy
+    // eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.&lt;i&gt; At vero eos et accusam et
+    // justo duo dolores et ea rebum.&lt;/i&gt; Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet
+}
+</code></pre>
+
+<h4 id="data-extraction">Data extraction</h4>
+<p>
+    Advanced use of the output, used on XML/XHTML structured article elements. You can extract any sub-element via querying elements using a <a href="#querying-syntax">jQuery like syntax</a>
+</p>
+
+<pre><code class="language-php">
+$drPublisApiWebClientArticle = $drPublishApiClient->getArticle(123);
+$story = $drPublisApiWebClientArticle->getStory();
+
+// Getting the story (body) element from the artilce. The returned element is of type DrPublishApiClientXmlElement.
+$drPublishDomElementList = $story->find('a');
+
+// DrPublishApiClientXmlElement provides a method "find()" to extracting any element that matches the $query parameter. It returns an object of type
+// DrPublishDomElementList which is a collection of DrPublishDomElement objects
+// This list can now be traversed by using the for-each construct
+
+foreach ($drPublishDomElementList as $drPublishDomElement) {
+    print $drPublishDomElement;
+
+    // Output:
+    // &lt;a href="http://somelink/1"&gt;Jahrhunderte überlebt&lt;a&gt;
+    // &lt;a href="http://somelink/2"&gt;Stet cilt kasd&lt;a&gt;
+
+    // ...or you can just extract single elements/attributes
+    print $drPublishDomElement->getAttribute('href');
+    // Output:
+    // http://somelink/1
+    // http://somelink/2
+}
+</code></pre>
+
+<h4 id="querying-syntax">Querying syntax</h4>
+
+<h4 id="replacing-elements">Replacing elements</h4>
+<pre><code class="language-php">
+// You can replace any XHTML element in the content using the either
+// DrPublishDomElementList::replaceBy() or DrPublishDomElement::replaceBy().
+
+// Finding all "iframe" elements int the story (body) and replace them with "<span style="font-weight: bold">Foo!</span>"
+$story = $drPublisApiWebClientArticle->getStory();
+$drPublishDomElementList = $story->find('iframe');
+$drPublishDomElementList->replaceBy('&lt;b&gt;Foo!&lt;/b&gt;');
+
+// Changing the "src" parameter in all image elements of the article
+$drPublishDomElementList = $story->find('img');
+foreach ($drPublishDomElementList as $drPublishDomElement) {
+    $href = $drPublishDomElement->getAttribute('src');
+    $newHref = str_replace('http://server1', 'http://newserver', );
+    $drPublishDomElement->setAttribute($newHref);
+}
+
+// Adding the label "external link" to all links in the story element of the article
+$links = $drPublishApiClientArticle->getStory()->find('a');
+foreach ($links as $link) {
+    $newContent =   $link . ' (external link)';
+    $link->replaceBy($newContent);
+}
+</code></pre>
+
+<h4 id="removing-elements">Removing elements</h4>
+<p>You can remove any XHTML element in the content using the either DrPublishDomElementList::remove() or DrPublishDomElement::remove().</p>
+<pre><code class="language-php">
+// Removing all images from the article:
+$drPublishDomElementList = $drPublishApiWebClientArticle->find('img');
+$drPublishDomElementList->remove();
+
+// Removing all images only from the story (body) field:
+$drPublishDomElementList = $drPublishApiWebClientArticle->getStory()->find('img');
+$drPublishDomElementList->remove();
+</code></pre>
+
+<h4 id="xml-dom">Using DOM and XPath objects for customized processing</h4>
+<p>
+    Objects of type <strong>DrPublishApiClientXmlElement</strong> provide the methods getDom()/getXpath() for further processing of "raw" article element data
+</p>
+<pre><code class="language-php">
+$storyDom = $drPublishApiWebClientArticle->getStory()->getDom();
+
+// Fetch data from DOM object
+$myNodeList1 = $storyDom->getElementsByTagName('a');
+
+// Fetch data using XPath
+$storyXpath = $drPublishApiWebClientArticle->getStory()->getXpath();
+$myNodeList2 = $storyXpath('//h3');
+$mySubTitles = array();
+foreach ($myNodeList2 as $domElement) {
+    $mySubTitles[] = $domElement->nodeValue;
+    // or perhaps do this
+    //$mySubTitles[] = $storyDom->saveXml($domElement);
+}
+</code></pre>
+
+<h3 id="article-images">Handle article images</h3>
+<p>
+    Images including their wrapping markup can be extracted by calling <code>DrPublishApiClientArticle::getDPImages()</code>.
+    The returned list objects of type <code>DrPublishApiClientArticleImageElement</code>
+    provide methods for getting all properties of the image as well as the content of the describing elements
+</p>
+<pre><code class="language-php">
+$drPublishApiClientList = $drPublishApiClient->getDPImages();
+$drPublishApiClientArticleImageElement = $drPublishApiClientList->item(0);
+
+// extracting article image properties
+print $drPublishApiClientArticleImageElement->getTitle();
+print $drPublishApiClientArticleImageElement->getDescription();
+print $drPublishApiClientArticleImageElement->getPhotographer();
+print $drPublishApiClientArticleImageElement->getSource();
+print $drPublishApiClientArticleImageElement->getSrc();
+print $drPublishApiClientArticleImageElement->getWidth();
+print $drPublishApiClientArticleImageElement->getHeight();
+</code></pre>
+
+<p>
+    It's also possible only to extract images from one specific article element
+</p>
+<pre><code class="language-php">
+// extract only images located in the "leadAsset" element of the article
+$drPublishApiClientList = $drPublishApiClient->getLeadAsset()->getDPImages();
+</code></pre>
+
+<h4 id="article-images-resize">Resizing images on the fly</h4>
+<p>
+    The DrPublishApiClient provides functionality for generating resized images in any format on the fly.
+    Doing this will send a request to the DrPublish image converter service which will check if an image with the
+    requested size already exists. If not, the service will create it and store it on disk.
+    </p>
+<p>
+    DrPublishApiClient automatically changes the appropriate parameters of the image object to match the generated one.
+</p>
+<h5>Formats</h5>
+<p>Format descriptors can be used to force image resizing to fit into given boundaries. These are:</p>
+<ul>
+    <li>
+        <b>box-&lt;int width&gt;x&lt;int height&gt;</b> Image fits into a rectangular of the specified dimension, by keeping
+        it's proportions and without cropping.<br/>
+        Example: article/2012/05/14/10115641/1/<b>box-200x200</b>/foo.jpg
+    </li>
+    <li>
+        <b>crop-&lt;int x1&gt;,&lt;int y1&gt;,&lt;int x2&gt;,&lt;int y2&gt;,&lt;int width&gt;(x&lt;int height&gt;)</b>
+        Crop and resize the image to the given area and width or box areal<br/>
+        Example: article/2012/05/14/10115641/1/<b>crop-344,650,1174,1300,1000x1000</b>/foo.jpg (cropped and scaled to fit into a box of 1000x1000px)
+        <br/>
+        Example: article/2012/05/14/10115641/1/<b>crop-344,650,1174,1300,500</b>/foo.jpg (cropped and scaled to 500px width)
+    </li>
+
+    <li>
+        <b>autocrop-&lt;int &gt;x&lt;int height&gt;</b> Image will be cropped from the middle to fit into a rectangular of the specified dimensions<br/>
+        Example: article/2012/05/14/10115641/1/<b>autocrop-200x200</b>/foo.jpg
+    </li>
+    <li>
+        <b>height-&lt;int height&gt;</b> Image will be resized to specified height<br/>
+        Example: article/2012/05/14/10115641/1/<b>height-200</b>/foo.jpg
+    </li>        <li>
+    <b>height-&lt;int height&gt;</b> Image will be resized to specified width<br/>
+    Example: article/2012/05/14/10115641/1/<b>width-200</b>/foo.jpg
+</li>
+</ul>
+
+<pre><code class="language-php">
+$drPublishApiClientList = $drPublishApiClient->getDPImages();
+foreach ($drPublishApiClientList as $drPublishApiClientArticleImageElement) {
+    $drPublishApiClientArticleImageElement->resizeImage(325);
+}
+</code></pre>
+
+<p>
+    Example resizing the first image of the article:
+</p>
+<pre><code class="language-php">
+&lt;?php
+$leadImage = $drPublishApiClientArticle->getLeadDPImage();
+$leadImage->getResizedImage(850);
+?&gt;
+&lt;div&gt;
+    &lt;img src="&lt;?=$leadImage->getSrc()?&gt;" width="&lt;?=$leadImage->getWidth()?&gt;" height="&lt;?=$leadImage->getHeight()?&gt;" /&gt;
+    &lt;div&gt;&lt;?=$leadImage->getTitle()?&gt;&lt;/div&gt;
+    &lt;div&gt;&lt;?=$leadImage->getDescription()?&gt;&lt;/div&gt;
+    &lt;div&gt;&lt;?=$leadImage->getPhotographer()?&gt;&lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+
+<h4 id="article-images-square-crop-resize">Square-crop-resize images on the fly</h4>
+
+<p>
+    If the square-crop feature in DrPublish enabled, cropped and panned images can be generated using the
+    <code>DrPublishArticleImageElement::getSquareCropResizedImage(&lt;edge length>)</code> method
+</p>
+
+<pre><code class="language-php">
+$drPublishApiClientImages = $drPublishApiClientArticle->getDPImages();
+foreach ($drPublishApiClientImages as $drPublishApiClientImageElement) {
+    $drPublishApiClientImage = $drPublishApiClientImageElement->getSquareCropResizedImage(200);
+    print ($drPublishApiClientImage);
+}
+</code></pre>
+
+
+<h4 id="article-images-slideshows">Slide shows (image galleries)</h4>
+<p>
+    You can easily extract and transform slide shows generated by journalists with the help of the DrPublish image app slide show builder.
+</p>
+<p>
+    Slide shows can be fetched either globally with <code>DrPublishApiClientArticle::getSlideShows()</code> or from just
+    one specific article element by calling <code>DrPublishApiClientXmlElement::getSlideShows().</code>
+</p>
+<p>
+    Now you can build you own HTML/JavaScript code based on the data from the <code>DrPublishApiClientArticleSlideShowElements</code> and replace the original code.
+</p>
+
+<pre><code class="language-php">
+// Fetch slide shows from all article elements
+$drPublishApiClientSlideShows = $drPublishApiClientArticle->getDPSlideShows();
+
+// or just from from, let's say the leadAsset element
+$drPublishApiClientSlideShows = $drPublishApiClientArticle->getLeadAsset()->getDPSlideShows();
+
+foreach ($drPublishApiClientSlideShows as $drPublishApiClientSlideShow) {
+    // customize the slide show code
+    $yourHtmlCode = doYourStuff($drPublishApiClientSlideShow);
+    // replace the original code
+    $drPublishApiClientSlideShow->replaceBy($yourHtmlCode);
+}
+
+function doYourStuff(DrPublishApiClientArticleSlideShowElement $drPublishApiClientSlideShow)
+{
+    $slideShowId = $drPublishApiClientSlideShow->getId();
+    $dpImages = $drPublishApiClientSlideShow->getDPImages();
+    $slideShowImageUrls = array();
+    foreach ($dpImages as $dpImage) {
+        $previewImage = $dpImage->getResizedImage(350);
+        $enlargedImage = $dpImage->getResizedImage(950);
+        $slideShowImageUrls[] = array(
+            'preview' => $previewImage->getUrl(),
+            'enlarged' => $enlargedImage->getUrl()
+        );
+    }
+
+    $jsonImageUrls = json_encode($slideShowImageUrls);
+    $out = "&lt;div id=\"{$slideShowId}\"&gt;";
+    $out .= "&lt;script type=\"text/javascript\"&gt;";
+    $out .= "SlideShow.init('{$slideShowId}', {$jsonImageUrls})";
+    $out .= "&lt;/script&gt;";
+    $out .= "&lt;/div&gt;";
+    return $out;
+}
+</code></pre>
+
+<h4 id="image-data-caching">Image data caching</h4>
+<p>
+    To avoid unnecessary HTTP requests for repeatedly gathering of already processed image information,
+    DrPublishApiClient has a built-in data cache. This is a simple flat-file based data storage and may be located at
+    any place that is readable and writable by the application.
+</p>
+<p>
+    The cache has te be configurated in the <strong>config.php</strong> (inside root dir of the lib folder), use config.default.php as a template
+</p>
+<pre><code class="language-php">
+$configs = array(
+    'ENABLE_IMAGE_DATA_CACHING' => true,
+    'CACHE_DIR' => '/path/to/your/cache/directory'
+);
+</code></pre>
+
+<h2 id="article-preview">Article preview, including unpublished changes</h2>
+
+<h3 id="internal-articles">Accessing unpublished articles for internal use</h3>
+<p>
+    Internal data can be accessed via HTTPS and the use of an API key. This key can be generated for any user in  DrLib /admin.
+</p>
+<p>
+    The default address of the internal scope is: <strong>https://your-host:9443</strong>, but the address/port may
+    differ from this dependent on your server setup. Please ask your system administrator. A valid DrLib API key
+    (credential: GET) is required to run internal scope requests.
+</p>
+
+<pre><code class="language-php">
+$internalScopepiKey = 'DREF12FU78PAUYYI9902E474';
+$apiUrl = 'http://drlib-dev.aptoma.n';
+$sslApiUrl = 'https://drlib-dev.aptoma.n:443';
+$internalScopeClient = new DrPublishApiClient($apiUrl, 'Solarius');
+$internalScopeClient->articlePreview(12345, $internalScopeApiKey, $sslApiUrl);
+</code></pre>
+
+<p>
+    <code>$internalScopeClient</code> in the example above is a secured instance of <code>DrPublishApiClient</code>,
+    thus it includes all its functionality but the data will be accessed in an encrypted way.
+</p>
+
+<h2 id="authors">Authors</h2>
+
+<pre><code class="language-php">
+// Request a list of authors or fetch a specific author by its id:
+$drPublishApiClientSearchList = $drPublishApiClient->searchAuthors('username=mschulze');
+$drPublishApiClientAuthor = $drPublishApiClient->getAuthor(123);
+
+// For processing a search result, the received DrPublishApiClientSearchList
+// can be traversed as a list of DrPublishApiClientAuthor objects.
+// Use the appropriate getter method og access the properties of a DrPublishApiClientAuthor object.
+foreach ($drPublishApiClientSearchList as $drPublishApiClientAuthor) {
+    $fullName = $drPublishApiClientAuthor->getFullName();
+}
+</code></pre>
+
+<h2 id="categories">Categories</h2>
+<p>
+    You can either request a list of categories by sending a search query or request a specific category by id:
+</p>
+<pre><code class="language-php">
+$drPublishApiClientSearchList = $drPublishApiClient->searchCategories('parentId=2');
+$drPublishApiClientCategory = $drPublishApiClient->getCategory(234);
+</code></pre>
+<p>
+    For processing a search result, the received DrPublishApiClientSearchList can be traversed as a list of DrPublishApiClientCategory objects
+    Use the appropriate getter method og access the properties of a category object.
+</p>
+<pre><code class="language-php">
+foreach ($drPublishApiClientSearchList as $drPublishApiClientCategory) {
+    $categoryName = $drPublishApiClientCategory->getName();
+    $categoryParentName = $drPublishApiClientCategory->getParentName();
+}
+</code></pre>
+
+<h2 id="tags">Tags</h2>
+<p>
+    Same procedure as for <a href="#categories">categories</a>, apart from the the objects are of type DrPublishApiClientTag
+</p>
+<pre><code class="language-php">
+$drPublishApiClientSearchList = $drPublishApiClient->searchTag('name=Sports');
+$drPublishApiClientTag = $drPublishApiClient->getTag(362);
+</code></pre>
+<p>
+    For processing a search result, the received DrPublishApiClientSearchList can be traversed as a list of DrPublishApiClientTag objects
+    Use the appropriate getter method og access the properties of a DrPublishApiTag object.
+</p>
+<pre><code class="language-php">
+foreach ($drPublishApiClientSearchList as $drPublishApiClientTag) {
+    $tagName = $drPublishApiClientTag->getName();
+}
+</code></pre>
+
+<h2 id="dossiers">Dossiers</h2>
+<p>
+    Same procedure as for <a href="#categories">categories</a>, apart from the the objects are of type DrPublishApiClientDossier
+</p>
+<pre><code class="language-php">
+$drPublishApiClientSearchList = $drPublishApiClient->searchDossier('parentId=9876');
+$drPublishApiClientDossier = $drPublishApiClient->getDossier(76);
+</code></pre>
+<p>
+    For processing a search result, the received DrPublishApiClientSearchList can be traversed as a list of DrPublishApiClientDossier objects
+    Use the appropriate getter method og access the properties of a dossier object.
+</p>
+<pre><code class="language-php">
+foreach ($drPublishApiClientSearchList as $drPublishApiClientTag) {
+    $tagName = $drPublishApiClientTag->getName();
+}
+</code></pre>
+
+
+<h2 id="sources">Sources</h2>
+<p>
+    Same procedure as for <a href=#categories">categories</a>, apart from the the objects are of type DrPublishApiClientSource
+    <br/>See <a href="apidoc.php#sources">API doc</a> for available search options
+</p>
+<pre><code class="language-php">
+$drPublishApiClientSearchList = $drPublishApiClient->searchSource('name=NTB');
+$drPublishApiClientSource = $drPublishApiClient->getSource(76);
+</code></pre>
+<p>
+    For processing a search result, the received DrPublishApiClientSearchList can be traversed as a list of DrPublishApiClientSource objects
+    Use the appropriate getter method og access the properties of a DrPublishApiClientSource object.
+</p>
+<pre><code class="language-php">
+foreach ($drPublishApiClientSearchList as $drPublishApiClientTag) {
+    $tagName = $drPublishApiClientTag->getName();
+}
+</code></pre>
+
+<h2 id="error-handling">Error handling</h2>
+<p>
+    Several methods in DrPublishApiClient may throw an exception of type <code>DrPublishApiClientException</code>. This object contains:
+</p>
+<ul>
+    <li>Error type</li>
+    <li>Error message</li>
+    <li>Request URL that provoked the error</li>
+</ul>
+
+<pre><code class="language-php">
+try {
+    $drpublishApiClientArticle = $drPublishApiClient->getArticle(123);
+} catch (DrpublishApiClientException $e) {
+    $message = $e->getMessage();
+    $errorCode = $e->getCause();
+    $requestUrl = $e->getRequestUrl();
+    $this->myErrorHandler($message, $errorCode, $requestUrl);
+}
+</code></pre>
+
+<p>
+    Non-critical errors trigger a PHP warning (E_USER_WARNING)
+</p>
+
+<h3 id="error-types">Exception types</h3>
+<ul>
+    <li><code>HTTP_ERROR</code> Connecting to DrPublish APO failed</li>
+    <li><code>NO_DATA_ERROR</code> No date received from established connection</li>
+    <li><code>IMAGE_CONVERTING_ERROR</code> Problems while resizing images</li>
+    <li><code>UNAUTHORIZED_ACCESS_ERROR</code> Permission denied on internal API calls</li>
+    <li><code>PUBLICATION_ACCESS_ERROR</code> Article is not connected to chosen publication</li>
+</ul>
