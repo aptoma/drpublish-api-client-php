@@ -11,7 +11,7 @@ $headless = isset($_GET['headless']);
     <script type="text/javascript" src="inc/prism.js"></script>
     <link rel="stylesheet" href="inc/bootstrap.min.css"/>
     <link rel="stylesheet" href="inc/prism.css"/>
-    <link rel="stylesheet" href="https://aptoma.github.io/aptoma-design-guide/compiled/css/type.css" type="text/css" media="all" charset="utf-8">
+    <link rel="stylesheet" href="inc/type.css"/>
     <link rel="stylesheet" href="inc/docstyles.css" type="text/css" media="all" charset="utf-8" />
 </head>
 <body class="<?=$headless ? 'headless':''?> language-php">

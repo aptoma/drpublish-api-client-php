@@ -26,7 +26,7 @@ $headless = isset($_GET['headless']);
     <script src="inc/DrPublishApiClientExample.js"></script>
     <link rel="stylesheet" href="../inc/bootstrap.min.css" />
     <link rel="stylesheet" href="../inc/prism.css"/>
-    <link rel="stylesheet" href="https://aptoma.github.io/aptoma-design-guide/compiled/css/type.css" type="text/css" media="all" charset="utf-8">
+    <link type="text/css" rel="stylesheet" media="all" href="../inc/type.css"/>
     <link type="text/css" rel="stylesheet" media="all" href="../inc/docstyles.css"/>
     <link type="text/css" rel="stylesheet" media="all" href="inc/styles.css"/>
 </head>

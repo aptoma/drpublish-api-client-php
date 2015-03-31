@@ -1,0 +1,70 @@
+/* This file is downloaded from https://aptoma.github.io/aptoma-design-guide/compiled/css/type.css
+ * Will be moved to be a bower dependency
+ */
+@import url(http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,700,300,400|Source+Code+Pro:700,300,400);
+body {
+  background: #fff;
+  color: #333;
+  font-family: "Open Sans", "Helvetica Neue", sans-serif;
+  font-size: 15px;
+  line-height: 21px; }
+
+h1, .h1 {
+  font-size: 36px;
+  font-weight: normal;
+  line-height: 49px;
+  margin: 21px 0 0; }
+
+h2, .h2 {
+  border-bottom: 1px solid #ccc;
+  font-size: 30px;
+  font-weight: normal;
+  line-height: 42px;
+  margin: 21px 0 12px;
+  padding-bottom: 5px; }
+
+h3, .h3 {
+  font-size: 21px;
+  font-weight: normal;
+  line-height: 35px;
+  margin: 21px 0 0; }
+
+h4, .h4 {
+  font-size: 17px;
+  font-weight: bold;
+  line-height: 35px;
+  margin: 21px 0 0; }
+
+h5, .h5 {
+  font-size: 17px;
+  font-style: italic;
+  font-weight: normal;
+  line-height: 35px;
+  margin: 21px 0 0; }
+
+h6, .h6 {
+  font-size: 13px;
+  font-weight: bold;
+  line-height: 21px;
+  margin: 21px 0 0; }
+
+p {
+  margin-bottom: 12px; }
+
+ul, ol {
+  margin: 0 0 21px;
+  padding-left: 25px; }
+
+dt {
+  font-size: 17px;
+  font-weight: bold;
+  margin: 0; }
+
+dd {
+  margin: 0 0 21px; }
+
+td {
+  font-size: 13px; }
+
+code, pre {
+  font-size: 13px; }

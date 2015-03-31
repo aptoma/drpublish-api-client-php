@@ -8,7 +8,7 @@
             <title>DrPublish API doc</title>
             <script src="inc/jquery-2.1.0.min.js"></script>
             <link rel="stylesheet" href="inc/bootstrap.min.css"/>
-            <link rel="stylesheet" href="https://aptoma.github.io/aptoma-design-guide/compiled/css/type.css" type="text/css" media="all" charset="utf-8"/>
+            <link rel="stylesheet" href="inc/type.css" type="text/css" media="all" charset="utf-8"/>
             <link rel="stylesheet" href="inc/docstyles.css" type="text/css" media="all" charset="utf-8"/>
         </head>
         <body>
