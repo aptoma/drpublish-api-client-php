@@ -3,6 +3,11 @@
 
 #outer {
     max-width: 1400px;
+    margin: 60px auto 0;
+}
+
+.headless #outer {
+    margin-top: 0;
 }
 
 a {
@@ -23,14 +28,6 @@ a:hover {
     padding: 9px;
     background: rgba(29, 78, 111, 0.12);
     line-height: 2.5em;
-}
-
-pre {
-    max-height: 350px;
-    overflow-y: auto;
-    overflow-x: hidden;
-    background: rgba(29, 78, 111, 0.05);
-    font-size: 1em;
 }
 
 .result {
@@ -240,30 +237,6 @@ input[type='submit'] {
     padding: 5px 10px;
     float: right;
 }
-
-.source-code {
-    font-size: 1.1em;
-    position: relative;
-    height: auto;
-    max-height: none;
-    background: rgba(29, 78, 111, 0.12);
-    color: #444;
-    padding: 30px 12px 12px 12px;
-    margin: 20px -12px -12px -12px;
-    border-top: solid #444 2px;
-}
-
-.source-code:before {
-    position: absolute;
-    top: 0;
-    left: 0;
-    color: #FFF;
-    background: #1d4e6f;
-    content: 'Source code of the PHP template file above';
-    padding: 0 5px;
-
-}
-
 .active-search {
     color: #1d4e6f !important;
 }

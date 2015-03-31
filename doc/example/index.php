@@ -15,22 +15,32 @@ if (file_exists(dirname(__FILE__) . '/config.php')) {
 }
 $headless = isset($_GET['headless']);
 ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
     <title>DrPublish API client example implementation</title>
     <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
-    <script type="text/javascript" src="../inc/jquery-2.1.0.min.js"></script>
-    <script type="text/javascript" src="inc/DrPublishApiClientExample.js"></script>
+    <script src="../inc/jquery-2.1.0.min.js"></script>
+    <script src="../inc/prism.js"></script>
     <script src="../inc/bootstrap.min.js"></script>
+    <script src="inc/DrPublishApiClientExample.js"></script>
     <link rel="stylesheet" href="../inc/bootstrap.min.css" />
+    <link rel="stylesheet" href="../inc/prism.css"/>
+    <link type="text/css" rel="stylesheet" media="all" href="../inc/type.css"/>
     <link type="text/css" rel="stylesheet" media="all" href="../inc/docstyles.css"/>
     <link type="text/css" rel="stylesheet" media="all" href="inc/styles.css"/>
 </head>
 <body class="<?=$headless? 'headless' : ''?>">
-<? if(!$headless) { ?>
-<h1>/ <a href="../index.php">API client doc</a> / example implementation</h1>
+<? if (!$headless) { ?>
+    <nav class="navbar">
+        <div class="app-name">API Client</div>
+        <ul class="nav">
+            <li><a href="../usagedoc.php">PHP API Client Doc</a></li>
+            <li><a href="../apidoc.php">API Request Doc</a></li>
+            <li class="active"><a href="./">API Playground</a></li>
+            <li><a href="https://github.com/aptoma/no.aptoma.drpublish.api.client.php" target="_blank">Download the API client from GitHub</a></li>
+        </ul>
+    </nav>
 <? } ?>
 <div id="outer">
 <div id="global-properties">
@@ -42,7 +52,7 @@ $headless = isset($_GET['headless']);
     Publication
     <input type="text" id="dp-publication" name="dp-publication" value="<?php print($publication)?>" style="width: 100px"/>
     API key
-        <input type="text" id="dp-apikey" name="dp-apikey" value="<?php print($apikey)?>" style="width: 200px"/>
+    <input type="text" id="dp-apikey" name="dp-apikey" value="<?php print($apikey)?>" style="width: 200px"/>
 </div>
 <div id="active-form">
     <fieldset>

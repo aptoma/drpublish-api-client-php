@@ -12,8 +12,9 @@ function printSourceCode() {
    $source = file_get_contents($trace[0]['file']);
    $source = preg_replace('#<\?=\s?printSourceCode\(\)\s?\?>#', '', $source);
    $out = '<div style="clear:both"></div>';
-   $out .= '<pre class="source-code">';
+   $out .= '<h3>Source code of the PHP template file above</h3>';
+   $out .= '<pre><code class="language-php">';
    $out .= htmlentities($source);
-   $out.= '</pre>';
+   $out.= '</code></pre>';
    return $out;
 }

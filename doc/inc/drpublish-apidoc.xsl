@@ -6,14 +6,24 @@
         <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
         <head>
             <title>DrPublish API doc</title>
-            <script type="text/javascript" src="inc/jquery-2.1.0.min.js"></script>
-            <script src="inc/bootstrap.min.js"></script>
+            <script src="inc/jquery-2.1.0.min.js"></script>
             <link rel="stylesheet" href="inc/bootstrap.min.css"/>
-            <link rel="stylesheet" href="inc/docstyles.css" type="text/css" media="all" charset="utf-8" />
+            <link rel="stylesheet" href="inc/type.css" type="text/css" media="all" charset="utf-8"/>
+            <link rel="stylesheet" href="inc/docstyles.css" type="text/css" media="all" charset="utf-8"/>
         </head>
         <body>
+            <nav class="navbar">
+                <div class="app-name">API Client</div>
+                <ul class="nav">
+                    <li><a href="usagedoc.php">PHP API Client Doc</a></li>
+                    <li class="active"><a href="apidoc.php">API Request Doc</a></li>
+                    <li><a href="example/">API Playground</a></li>
+                    <li><a href="https://github.com/aptoma/no.aptoma.drpublish.api.client.php" target="_blank">Download the API client from GitHub</a></li>
+                </ul>
+            </nav>
 
-         <h1>/ <a href="index.php">API client doc</a>  / API querying* <span style="font-size: .6em; margin-left: 36px;"> *for use with DrLib 1 as the API engine</span></h1>
+            <div class="doc-wrapper toc-depth-4">
+            <h1>API querying <span style="font-size: 13px; font-style: italic; margin-left: 36px;">for use with DrLib 1 as the API engine</span></h1>
             <h2 class="no-sec">Table of contents</h2>
             	<ul class="toc"> </ul>
 
@@ -119,34 +129,43 @@
                 </div>
             </xsl:for-each>
             </div>
+            </div>
             <script type="text/javascript">
             <xsl:text disable-output-escaping="yes"><![CDATA[
+                (function ($) {
                     $(document).ready(function () {
-                        var h = [0, 0, 0, 0, 0], i, s, level, toc = $('.toc');
-                            $('h2,h3,h4,h5').each(function () {
-                                    if (!$(this).hasClass('no-sec')) {
-                                            s = [];
-                                            level = this.nodeName.match(/H([2-6])/)[1] - 2;
-                                            h[level]++;
-                                            for (i = 0; i < h.length; i++) {
-                                                    if (i > level) {
-                                                            h[i] = 0;
-                                                    } else {
-                                                            s.push(h[i]);
-                                                    }
-                                            }
-                                            $(this).html('<span class="secnum">' + s.join('.') + '</span><a href="#' + this.id + '">' + $(this).text() + '</a>');
-                                            $(toc).append(
-                                                    $('<li>' + $(this).html() + '</li>').find('span').css('width', (4 + level) + 'em').end()
-                                            );
-                                    }
-                            });
+                        var currentLevel;
+                        var headerLevelCounts = [0, 0, 0, 0, 0];
+                        var $toc = $('.toc');
+                        $('h2, h3, h4, h5').not('.no-sec').each(function () {
+                            var i;
+                            currentLevel = this.nodeName.match(/H([2-6])/)[1] - 2;
+                            headerLevelCounts[currentLevel]++;
+                            for (i = 0; i < headerLevelCounts.length; i++) {
+                                if (i > currentLevel) {
+                                    headerLevelCounts[i] = 0;
+                                }
+                            }
 
-                            $('.example-code').each(function () {
-                                    elem = $(this);
-                            });
+                            $(this).html('<a href="#' + generateId(this) + '">' + $(this).html() + '</a>');
+                            $toc.append(
+                                $('<li>' + $(this).html() + '</li>').addClass('level-' + currentLevel)
+                            );
+                        });
+
+                        function generateId(elem) {
+                            if (!elem.id) {
+                                elem.id = slugify($(elem).text()) + '-' + (1 + currentLevel) + '-' + headerLevelCounts[currentLevel];
+                            }
+
+                            return elem.id;
+                        }
+
+                        function slugify(text) {
+                            return text.toLowerCase().replace(/[^a-z0-9]/g, '-');
+                        }
                     });
-
+                }(jQuery));
             ]]></xsl:text>
             </script>
        </body>

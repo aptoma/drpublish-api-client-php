@@ -102,6 +102,7 @@ var DrPublishApiClientExample = {
                 $('#api-response').html('no response');
                 $('#api-response').html(data);
                 $('#api-response').fadeIn();
+                Prism.highlightAll();
             });
         });
     },
