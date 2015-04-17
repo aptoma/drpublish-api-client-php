@@ -188,16 +188,6 @@ class DrPublishApiClientArticle
    		return $list;
    	}
 
-    public function getDPDossiers()
-    {
-        $list = new DrPublishApiClientList();
-        if (!empty($this->data->meta->dossiers)) foreach ($this->data->meta->dossiers as $dossier) {
-            $list->add($this->createDrPublishApiClientDossier($dossier));
-        }
-
-        return $list;
-    }
-
     public function getDPCategories()
     {
         $list = new DrPublishApiClientList();
@@ -271,11 +261,6 @@ class DrPublishApiClientArticle
     protected function createDrPublishApiClientCategory($category)
     {
        return new DrPublishApiClientCategory($category, $this->dpClient);
-    }
-
-    protected function createDrPublishApiClientDossier($dossier)
-    {
-       return new DrPublishApiClientDossier($dossier);
     }
 
     protected function createDrPublishApiClientTag($tag)

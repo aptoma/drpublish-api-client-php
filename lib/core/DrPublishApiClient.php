@@ -417,32 +417,6 @@ class DrPublishApiClient
         return $this->createDrPublishApiClientCategory($responseObject);
     }
 
-    public function searchDossiers($query, $limit = 5, $offset = 0)
-    {
-        $url = '/dossiers.json?' . $query . '&offset=' . $offset . '&limit=' . $limit;
-
-        $response = $this->curl($url);
-        $responseObject = json_decode($response->body);
-        $drPublishApiClientSearchList = new DrPublishApiClientSearchList($responseObject->search, $response->headers);
-        if (!empty($responseObject)) {
-            foreach ($responseObject->items as $item) {
-                $drPublishApiClientSearchList->add($this->createDrPublishApiClientDossier($item));
-            }
-        }
-        return $drPublishApiClientSearchList;
-    }
-
-    public function getDossier($id)
-    {
-        $url = '/dossiers/' . $id . '.json';
-        $response = $this->curl($url);
-        $responseObject = json_decode($response->body);
-        if (empty($responseObject)) {
-            throw new DrPublishApiClientException("No article data retrieved for article-id='{$id}'", DrPublishApiClientException::NO_DATA_ERROR);
-        }
-        return $this->createDrPublishApiClientDossier($responseObject);
-    }
-
     public function searchSources($query, $limit = 5, $offset = 0)
     {
         $url = '/sources.json?' . $query . '&offset=' . $offset . '&limit=' . $limit;
@@ -491,11 +465,6 @@ class DrPublishApiClient
         $dpClientAuthor->setUserName($dpClientAuthor->getProperty('username'));
         $dpClientAuthor->setEmail($dpClientAuthor->getProperty('email'));
         return $dpClientAuthor;
-    }
-
-    protected function createDrPublishApiClientDossier($dossier)
-    {
-        return new DrPublishApiClientDossier($dossier);
     }
 
     protected function createDrPublishApiClientSource($source)
