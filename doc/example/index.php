@@ -151,26 +151,6 @@ $headless = isset($_GET['headless']);
     </fieldset>
 
     <fieldset>
-        <legend>Search dossiers</legend>
-        <form action="search-dossiers">
-            <?php printSelectex('dossiers', 'name') ?>
-            <?php printLimit() ?>
-            <?php printSubmit() ?>
-            <?php printApiDocLink('dossiers') ?>
-        </form>
-    </fieldset>
-
-    <fieldset>
-        <legend>Get dossier</legend>
-        <form action="dossier">
-            Dossier id: <input type="text" name="dossier-id" style="width: 80px"/>
-            <br/><br/>
-            <input type="submit" onclick="DrPublishApiClientExample.submitForm(this); return false;" value="Show dossier"/>
-            <?php printApiDocLink('dossier') ?>
-        </form>
-    </fieldset>
-
-    <fieldset>
         <legend>Search sources</legend>
         <form action="search-sources">
             <?php printSelectex('sources', 'name') ?>

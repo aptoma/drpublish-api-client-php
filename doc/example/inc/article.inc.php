@@ -61,13 +61,6 @@ DrPublishApiWebClient::getDPTags()]</h3>
 </pre>
 </div>
 
-<h3>DPDossiers as dedicated DrPublishApiClientDossier objects [DrPublishApiClient::getDPDossiers()]</h3>
-<div class="result">
-<pre>
-<?php print(printResult($drPublishApiClientArticle->getDPDossiers())) ?>
-</pre>
-</div>
-
 <h3>Main category [DrPublishApiClientArticleElement DrPublishApiWebClient::getMainCategoryName()]</h3>
 <div class="result">
 <?php print($drPublishApiClientArticle->getMainDPCategory()) ?>

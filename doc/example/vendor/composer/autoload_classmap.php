@@ -13,7 +13,6 @@ $classmap = array(
     'DrPublishApiClientArticleEntity' => $root . '/lib/core/entities/DrPublishApiClientArticleEntity.php',
     'DrPublishApiClientAuthor' => $root . '/lib/core/entities/DrPublishApiClientAuthor.php',
     'DrPublishApiClientCategory' => $root . '/lib/core/entities/DrPublishApiClientCategory.php',
-    'DrPublishApiClientDossier' => $root . '/lib/core/entities/DrPublishApiClientDossier.php',
     'DrPublishApiClientException' => $root . '/lib/core/helpers/DrPublishApiClientException.php',
     'DrPublishApiClientHttpException' => $root . '/lib/core/helpers/DrPublishApiClientHttpException.php',
     'DrPublishApiClientList' => $root . '/lib/core/helpers/DrPublishApiClientList.php',

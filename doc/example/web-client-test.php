@@ -134,26 +134,6 @@ switch ($action) {
             $mainView = 'error';
         }
         break;
-    case 'search-dossiers':
-        try {
-          $query = parseFilterFieldsRequest();
-          $limit = isset($_GET['limit']) ? (int) $_GET['limit'] : 5;
-          $offset = isset($_GET['offset']) ? (int) $_GET['offset'] : 0;
-          $drPublishApiClientSearchList = $dpWebClient->searchDossiers($query, $limit, $offset);
-          $mainView = 'search-dossiers';
-        } catch (DrPublishApiClientException $e) {
-            $mainView = 'error';
-        }
-        break;
-    case 'dossier':
-        try {
-            $dossierId = isset($_GET['dossier-id']) ? $_GET['dossier-id'] : 0;
-            $drPublishApiClientDossier = $dpWebClient->getDossier($dossierId);
-            $mainView = 'dossier';
-        } catch (DrPublishApiClientException $e) {
-            $mainView = 'error';
-        }
-        break;
     case 'search-sources':
         try {
           $query = parseFilterFieldsRequest();

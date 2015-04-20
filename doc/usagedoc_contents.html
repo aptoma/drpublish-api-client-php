@@ -445,25 +445,6 @@ foreach ($drPublishApiClientSearchList as $drPublishApiClientTag) {
 }
 </code></pre>
 
-<h2 id="dossiers">Dossiers</h2>
-<p>
-    Same procedure as for <a href="#categories">categories</a>, apart from the the objects are of type DrPublishApiClientDossier
-</p>
-<pre><code class="language-php">
-$drPublishApiClientSearchList = $drPublishApiClient->searchDossier('parentId=9876');
-$drPublishApiClientDossier = $drPublishApiClient->getDossier(76);
-</code></pre>
-<p>
-    For processing a search result, the received DrPublishApiClientSearchList can be traversed as a list of DrPublishApiClientDossier objects
-    Use the appropriate getter method og access the properties of a dossier object.
-</p>
-<pre><code class="language-php">
-foreach ($drPublishApiClientSearchList as $drPublishApiClientTag) {
-    $tagName = $drPublishApiClientTag->getName();
-}
-</code></pre>
-
-
 <h2 id="sources">Sources</h2>
 <p>
     Same procedure as for <a href=#categories">categories</a>, apart from the the objects are of type DrPublishApiClientSource
