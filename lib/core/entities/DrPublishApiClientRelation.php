@@ -12,6 +12,8 @@ class DrPublishApiClientRelation extends DrPublishApiClientArticleEntity
     {
         parent::__construct($data);
         $this->relationshipPriority = $this->relationship_priority;
+        $this->subjectId = $this->subject_id;
+        $this->objectId = $this->object_id;
     }
 
     public function __toString()
