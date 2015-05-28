@@ -38,7 +38,7 @@ $headless = isset($_GET['headless']);
             <li><a href="../usagedoc.php">PHP API Client Doc</a></li>
             <li><a href="../apidoc.php">API Request Doc</a></li>
             <li class="active"><a href="./">API Playground</a></li>
-            <li><a href="https://github.com/aptoma/no.aptoma.drpublish.api.client.php" target="_blank">Download the API client from GitHub</a></li>
+            <li><a href="https://github.com/aptoma/drpublish-api-client-php" target="_blank">Download the API client from GitHub</a></li>
         </ul>
     </nav>
 <? } ?>
