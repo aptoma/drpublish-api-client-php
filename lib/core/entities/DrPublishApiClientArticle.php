@@ -1,7 +1,6 @@
 <?php
 class DrPublishApiClientArticle
 {
-
     protected $data = array();
     protected $dpClient;
     protected $medium;
@@ -57,44 +56,44 @@ class DrPublishApiClientArticle
     }
 
     private function parseGetCall($name, $arguments) {
-            $varName = lcfirst(substr($name, 3));
-            if (isset($this->data->meta->{$varName})) {
-                switch ($varName) {
-                    case 'authors' :
-                        return $this->getDPAuthors($arguments);
-                    case 'tags' :
-                        return $this->getDPTags($arguments);
-                    case 'categories' :
-                        return $this->getDPCategories($arguments);
-                    case 'source' :
-                        return $this->getDPSource($arguments);
-                    default:
-                        return $this->data->meta->{$varName};
-                }
+        $varName = lcfirst(substr($name, 3));
+        if (isset($this->data->meta->{$varName})) {
+            switch ($varName) {
+            case 'authors' :
+                return $this->getDPAuthors($arguments);
+            case 'tags' :
+                return $this->getDPTags($arguments);
+            case 'categories' :
+                return $this->getDPCategories($arguments);
+            case 'source' :
+                return $this->getDPSource($arguments);
+            default:
+                return $this->data->meta->{$varName};
             }
-            if (isset($this->data->contents) && isset($this->data->contents->{$this->medium})) {
-                $content = $this->data->contents->{$this->medium};
-                if ($content !== null && isset($content->{$varName})) {
-                    if (isset($this->data->templates->{$this->medium}->elements->{$varName})) {
-                        $templateElement = $this->data->templates->{$this->medium}->elements->{$varName};
-                        if (isset($this->articleContentXmlElements[$varName])) {
-                            return $this->articleContentXmlElements[$varName];
-                        }
-                        $options = new stdClass();
-                        $options->medium = $this->medium;
-                        $options->dataType = isset($templateElement->dataType) ? $templateElement->dataType : '';
-                        if ($templateElement->dataType == 'xml') {
-                            return new DrPublishApiClientXmlElement($content->{$varName}, $options);
-                        } else {
-                            return new DrPublishApiClientTextElement($content->{$varName}, $options);
-                        }
+        }
+        if (isset($this->data->contents) && isset($this->data->contents->{$this->medium})) {
+            $content = $this->data->contents->{$this->medium};
+            if ($content !== null && isset($content->{$varName})) {
+                if (isset($this->data->templates->{$this->medium}->elements->{$varName})) {
+                    $templateElement = $this->data->templates->{$this->medium}->elements->{$varName};
+                    if (isset($this->articleContentXmlElements[$varName])) {
+                        return $this->articleContentXmlElements[$varName];
+                    }
+                    $options = new stdClass();
+                    $options->medium = $this->medium;
+                    $options->dataType = isset($templateElement->dataType) ? $templateElement->dataType : '';
+                    if ($templateElement->dataType == 'xml') {
+                        return new DrPublishApiClientXmlElement($content->{$varName}, $options);
+                    } else {
+                        return new DrPublishApiClientTextElement($content->{$varName}, $options);
                     }
                 }
             }
-            if (isset($this->data->meta->articleTypeMeta->{$varName})) {
-                return $this->data->meta->articleTypeMeta->{$varName};
-            }
-            return null;
+        }
+        if (isset($this->data->meta->articleTypeMeta->{$varName})) {
+            return $this->data->meta->articleTypeMeta->{$varName};
+        }
+        return null;
     }
 
     public function find($query) {
@@ -127,8 +126,8 @@ class DrPublishApiClientArticle
     {
         $this->articleContentXmlElements = array();
         if (!empty($this->data->templates->{$this->medium}->elements)) {
-               foreach($this->data->templates->{$this->medium}->elements as $templateName => $templateElement) {
-                   $this->articleContentXmlElements[$templateName] =  $this->{'get'. ucfirst($templateName)}();
+            foreach($this->data->templates->{$this->medium}->elements as $templateName => $templateElement) {
+                $this->articleContentXmlElements[$templateName] =  $this->{'get'. ucfirst($templateName)}();
             }
         }
     }
@@ -146,11 +145,19 @@ class DrPublishApiClientArticle
 
     public function getDPImages()
     {
-        DrPublishDomElement::$queryMode = QUERY_TYPE_XPATH;
         $q = 'div[@class and contains(concat(" ",normalize-space(@class)," ")," dp-article-image ") and descendant::img]';
+        DrPublishDomElement::$queryMode = QUERY_TYPE_XPATH;
         $drPublishDomElementList =  $this->find($q);
         DrPublishDomElement::$queryMode = QUERY_TYPE_JQUERY;
         $imageList = new DrPublishDomElementList();
+        foreach($drPublishDomElementList as $drPublishDomElement) {
+            $drPublishApiClientArticleElement = $this->createDrPublishApiClientArticleImageElement($drPublishDomElement);
+            $imageList->add($drPublishApiClientArticleElement);
+        }
+        $q = 'div[@class and contains(concat(" ",normalize-space(@class)," ")," dp-picture ") and descendant::img]';
+        DrPublishDomElement::$queryMode = QUERY_TYPE_XPATH;
+        $drPublishDomElementList =  $this->find($q);
+        DrPublishDomElement::$queryMode = QUERY_TYPE_JQUERY;
         foreach($drPublishDomElementList as $drPublishDomElement) {
             $drPublishApiClientArticleElement = $this->createDrPublishApiClientArticleImageElement($drPublishDomElement);
             $imageList->add($drPublishApiClientArticleElement);
@@ -163,30 +170,30 @@ class DrPublishApiClientArticle
         return $this->getDPImages()->item(0);
     }
 
-   	public function getDPAuthors($allData = false)
-   	{
-   		$list = new DrPublishApiClientList();
-   		if (!empty($this->data->meta->authors)) foreach ($this->data->meta->authors as $author) {
-               if ($allData) {
-                   try {
-   			             $dpClientAuthor = $this->dpClient->getAuthor($author->id);
-                   } catch (DrPublishApiClientException $e) {
-                       if ($e->getCode() == DrPublishApiClientException::NO_DATA_ERROR) {
-                           trigger_error('DrPublishApiClient error: no data responded for author id= "' . $author->id . '"' , E_USER_WARNING);
-                           $dpClientAuthor = null;
-                       } else {
-                           throw new DrPublishApiClientException($e);
-                       }
-                   }
-               } else {
-                   $dpClientAuthor = $this->createDrPublishApiClientAuthor($author);
-               }
-            if ($dpClientAuthor !== null) {
-   			   $list->add($dpClientAuthor);
+    public function getDPAuthors($allData = false)
+    {
+        $list = new DrPublishApiClientList();
+        if (!empty($this->data->meta->authors)) foreach ($this->data->meta->authors as $author) {
+            if ($allData) {
+                try {
+                    $dpClientAuthor = $this->dpClient->getAuthor($author->id);
+                } catch (DrPublishApiClientException $e) {
+                    if ($e->getCode() == DrPublishApiClientException::NO_DATA_ERROR) {
+                        trigger_error('DrPublishApiClient error: no data responded for author id= "' . $author->id . '"' , E_USER_WARNING);
+                        $dpClientAuthor = null;
+                    } else {
+                        throw new DrPublishApiClientException($e);
+                    }
+                }
+            } else {
+                $dpClientAuthor = $this->createDrPublishApiClientAuthor($author);
             }
-   		}
-   		return $list;
-   	}
+            if ($dpClientAuthor !== null) {
+                $list->add($dpClientAuthor);
+            }
+        }
+        return $list;
+    }
 
     public function getDPCategories()
     {
@@ -245,34 +252,45 @@ class DrPublishApiClientArticle
 
     protected function createDrPublishApiClientArticleImageElement(DrPublishDomElement $image)
     {
-       return new DrPublishApiClientArticleImageElement($image);
+        $renditions = array();
+        if (!empty($this->data->assets)) {
+            $internalId = $image->getAttribute('data-internal-id');
+            if ($internalId) {
+                foreach ($this->data->assets as $asset) {
+                    if ($asset->internalId == $internalId) {
+                        $renditions = $asset->renditions;
+                    }
+                }
+            }
+        }
+        return new DrPublishApiClientArticleImageElement($image, $renditions, $asset->options, $asset->assetSource);
     }
 
     protected function createDrPublishApiClientArticleSlideShowElement(DrPublishDomElement $slideShow)
     {
-       return new DrPublishApiClientArticleSlideShowElement($slideShow);
+        return new DrPublishApiClientArticleSlideShowElement($slideShow);
     }
 
     protected function createDrPublishApiClientAuthor($author)
     {
-       return new DrPublishApiClientAuthor($author);
+        return new DrPublishApiClientAuthor($author);
     }
 
     protected function createDrPublishApiClientCategory($category)
     {
-       return new DrPublishApiClientCategory($category, $this->dpClient);
+        return new DrPublishApiClientCategory($category, $this->dpClient);
     }
 
     protected function createDrPublishApiClientTag($tag)
     {
-       $data = new stdClass();
-       $tagType = new stdClass();
-       $tagType->id = isset($tag->tagTypeId) ? $tag->tagTypeId : 0;
-       $tagType->name = isset($tag->tagTypeName) ? $tag->tagTypeName : '';
-       $data->id =  isset($tag->id)? $tag->id : 0;
-       $data->name = isset($tag->name)? $tag->name : '';
-       $data->tagType =  $tagType;
-       return new DrPublishApiClientTag($data);
+        $data = new stdClass();
+        $tagType = new stdClass();
+        $tagType->id = isset($tag->tagTypeId) ? $tag->tagTypeId : 0;
+        $tagType->name = isset($tag->tagTypeName) ? $tag->tagTypeName : '';
+        $data->id =  isset($tag->id)? $tag->id : 0;
+        $data->name = isset($tag->name)? $tag->name : '';
+        $data->tagType =  $tagType;
+        return new DrPublishApiClientTag($data);
     }
 
     public function __toString()

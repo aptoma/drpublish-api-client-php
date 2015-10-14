@@ -38,6 +38,16 @@ class DrPublishApiClientImage extends DrPublishDomElement
         return $this->getAttribute('src');
     }
 
+    /**
+     * Sets the souce attribute
+     *
+     * @param string
+     */
+    public function setSrc($src)
+    {
+        return $this->setAttribute('src', $src);
+    }
+
     public function resize($type)
     {
         $currentSrc = $this->getAttribute('src');
@@ -56,4 +66,34 @@ class DrPublishApiClientImage extends DrPublishDomElement
         return $this;
     }
 
+    public function imboResize($width, $height)
+    {
+        $src = $this->getAttribute('src');
+        $parts = parse_url($src);
+        parse_str(urldecode($parts['query']), $arr);
+
+        foreach ($arr['t'] as $key => $transformation) {
+            if (strpos(strtolower($transformation), 'maxsize') !== false) {
+                print '<p>(maxSize) unsetting '.$transformation.'</p>';
+                $arr['t'][$key] = '';
+            }
+        }
+        $arr['t'] = array_filter($arr['t']);
+        $arr['t'][] = 'maxSize:width='.$width.',height='.$height;
+
+        $query = http_build_query($arr);
+        $parts['query'] = $query;
+
+        $url = $parts['scheme'].'://'.$parts['host'].$parts['path'].'?';
+        $url .= $parts['query'];
+        $this->setAttribute('src', $url);
+
+        if ($this->getAttribute('width')) {
+            $this->setAttribute('width', $width);
+        }
+        if ($this->getAttribute('height')) {
+            $this->setAttribute('height', $height);
+        }
+        return $this;
+    }
 }

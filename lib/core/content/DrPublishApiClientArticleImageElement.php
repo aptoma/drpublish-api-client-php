@@ -2,12 +2,22 @@
 
 class DrPublishApiClientArticleImageElement extends DrPublishDomElement
 {
-
     protected $dpClientImage = null;
+    private $renditions = array();
 
-    public function __construct(DrPublishDomElement $drPublishDomElement)
+    private $digitalAssetPictures = false;
+    private $options = array();
+    private $assetSource = null;
+
+    public function __construct(DrPublishDomElement $drPublishDomElement, $renditions = array(), $options = array(), $assetSource = null)
     {
+        $this->renditions = $renditions;
+        $this->options = $options;
+        $this->assetSource = $assetSource;
         parent::__construct($drPublishDomElement->domElement);
+        if ($this->find("*.dp-picture")) {
+            $this->digitalAssetPictures = true;
+        }
     }
 
     public function getTitle()
@@ -67,7 +77,35 @@ class DrPublishApiClientArticleImageElement extends DrPublishDomElement
         if (empty($image)) {
             return null;
         }
-        return $image->resize($type);
+        if ($this->digitalAssetPictures) {
+            if (isset($this->renditions->{$type})) {
+                $image->setSrc($this->renditions->{$type}->uri);
+                if (isset($this->renditions->{$type}->width)) {
+                    $image->setAttribute('width', $this->renditions->{$type}->width);
+                } else {
+                    $image->setAttribute('width', '');
+                }
+                if (isset($this->renditions->{$type}->height)) {
+                    $image->setAttribute('height', $this->renditions->{$type}->height);
+                } else {
+                    $image->setAttribute('height', '');
+                }
+            } else {
+                $size = explode('x', $type);
+                $width = $size[0];
+                if (isset($size[1])) {
+                    $height = $size[1];
+                } else {
+                    $height = $width;
+                }
+                if ($this->assetSource == 'imbo') {
+                    $image->imboResize($width, $height);
+                }
+            }
+        } else {
+            $image->resize($type);
+        }
+        return $image;
     }
 
     public function getSquareCropResizedImage($width)
