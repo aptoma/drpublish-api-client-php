@@ -74,18 +74,25 @@ class DrPublishApiClientImage extends DrPublishDomElement
 
         foreach ($arr['t'] as $key => $transformation) {
             if (strpos(strtolower($transformation), 'maxsize') !== false) {
-                print '<p>(maxSize) unsetting '.$transformation.'</p>';
                 $arr['t'][$key] = '';
             }
         }
         $arr['t'] = array_filter($arr['t']);
         $arr['t'][] = 'maxSize:width='.$width.',height='.$height;
+        unset($arr['accessToken']);
 
         $query = http_build_query($arr);
+
         $parts['query'] = $query;
+
 
         $url = $parts['scheme'].'://'.$parts['host'].$parts['path'].'?';
         $url .= $parts['query'];
+
+        if (!empty(DrPublishApiClient::$configs['imbo-key'])) {
+            $url .= '&accessToken='.hash_hmac("sha256", $url, DrPublishApiClient::$configs['imbo-key']);
+        }
+
         $this->setAttribute('src', $url);
 
         if ($this->getAttribute('width')) {

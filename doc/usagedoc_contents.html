@@ -15,6 +15,15 @@ $publicationName = 'Solarius';
 $drPublishApiWebClient = new DrPublishApiWebClient($drPublishApiUrl, $publicationName);
 </code></pre>
 
+<p>The client can also take a third parameter in case you're using Imbo for images and require an accessToken.</p>
+<pre><code class="language-php">
+require 'vendor/autoload.php';
+
+$drPublishApiUrl = 'drlib-dev.aptoma.no';
+$publicationName = 'Solarius';
+$drPublishApiWebClient = new DrPublishApiWebClient($drPublishApiUrl, $publicationName, array('imbo-key' => 'private-key');
+</code></pre>
+
 <h2 id="api-request">Sending article search request to the API</h2>
 <p>
     Any valid API query as defined in the <a href="apidoc.php">DrPublish API query documentation</a>.

@@ -114,6 +114,9 @@ class DrPublishApiClientArticleImageElement extends DrPublishDomElement
         if (empty($image)) {
             return null;
         }
+        if ($this->digitalAssetPictures) {
+            return $image->resize($width, $width);
+        }
         $squareCropParamString = $this->getAttribute('data-square-crop');
         if (!empty($squareCropParamString)) {
             $squareCropParams = mb_split(',', $squareCropParamString);

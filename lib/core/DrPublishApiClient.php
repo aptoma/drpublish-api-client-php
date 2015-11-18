@@ -16,7 +16,7 @@ class DrPublishApiClient
     private $internalScopeRequest = false;
     protected $internalScopeApiKey;
     private $internalScopeClient = null;
-    private static $configs = null;
+    public static $configs = null;
     private $curlInfo;
 
     public function __construct($url, $publicationName, $config = null)
@@ -27,7 +27,7 @@ class DrPublishApiClient
         // Setup config, either set by injection or by file
         if ($config !== null) {
             self::$configs = $config;
-        } else {
+        } else if (self::$configs == null) {
             self::$configs = $this->loadConfigFromFile();
         }
     }
