@@ -69,38 +69,7 @@ class DrPublishApiClientImage extends DrPublishDomElement
     public function imboResize($width, $height)
     {
         $src = $this->getAttribute('src');
-        $parts = parse_url($src);
-        parse_str(urldecode($parts['query']), $arr);
 
-        foreach ($arr['t'] as $key => $transformation) {
-            if (strpos(strtolower($transformation), 'maxsize') !== false) {
-                $arr['t'][$key] = '';
-            }
-        }
-        $arr['t'] = array_filter($arr['t']);
-        $arr['t'][] = 'maxSize:width='.$width.',height='.$height;
-        unset($arr['accessToken']);
-
-        $query = http_build_query($arr);
-
-        $parts['query'] = $query;
-
-
-        $url = $parts['scheme'].'://'.$parts['host'].$parts['path'].'?';
-        $url .= $parts['query'];
-
-        if (!empty(DrPublishApiClient::$configs['imbo-key'])) {
-            $url .= '&accessToken='.hash_hmac("sha256", $url, DrPublishApiClient::$configs['imbo-key']);
-        }
-
-        $this->setAttribute('src', $url);
-
-        if ($this->getAttribute('width')) {
-            $this->setAttribute('width', $width);
-        }
-        if ($this->getAttribute('height')) {
-            $this->setAttribute('height', $height);
-        }
-        return $this;
+        return DrPublishApiClient::resizeImboImage($src, $width, $height);
     }
 }
