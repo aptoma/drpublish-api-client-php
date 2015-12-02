@@ -1,4 +1,6 @@
 <?php
+use ImboClient\Http\ImageUrl as ImboImageUrl;
+
 define('QUERY_TYPE_XPATH', 1);
 define('QUERY_TYPE_JQUERY', 2);
 
@@ -18,6 +20,7 @@ class DrPublishApiClient
     private $internalScopeClient = null;
     public static $configs = null;
     private $curlInfo;
+    public static $imboClient;
 
     public function __construct($url, $publicationName, $config = null)
     {
@@ -632,6 +635,29 @@ class DrPublishApiClient
             self::writeCache($cacheIdentifier, $props);
         }
         return $props;
+    }
+
+    public static function resizeImboImage($src, $width, $height)
+    {
+        $imboUrl = ImboImageUrl::factory($src);
+        $imageIdentifier = $imboUrl->getImageIdentifier();
+        $imboUrl = self::getImboClient()->getImageUrl($imageIdentifier);
+
+        return $imboUrl->maxSize($width, $height);
+    }
+
+    public static function setImboClient($imboClient) {
+        self::$imboClient = $imboClient;
+    }
+
+    public static function getImboClient() {
+        if (!self::$imboClient) {
+            $imboConfig = self::getConfigOption('imbo');
+            $imboClient = ImboClient\ImboClient::factory($imboConfig);
+            self::setImboClient($imboClient);
+        }
+
+        return self::$imboClient;
     }
 
     public function getCurlInfo()

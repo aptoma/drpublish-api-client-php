@@ -9,18 +9,19 @@
         }
     ],
     "require": {
+        "imbo/imboclient": "~1.0"
     },
         "autoload": {
         "classmap": [
-            "lib/core/DrPublishApiClient.php", 
-            "lib/web/DrPublishApiWebClient.php", 
-            "lib/core/helpers", 
-            "lib/core/dom", 
-            "lib/core/entities", 
+            "lib/core/DrPublishApiClient.php",
+            "lib/web/DrPublishApiWebClient.php",
+            "lib/core/helpers",
+            "lib/core/dom",
+            "lib/core/entities",
             "lib/core/content",
-            "lib/web/entities", 
+            "lib/web/entities",
             "lib/web/content"
         ]
-            
+
     }
 }
