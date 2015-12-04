@@ -641,9 +641,16 @@ class DrPublishApiClient
     {
         $imboUrl = ImboImageUrl::factory($src);
         $imageIdentifier = $imboUrl->getImageIdentifier();
-        $imboUrl = self::getImboClient()->getImageUrl($imageIdentifier);
+        $transformations = $imboUrl->getQuery()->get('t');
 
-        return $imboUrl->maxSize($width, $height);
+        $imboUrl = self::getImboClient()->getImageUrl($imageIdentifier);
+        foreach ($transformations as $transformation) {
+            if (strpos($transformation, 'maxSize') === false) {
+                $imboUrl->addTransformation($transformation);
+            }
+        }
+
+        return $imboUrl->maxSize($width, $height)->resize($width);
     }
 
     public static function setImboClient($imboClient) {
