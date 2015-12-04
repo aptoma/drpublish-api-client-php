@@ -252,18 +252,22 @@ class DrPublishApiClientArticle
 
     protected function createDrPublishApiClientArticleImageElement(DrPublishDomElement $image)
     {
-        $renditions = array();
+        $imageAsset = null;
         if (!empty($this->data->assets)) {
             $internalId = $image->getAttribute('data-internal-id');
             if ($internalId) {
                 foreach ($this->data->assets as $asset) {
                     if ($asset->internalId == $internalId) {
-                        $renditions = $asset->renditions;
+                        $imageAsset = $asset;
                     }
                 }
             }
         }
-        return new DrPublishApiClientArticleImageElement($image, $renditions, $asset->options, $asset->assetSource);
+        if ($imageAsset) {
+            return new DrPublishApiClientArticleImageElement($image, $imageAsset->renditions, $imageAsset->options, $imageAsset->assetSource);
+        } else {
+            return new DrPublishApiClientArticleImageElement($image);
+        }
     }
 
     protected function createDrPublishApiClientArticleSlideShowElement(DrPublishDomElement $slideShow)
