@@ -674,6 +674,13 @@ class DrPublishApiClient
         return self::$imboClient;
     }
 
+    public static function setImboConfig($config) {
+        if (!is_array(self::$configs)) {
+            self::$configs = array();
+        }
+        self::$configs['imbo'] = $config;
+    }
+
     public function getCurlInfo()
     {
         return $this->curlInfo;
