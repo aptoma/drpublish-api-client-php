@@ -9,7 +9,7 @@
         }
     ],
     "require": {
-        "imbo/imboclient": "~1.0"
+        "imbo/imboclient": "~2.0"
     },
         "autoload": {
         "classmap": [
