@@ -642,15 +642,20 @@ class DrPublishApiClient
         $imboUrl = ImboImageUrl::factory($src);
         $imageIdentifier = $imboUrl->getImageIdentifier();
         $transformations = $imboUrl->getQuery()->get('t');
+        $imboClient = self::getImboClient();
 
-        $imboUrl = self::getImboClient()->getImageUrl($imageIdentifier);
-        foreach ($transformations as $transformation) {
-            if (strpos($transformation, 'maxSize') === false) {
-                $imboUrl->addTransformation($transformation);
+        if ($imboClient) {
+            $imboUrl = $imboClient->getImageUrl($imageIdentifier);
+            foreach ($transformations as $transformation) {
+                if (strpos($transformation, 'maxSize') === false) {
+                    $imboUrl->addTransformation($transformation);
+                }
             }
+
+            return $imboUrl->maxSize($width, $height)->resize($width);
         }
 
-        return $imboUrl->maxSize($width, $height)->resize($width);
+        return null;
     }
 
     public static function setImboClient($imboClient) {
@@ -660,8 +665,10 @@ class DrPublishApiClient
     public static function getImboClient() {
         if (!self::$imboClient) {
             $imboConfig = self::getConfigOption('imbo');
-            $imboClient = ImboClient\ImboClient::factory($imboConfig);
-            self::setImboClient($imboClient);
+            if ($imboConfig) {
+                $imboClient = ImboClient\ImboClient::factory($imboConfig);
+                self::setImboClient($imboClient);
+            }
         }
 
         return self::$imboClient;
