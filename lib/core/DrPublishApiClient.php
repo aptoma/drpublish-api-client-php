@@ -641,7 +641,7 @@ class DrPublishApiClient
     {
         $imboUrl = ImboImageUrl::factory($src);
         $imageIdentifier = $imboUrl->getImageIdentifier();
-        $transformations = $imboUrl->getQuery()->get('t');
+        $transformations = (array) $imboUrl->getQuery()->get('t');
         $imboClient = self::getImboClient();
 
         if ($imboClient) {
