@@ -641,16 +641,27 @@ class DrPublishApiClient
     {
         $imboUrl = ImboImageUrl::factory($src);
         $imageIdentifier = $imboUrl->getImageIdentifier();
-        $transformations = $imboUrl->getQuery()->get('t');
+        $transformations = (array) $imboUrl->getQuery()->get('t');
+        $imboClient = self::getImboClient();
 
-        $imboUrl = self::getImboClient()->getImageUrl($imageIdentifier);
-        foreach ($transformations as $transformation) {
-            if (strpos($transformation, 'maxSize') === false) {
-                $imboUrl->addTransformation($transformation);
+        if ($imboClient) {
+            $user = $imboUrl->getUser();
+            $originalUser = $imboClient->getUser();
+            if (!empty($user)) {
+                $imboClient->setUser($user);
             }
+            $imboUrl = $imboClient->getImageUrl($imageIdentifier);
+            $imboClient->setUser($originalUser);
+            foreach ($transformations as $transformation) {
+                if (strpos($transformation, 'maxSize') === false) {
+                    $imboUrl->addTransformation($transformation);
+                }
+            }
+
+            return $imboUrl->maxSize($width, $height)->resize($width);
         }
 
-        return $imboUrl->maxSize($width, $height)->resize($width);
+        return null;
     }
 
     public static function setImboClient($imboClient) {
@@ -660,11 +671,20 @@ class DrPublishApiClient
     public static function getImboClient() {
         if (!self::$imboClient) {
             $imboConfig = self::getConfigOption('imbo');
-            $imboClient = ImboClient\ImboClient::factory($imboConfig);
-            self::setImboClient($imboClient);
+            if ($imboConfig) {
+                $imboClient = ImboClient\ImboClient::factory($imboConfig);
+                self::setImboClient($imboClient);
+            }
         }
 
         return self::$imboClient;
+    }
+
+    public static function setImboConfig($config) {
+        if (!is_array(self::$configs)) {
+            self::$configs = array();
+        }
+        self::$configs['imbo'] = $config;
     }
 
     public function getCurlInfo()
