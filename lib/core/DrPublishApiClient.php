@@ -645,7 +645,13 @@ class DrPublishApiClient
         $imboClient = self::getImboClient();
 
         if ($imboClient) {
+            $user = $imboUrl->getUser();
+            $originalUser = $imboClient->getUser();
+            if (!empty($user)) {
+                $imboClient->setUser($user);
+            }
             $imboUrl = $imboClient->getImageUrl($imageIdentifier);
+            $imboClient->setUser($originalUser);
             foreach ($transformations as $transformation) {
                 if (strpos($transformation, 'maxSize') === false) {
                     $imboUrl->addTransformation($transformation);
