@@ -23,6 +23,9 @@ $isSSL = strpos($dpUrl, 'https') === 0;
 
 $procStart = microtime(true);
 $dpWebClient = new DrPublishApiWebClient($dpUrl, $publication);
+if (!empty($apiKey)) {
+  $dpWebClient->setInternalScopeApiKey($apiKey);
+}
 if ($isInternal) {
     $dpWebClient = $dpWebClient->internalScopeClient($apiKey, $dpUrlInternal);
 }

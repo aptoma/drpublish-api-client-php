@@ -528,12 +528,14 @@ class DrPublishApiClient
     protected function curl($query)
     {
         $query = str_replace(' ', '+', $query);
+        $url = $this->url . $query;
+        if (!empty($this->internalScopeApiKey)) {
+          $url .= strpos($url, '?') === false ? '?' : '&';
+          $url .= 'apikey=' . $this->internalScopeApiKey;
+        }
         if ($this->internalScopeRequest) {
-            $url = $this->url . $query;
-            $url .= strpos($query, '?') === false ? '?' : '&';
-            $url .= 'scope=internal&apikey=' . $this->internalScopeApiKey;
-        } else {
-            $url = $this->url . $query;
+            $url .= strpos($url, '?') === false ? '?' : '&';
+            $url .= 'scope=internal';
         }
         $qPos = mb_strpos($url, '?');
         if ($qPos > 0) {
