@@ -417,6 +417,21 @@ class DrPublishApiClient
         return $this->createDrPublishApiClientCategory($responseObject);
     }
 
+    public function searchRelations($query, $limit = 5, $offset = 0)
+    {
+        $url = '/relationships.json?' . $query . '&offset=' . $offset . '&limit=' . $limit;
+        $response = $this->curl($url);
+        $responseObject = json_decode($response->body);
+        $drPublishApiClientSearchList = new DrPublishApiClientSearchList($responseObject->search, $response->headers);
+        if (!empty($responseObject)) {
+            $relations = $responseObject->items;
+            foreach ($relations as $relationData) {
+                $drPublishApiClientSearchList->add($this->createDrPublishApiClientRelation($relationData));
+            }
+        }
+        return $drPublishApiClientSearchList;
+    }
+
     public function searchSources($query, $limit = 5, $offset = 0)
     {
         $url = '/sources.json?' . $query . '&offset=' . $offset . '&limit=' . $limit;
@@ -480,6 +495,11 @@ class DrPublishApiClient
     public function createDrPublishApiClientCategory($category)
     {
         return new DrPublishApiClientCategory($category, $this);
+    }
+
+    public function createDrPublishApiClientRelation($relation)
+    {
+        return new DrPublishApiClientRelation($relation, $this);
     }
 
     public static function writeCache($identifier, $data)
