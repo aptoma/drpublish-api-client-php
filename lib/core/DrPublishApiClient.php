@@ -302,6 +302,7 @@ class DrPublishApiClient
         $resultJson = $response->body;
         $result = json_decode($resultJson);
         if (empty($result)) {
+            $id = htmlentities($id);
             throw new DrPublishApiClientException("No article data retrieved for article-id='{$id}'", DrPublishApiClientException::NO_DATA_ERROR);
         }
         return $this->createDrPublishApiClientArticle($result);
@@ -324,11 +325,13 @@ class DrPublishApiClient
         $resultJson = $response->body;
         $result = json_decode($resultJson);
         if (empty($result)) {
+            $id = htmlentities($id);
             $e = new DrPublishApiClientException("No article data retrieved for article-id='{$id}'", DrPublishApiClientException::NO_DATA_ERROR);
             $e->setRequestUrl($this->requestUri);
             throw $e;
         }
         if (!isset($result->meta->publication->name) || false === strpos($this->publicationName, $result->meta->publication->name)) {
+            $id = htmlentities($id);
             $e = new DrPublishApiClientException("Article article-id='{$id}' is not connected to publication '{$this->publicationName}'", DrPublishApiClientException:: PUBLICATION_ACCESS_ERROR);
             $e->setRequestUrl($this->requestUri);
             throw $e;
@@ -358,6 +361,7 @@ class DrPublishApiClient
         $response = $this->curl($url);
         $responseObject = json_decode($response->body);
         if (empty($responseObject)) {
+            $id = htmlentities($id);
             throw new DrPublishApiClientException("No or invalid author data retrieved for author id='{$id}'", DrPublishApiClientException::NO_DATA_ERROR);
         }
         return $this->createDrPublishApiClientAuthor($responseObject);
@@ -385,6 +389,7 @@ class DrPublishApiClient
         $response = $this->curl($url);
         $responseObject = json_decode($response->body);
         if (empty($responseObject)) {
+            $id = htmlentities($id);
             throw new DrPublishApiClientException("No or invalid author data retrieved for tag id='{$id}'", DrPublishApiClientException::NO_DATA_ERROR);
         }
         $dpClientTag = $this->createDrPublishApiClientTag($responseObject);
@@ -412,6 +417,7 @@ class DrPublishApiClient
         $response = $this->curl($url);
         $responseObject = json_decode($response->body);
         if (empty($responseObject)) {
+            $id = htmlentities($id);
             throw new DrPublishApiClientException("No article data retrieved for article-id='{$id}'", DrPublishApiClientException::NO_DATA_ERROR);
         }
         return $this->createDrPublishApiClientCategory($responseObject);
@@ -437,6 +443,7 @@ class DrPublishApiClient
         $response = $this->curl($url);
         $responseObject = json_decode($response->body);
         if (empty($responseObject)) {
+            $id = htmlentities($id);
             throw new DrPublishApiClientException("No article data retrieved for article-id='{$id}'", DrPublishApiClientException::NO_DATA_ERROR);
         }
         return $this->createDrPublishApiClientSource($responseObject);
